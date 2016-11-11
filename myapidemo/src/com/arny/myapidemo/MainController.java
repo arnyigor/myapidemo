@@ -168,6 +168,9 @@ public class MainController extends AppCompatActivity {
                 case 17:
                     intent = new Intent(MainController.this, MyLoaderActivity.class);
                     break;
+                case 18:
+                    intent = new Intent(MainController.this, MyNewLoader.class);
+                    break;
             }
             startActivity(intent);
         }

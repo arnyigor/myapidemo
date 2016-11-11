@@ -29,6 +29,7 @@
         <item>TimerTaskActivity</item>
         <item>StartAlarmActivity</item>
         <item>MyLoaderActivity</item>
+        <item>MyNewLoader</item>
     </string-array>
 
     <!--Volley-->
@@ -53,14 +54,12 @@
         <item>Spinner 3</item>
         <item>Spinner 4</item>
     </string-array>
-
     <string-array name="listviewarray">
         <item>list item 1</item>
         <item>list item 2</item>
         <item>list item 3</item>
         <item>list item 4</item>
     </string-array>
-
     <string-array name="cats_array_ru">
         <item>Васька</item>
         <item>Барсик</item>
@@ -71,7 +70,6 @@
         <item>Бублик (у Экслера)</item>
         <item>Дорофей (у Димона)</item>
     </string-array>
-
     <string-array name="cats_array">
         <item>vaska</item>
         <item>barsik</item>
@@ -195,5 +193,10 @@
     <string name="format_long">Long</string>
     <string name="get_time">Get time</string>
     <string name="observer">Observer</string>
+
+    <!--Robospice-->
+    <string name="robo_name">RoboSpice Example</string>
+    <string name="title_activity_sample_spice">SampleSpiceActivity</string>
+    <string name="textview_text">textview_text</string>
 
 </resources>

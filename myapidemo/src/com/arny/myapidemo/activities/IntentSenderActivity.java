@@ -35,7 +35,7 @@ public class IntentSenderActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				intent = new Intent(getApplicationContext(), EnterIntentAcivity.class);
-				intent.putExtra(Consts.INTENT_STRING_DATA, edtIntentText.getText().toString());
+				intent.putExtra(Consts.INTENT_NAME_TEST, edtIntentText.getText().toString());
 				startActivity(intent);
 			}
 		});

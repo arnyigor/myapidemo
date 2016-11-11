@@ -27,7 +27,7 @@ public class EnterIntentAcivity extends AppCompatActivity {
 			e.printStackTrace();
 		}
 		textView = (TextView) findViewById(R.id.intenttv);
-		textView.setText(getIntent().getStringExtra(Consts.INTENT_STRING_DATA));
+		textView.setText(getIntent().getStringExtra(Consts.INTENT_NAME_TEST));
 		edtIntentResult = (EditText) findViewById(R.id.edtIntentResult);
 		btnOkResult = (Button) findViewById(R.id.btnOkResult);
 		btnOkResult.setOnClickListener(new View.OnClickListener() {

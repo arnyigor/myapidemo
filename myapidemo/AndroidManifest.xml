@@ -51,20 +51,15 @@
         <activity android:name=".activities.CoordinatorActivity" android:label="CoordinatorActivity"/>
         <activity android:name=".activities.TimerTaskActivity" android:label="TimerTaskActivity" />
         <activity android:name=".activities.MyLoaderActivity" android:label="MyLoaderActivity" />
+        <activity android:name=".activities.StartAlarmActivity" android:label="StartAlarmActivity" />
         <activity
-            android:name=".activities.StartAlarmActivity"
-            android:label="StartAlarmActivity" />
+            android:name=".activities.MyNewLoader"
+            android:label="MyNewLoader"/>
 
         <service android:name=".services.MyTimerService" android:label="MyAlarmService" />
-        <service
-            android:name=".services.HideNotificationService"
-            android:label="HideNotificationService" />
-        <serviceg
-            android:name=".services.WackeUpService"
-            android:label="WackeUpService" />
+        <service android:name=".services.HideNotificationService" android:label="HideNotificationService" />
+        <service android:name=".services.WackeUpService" android:label="WackeUpService" />
 
-        <receiver
-            android:name=".services.MyAlarmReceiver"
-            android:label="MyAlarmReceiver" />
+        <receiver android:name=".services.MyAlarmReceiver" android:label="MyAlarmReceiver" />
     </application>
 </manifest>
