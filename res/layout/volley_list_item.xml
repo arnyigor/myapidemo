@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvGitUserId" android:text="@string/str_new" android:layout_alignParentTop="true"
+            android:paddingLeft="20dp"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_new"
+            android:paddingLeft="20dp"
+            android:id="@+id/tvGitUserLogin"
+            android:layout_alignParentTop="true" android:layout_toRightOf="@+id/tvGitUserId"
+            android:layout_toEndOf="@+id/tvGitUserId"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_new"
+            android:paddingLeft="20dp"
+            android:id="@+id/tvGitUserRepos"
+            android:layout_alignParentTop="true" android:layout_toRightOf="@+id/tvGitUserLogin"
+            android:layout_toEndOf="@+id/tvGitUserLogin"/>
+
+</RelativeLayout>
