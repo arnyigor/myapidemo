@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.arny.myapidemo.fragments.FragmentOne;
 import com.arny.myapidemo.fragments.FragmentTwo;
+import com.arny.myapidemo.fragments.MyChronosFragment;
 import com.arny.myapidemo.fragments.SplashFragment;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
@@ -22,6 +23,8 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
                 return new FragmentTwo();
             case 2:
                 return new SplashFragment();
+            case 3:
+                return new MyChronosFragment();
         }
         return null;
 
@@ -45,6 +48,9 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
                 break;
             case 2:
                 title="Fragment splash";
+                break;
+            case 3:
+                title = "MyChronosFragment";
                 break;
         }
 
