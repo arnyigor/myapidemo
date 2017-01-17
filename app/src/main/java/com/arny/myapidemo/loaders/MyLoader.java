@@ -1,30 +1,44 @@
 package com.arny.myapidemo.loaders;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.arny.myapidemo.helpers.Funcs;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 public class MyLoader extends AsyncTaskLoader<String> {
 
-    public static final String TAG = "LOG_TAG";
-    public static final String ARG_WORD = "word";
-    public static final String RESULT = "Completed";
+    public static final String EXTRA_LOADER_STRING = "EXTRA_STRING";
+    private static final String TAG = "LOG_TAG";
 
-    public MyLoader(Context context) {
+    public MyLoader(Context context,Bundle bundle) {
         super(context);
+        if (bundle !=null){
+            Log.i(TAG, "MyLoader: bundle = " + bundle.toString());
+        }
         Log.i(TAG, "MyLoader: context = " + context);
     }
 
     @Override
     public String loadInBackground() {
-        Log.i(TAG, "loadInBackground");
-        return generateString();
+        Log.i(TAG, hashCode() + " loadInBackground start");
+        return getStringInbackground();
+    }
+
+
+    private String getStringInbackground() {
+        try {
+            TimeUnit.SECONDS.sleep(15);
+        } catch (InterruptedException e) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss.SSS", Locale.getDefault());
+        return sdf.format(new Date());
     }
 
     @Override
@@ -50,27 +64,5 @@ public class MyLoader extends AsyncTaskLoader<String> {
     public void deliverResult(String data) {
         Log.i(TAG, "deliverResult");
         super.deliverResult(data);
-    }
-
-
-    private String generateString()
-    {
-        long start = System.currentTimeMillis();
-        Log.i(TAG, "generateString: start = " + start);
-        int cnt = Funcs.getInstance().randInt(0,50);
-        Log.i(TAG, "generateString: random = " + cnt);
-        for (int i = 0; i <cnt ; i++) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.i(TAG, "generateString: i = " + i);
-        }
-        long finish = System.currentTimeMillis();
-        Log.i(TAG, "generateString: finish = " + finish);
-        long res = (finish - start)/1000;
-        Log.i(TAG, "generateString: res = " + res);
-        return RESULT + String.format(Locale.getDefault()," %.3d сек",res);
     }
 }

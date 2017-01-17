@@ -26,11 +26,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.arny.myapidemo.view.activities.*;
-import com.arny.myapidemo.view.fragments.SplashFragment;
-import com.arny.myapidemo.model.net.NetActivity;
-import com.arny.myapidemo.model.preferences.PreferenceHelper;
-import com.arny.myapidemo.model.preferences.Preferences;
+import com.arny.myapidemo.activities.*;
+import com.arny.myapidemo.fragments.SplashFragment;
+import com.arny.myapidemo.net.NetActivity;
+import com.arny.myapidemo.preferences.PreferenceHelper;
+import com.arny.myapidemo.preferences.Preferences;
 
 //==============Activity start=========================
 public class MainController extends AppCompatActivity {
@@ -43,73 +43,14 @@ public class MainController extends AppCompatActivity {
     String ringtonePreference;
     String secondEditTextPreference;
     String customPref;
-    private Context context = this;
     String[] mActivities;
-    private ListView listView;
-    private Intent intent;
-    // =============Variables end================
-
     // ==============Forms variables start==============
     FragmentManager fragmentManager;
     TextView mTextView;
-
-    // ==============Forms variables end==============
-    // ====================onCreate start=========================
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setTitle(getString(R.string.res_main_title));
-        Log.d(TAG, "MainController: onCreate()");
-        /*PreferenceHelper.getInstance().init(getApplicationContext());
-        preferenceHelper = PreferenceHelper.getInstance();
-		getPrefs();
-		String theme = ListPreference;
-		if (theme.equals("Black")) {
-			getApplication().getTheme().applyStyle(R.style.AppTheme,true);
-//			setTheme(R.style.AppTheme);
-		 }else if(theme.equals("Light")){
-//			 setTheme(R.style.AppThemeLight);
-			 getApplication().getTheme().applyStyle(R.style.AppThemeLight,true);
-        }
-		Toast.makeText(this, "Theme has been reset to " + theme ,
-                Toast.LENGTH_SHORT).show();*///TODO not working to app
-        listView = (ListView) findViewById(R.id.main_list);
-        mActivities = context.getResources().getStringArray(R.array.arrayActivities);
-        try {
-            ActivityInfo[] list = getActivityList();
-            for (ActivityInfo aList : list) {
-                Log.i(TAG, "onCreate List of running activities" + aList.name);
-
-            }
-        }
-        catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        fragmentManager = getSupportFragmentManager();
-        runSplash();
-
-        mTextView = (TextView) findViewById(R.id.textSelect);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mActivities);
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(onListItemClick);
-
-    }
-
-    private ActivityInfo[] getActivityList() throws PackageManager.NameNotFoundException {
-        Intent i = new Intent(Intent.ACTION_MAIN);
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
-        PackageManager pm = this.getPackageManager();
-
-        PackageInfo info = pm.getPackageInfo("com.arny.myapidemo.view.activities", PackageManager.GET_ACTIVITIES);
-
-        ApplicationInfo test = info.applicationInfo;
-        ActivityInfo[] list = info.activities;
-        return list;
-    }
-
+    private Context context = this;
+    // =============Variables end================
+    private ListView listView;
+    private Intent intent;
     AdapterView.OnItemClickListener onListItemClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -175,6 +116,56 @@ public class MainController extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    // ==============Forms variables end==============
+    // ====================onCreate start=========================
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        setTitle(getString(R.string.res_main_title));
+        Log.d(TAG, "MainController: onCreate()");
+        /*PreferenceHelper.getInstance().init(getApplicationContext());
+        preferenceHelper = PreferenceHelper.getInstance();
+		getPrefs();
+		String theme = ListPreference;
+		if (theme.equals("Black")) {
+			getApplication().getTheme().applyStyle(R.style.AppTheme,true);
+//			setTheme(R.style.AppTheme);
+		 }else if(theme.equals("Light")){
+//			 setTheme(R.style.AppThemeLight);
+			 getApplication().getTheme().applyStyle(R.style.AppThemeLight,true);
+        }
+		Toast.makeText(this, "Theme has been reset to " + theme ,
+                Toast.LENGTH_SHORT).show();*///TODO not working to app
+        listView = (ListView) findViewById(R.id.main_list);
+        mActivities = context.getResources().getStringArray(R.array.arrayActivities);
+        try {
+            ActivityInfo[] list = getActivityList();
+            for (ActivityInfo aList : list) {
+                Log.i(TAG, "onCreate List of running activities" + aList.name);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        fragmentManager = getSupportFragmentManager();
+        runSplash();
+        mTextView = (TextView) findViewById(R.id.textSelect);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, mActivities);
+        listView.setAdapter(arrayAdapter);
+        listView.setOnItemClickListener(onListItemClick);
+    }
+
+    private ActivityInfo[] getActivityList() throws PackageManager.NameNotFoundException {
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = this.getPackageManager();
+        PackageInfo info = pm.getPackageInfo("com.arny.myapidemo.activities", PackageManager.GET_ACTIVITIES);
+        ApplicationInfo test = info.applicationInfo;
+        ActivityInfo[] list = info.activities;
+        return list;
+    }
 
     public void getPrefs() {
         // Get the xml/preferences.xml preferences
