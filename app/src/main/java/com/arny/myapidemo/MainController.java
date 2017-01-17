@@ -26,11 +26,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.arny.myapidemo.activities.*;
-import com.arny.myapidemo.fragments.SplashFragment;
-import com.arny.myapidemo.net.NetActivity;
-import com.arny.myapidemo.preferences.PreferenceHelper;
-import com.arny.myapidemo.preferences.Preferences;
+import com.arny.myapidemo.view.activities.*;
+import com.arny.myapidemo.view.fragments.SplashFragment;
+import com.arny.myapidemo.model.net.NetActivity;
+import com.arny.myapidemo.model.preferences.PreferenceHelper;
+import com.arny.myapidemo.model.preferences.Preferences;
 
 //==============Activity start=========================
 public class MainController extends AppCompatActivity {
@@ -103,7 +103,7 @@ public class MainController extends AppCompatActivity {
         i.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = this.getPackageManager();
 
-        PackageInfo info = pm.getPackageInfo("com.arny.myapidemo.activities", PackageManager.GET_ACTIVITIES);
+        PackageInfo info = pm.getPackageInfo("com.arny.myapidemo.view.activities", PackageManager.GET_ACTIVITIES);
 
         ApplicationInfo test = info.applicationInfo;
         ActivityInfo[] list = info.activities;

@@ -19,47 +19,47 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activities.SplashActivity" android:label="@string/app_name" android:theme="@style/SplashTheme">
+        <activity android:name=".view.activities.SplashActivity" android:label="@string/app_name" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.FragmentActivity" android:label="fragment"/>
-        <activity android:name=".activities.XmlActivity" android:label="@string/XML"/>
-        <activity android:name=".activities.ScrollViewActivity" android:label="@string/Scroll"/>
-        <activity android:name=".activities.DialogActivity" android:label="@string/Dialog"/>
-        <activity android:name=".activities.TabsActivity" android:label="@string/Tabs"/>
-        <activity android:name=".activities.ToDoListActivity" android:label="@string/ToDoList"/>
-        <activity android:name=".activities.SqlLiteActivity" android:label="@string/SqlLite"/>
-        <activity android:name=".activities.SqlListActivity" android:label="@string/SqlList"/>
-        <activity android:name=".activities.SqlViewActivity" android:label="@string/SqlView"/>
-        <activity android:name=".activities.LayoutInflaterActivity" android:label="Results" />
-        <activity android:name=".activities.SimpleAdapterActivity" android:label="@string/SimpleAdapter"/>
-        <activity android:name=".net.NetActivity" android:label="NetActivity"/>
-        <activity android:name=".preferences.Preferences" android:label="@string/action_settings" />
-        <activity android:name=".activities.LoadActivity"  android:label="Load Activity" />
-        <activity android:name=".activities.AnimActivity" android:label="AnimActivity" />
-        <activity android:name=".activities.AlertCustomActivity" android:label="AlertCustomActivity" />
-        <activity android:name=".activities.DrawerActivity" android:label="DrawerActivity" />
-        <activity android:name=".activities.SimpleUIActivity" android:label="SimpleUIActivity" />
-        <activity android:name=".activities.RandomLoaderActivity" android:label="RandomLoaderActivity"/>
+        <activity android:name=".view.activities.FragmentActivity" android:label="fragment"/>
+        <activity android:name=".view.activities.XmlActivity" android:label="@string/XML"/>
+        <activity android:name=".view.activities.ScrollViewActivity" android:label="@string/Scroll"/>
+        <activity android:name=".view.activities.DialogActivity" android:label="@string/Dialog"/>
+        <activity android:name=".view.activities.TabsActivity" android:label="@string/Tabs"/>
+        <activity android:name=".view.activities.ToDoListActivity" android:label="@string/ToDoList"/>
+        <activity android:name=".view.activities.SqlLiteActivity" android:label="@string/SqlLite"/>
+        <activity android:name=".view.activities.SqlListActivity" android:label="@string/SqlList"/>
+        <activity android:name=".view.activities.SqlViewActivity" android:label="@string/SqlView"/>
+        <activity android:name=".view.activities.LayoutInflaterActivity" android:label="Results" />
+        <activity android:name=".view.activities.SimpleAdapterActivity" android:label="@string/SimpleAdapter"/>
+        <activity android:name=".model.net.NetActivity" android:label="NetActivity"/>
+        <activity android:name=".model.preferences.Preferences" android:label="@string/action_settings" />
+        <activity android:name=".view.activities.LoadActivity" android:label="Load Activity" />
+        <activity android:name=".view.activities.AnimActivity" android:label="AnimActivity" />
+        <activity android:name=".view.activities.AlertCustomActivity" android:label="AlertCustomActivity" />
+        <activity android:name=".view.activities.DrawerActivity" android:label="DrawerActivity" />
+        <activity android:name=".view.activities.SimpleUIActivity" android:label="SimpleUIActivity" />
+        <activity android:name=".view.activities.RandomLoaderActivity" android:label="RandomLoaderActivity"/>
         <activity android:name=".MainController" android:label="@string/app_name"/>
-        <activity android:name=".activities.CoordinatorActivity" android:label="CoordinatorActivity"/>
-        <activity android:name=".activities.TimerTaskActivity" android:label="TimerTaskActivity" />
-        <activity android:name=".activities.StartAlarmActivity" android:label="StartAlarmActivity" />
+        <activity android:name=".view.activities.CoordinatorActivity" android:label="CoordinatorActivity"/>
+        <activity android:name=".view.activities.TimerTaskActivity" android:label="TimerTaskActivity" />
+        <activity android:name=".view.activities.StartAlarmActivity" android:label="StartAlarmActivity" />
 
-        <service android:name=".services.MyTimerService" android:label="MyAlarmService" />
-        <service android:name=".services.HideNotificationService" android:label="HideNotificationService" />
-        <service android:name=".services.WackeUpService" android:label="WackeUpService" />
+        <service android:name=".model.services.MyTimerService" android:label="MyAlarmService" />
+        <service android:name=".model.services.HideNotificationService" android:label="HideNotificationService" />
+        <service android:name=".model.services.WackeUpService" android:label="WackeUpService" />
         <service
-            android:name=".services.MyIntentService"
+            android:name=".model.services.MyIntentService"
             android:label="MyIntentService" />
 
-        <receiver android:name=".services.MyAlarmReceiver" android:label="MyAlarmReceiver" />
-        <activity android:name=".activities.VolleyTestActivity" android:label="VolleyTestActivity" />
+        <receiver android:name=".model.services.MyAlarmReceiver" android:label="MyAlarmReceiver" />
+        <activity android:name=".view.activities.VolleyTestActivity" android:label="VolleyTestActivity" />
         <activity
-            android:name=".activities.IntentServiceActivity"
+            android:name=".view.activities.IntentServiceActivity"
             android:label="IntentServiceActivity" />
     </application>
 </manifest>
