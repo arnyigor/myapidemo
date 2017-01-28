@@ -80,7 +80,7 @@ public class DataLoader extends Loader<String> {
                 e.printStackTrace();
             }
             Log.i(TAG, "doInBackground: end huge task!!!!!!");
-            return Funcs.getCurrentDateTimeSec();
+            return Funcs.getDateTime(0,null);
         }
 
         @Override

@@ -34,12 +34,12 @@ public class DrawerActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.drawerlayout);
+		//setContentView(R.layout.drawerlayout);
 
 
 		mScreenTitles = getResources().getStringArray(R.array.cats_array_ru);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		//mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mScreenTitles));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -74,7 +74,7 @@ public class DrawerActivity extends AppCompatActivity {
 		};
 
 		// Set the drawer toggle as the DrawerListener
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		mDrawerLayout.addDrawerListener(mDrawerToggle);
 
 		// Initialize the first fragment when the application first loads.
 		if (savedInstanceState == null) {

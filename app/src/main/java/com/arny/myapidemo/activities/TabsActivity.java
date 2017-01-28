@@ -26,7 +26,7 @@ public class TabsActivity extends AppCompatActivity {
         // Fragment manager to add fragment in viewpager we will pass object of Fragment manager to adpater class.
         FragmentManager manager=getSupportFragmentManager();
         //object of PagerAdapter passing fragment manager object as a parameter of constructor of PagerAdapter class.
-        TabPagerAdapter adapter=new TabPagerAdapter(manager);
+        TabPagerAdapter adapter=new TabPagerAdapter(manager,this);
         //set Adapter to view pager
         viewPager.setAdapter(adapter);
         //set tablayout with viewpager

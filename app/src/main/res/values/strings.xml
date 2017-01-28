@@ -21,8 +21,7 @@
         <item>AnimActivity</item>
         <item>FragmentActivity</item>
         <item>AlertCustomActivity</item>
-        <item>NetActivity</item>
-        <item>DrawerActivity</item>
+        <item>NavigationActivity</item>
         <item>SimpleUIActivity</item>
         <item>RandomLoaderActivity</item>
         <item>CoordinatorActivity</item>
@@ -30,6 +29,8 @@
         <item>StartAlarmActivity</item>
         <item>VolleyTestActivity</item>
         <item>IntentServiceActivity</item>
+        <item>ChronosTestActivity</item>
+        <item>NavigationActivity</item>
     </string-array>
 
     <!--Volley-->
@@ -45,7 +46,6 @@
     <string name="app_not_available">app_not_available</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
-
 
 
     <string-array name="spinner">
@@ -198,5 +198,9 @@
     <string name="robo_name">RoboSpice Example</string>
     <string name="title_activity_sample_spice">SampleSpiceActivity</string>
     <string name="textview_text">textview_text</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

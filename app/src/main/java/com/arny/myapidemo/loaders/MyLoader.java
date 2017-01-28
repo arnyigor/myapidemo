@@ -5,16 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+import com.arny.myapidemo.helpers.Funcs;
 
 
 public class MyLoader extends AsyncTaskLoader<String> {
 
     public static final String EXTRA_LOADER_STRING = "EXTRA_STRING";
     private static final String TAG = "LOG_TAG";
+    private  String  mData;
 
     public MyLoader(Context context,Bundle bundle) {
         super(context);
@@ -23,35 +21,37 @@ public class MyLoader extends AsyncTaskLoader<String> {
         }
         Log.i(TAG, "MyLoader: context = " + context);
     }
-
+    //сюда помещаем рабочий код, то, что возвращается, колбэчится в onLoadFinished
+    //без необходимости вызова deliverResult
     @Override
     public String loadInBackground() {
         Log.i(TAG, hashCode() + " loadInBackground start");
-        return getStringInbackground();
+        String result = backgroundOperation();
+        Log.i(TAG, "loadInBackground: result - " + result);
+        return result;
     }
 
 
-    private String getStringInbackground() {
+    private String backgroundOperation() {
         try {
-            TimeUnit.SECONDS.sleep(15);
+            for (int i = 0; i < 10; i++) {
+                Thread.sleep(1000);
+                Log.i(TAG, "backgroundOperation: i = " + i);
+            }
         } catch (InterruptedException e) {
-            return null;
+            e.printStackTrace();
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss.SSS", Locale.getDefault());
-        return sdf.format(new Date());
+        String result = Funcs.getDateTime(0, null);
+        Log.i(TAG, "backgroundOperation: result = " + result);
+        return result;
     }
 
+    //У класса AsyncTaskLoader есть метод отмены: cancelLoad. Отмененный лоадер
+    // по окончании работы вызовет уже не onLoadFinished, а onCanceled в AsyncTaskLoader.
     @Override
-    public void forceLoad() {
-        Log.i(TAG, "forceLoad");
-        super.forceLoad();
-    }
-
-    @Override
-    protected void onStartLoading() {
-        super.onStartLoading();
-        Log.i(TAG, "onStartLoading");
-        forceLoad();
+    public void onCanceled(String data) {
+        super.onCanceled(data);
+        Log.i(TAG, "onCanceled: data = " + data);
     }
 
     @Override
@@ -60,9 +60,4 @@ public class MyLoader extends AsyncTaskLoader<String> {
         Log.i(TAG, "onStopLoading");
     }
 
-    @Override
-    public void deliverResult(String data) {
-        Log.i(TAG, "deliverResult");
-        super.deliverResult(data);
-    }
 }
