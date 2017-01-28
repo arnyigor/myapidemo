@@ -1,17 +1,31 @@
 package com.arny.myapidemo.adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.arny.myapidemo.R;
 import com.arny.myapidemo.fragments.FragmentOne;
 import com.arny.myapidemo.fragments.FragmentTwo;
-import com.arny.myapidemo.fragments.MyChronosFragment;
+import com.arny.myapidemo.fragments.MyServicefragment;
 import com.arny.myapidemo.fragments.SplashFragment;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
-    public TabPagerAdapter(FragmentManager fm) {
+    private Context context;
+    private String[] tabsFragments = {
+            "Fragment one",
+            "Fragment two",
+            "Fragment splash",
+            "Fragment service",
+    };
+//    private String[] tabsFragmentsResourses = {
+//            context.getResources().getString(R.string.action_settings),
+//    };
+
+    public TabPagerAdapter(FragmentManager fm,Context context) {
         super(fm);
+        this.context = context;
     }
 
     @Override
@@ -24,7 +38,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return new SplashFragment();
             case 3:
-                return new MyChronosFragment();
+                return new MyServicefragment();
         }
         return null;
 
@@ -32,29 +46,13 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return tabsFragments.length;
     }
 
 
     @Override
     public CharSequence getPageTitle(int position) {
-        String title=" ";
-        switch (position){
-            case 0:
-                title="Fragment one";
-                break;
-            case 1:
-                title="Fragment two";
-                break;
-            case 2:
-                title="Fragment splash";
-                break;
-            case 3:
-                title = "MyChronosFragment";
-                break;
-        }
-
-        return title;
+        return tabsFragments[position];
     }
 
-    }
+}

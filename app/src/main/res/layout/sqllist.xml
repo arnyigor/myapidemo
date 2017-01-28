@@ -3,14 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <TextView
-        android:id="@+id/textSelect"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold" />
 
     <ListView
-	 android:id="@+id/lvMain"
+	 android:id="@+id/sqlList"
 	 android:layout_width="match_parent"
 	 android:layout_height="wrap_content">
 	</ListView>

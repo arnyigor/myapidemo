@@ -89,7 +89,7 @@ public class MyTimerService extends Service {
         Intent intent = new Intent(TimerTaskActivity.BROADCAST_ACTION);
         updateNotification();
 
-        String time = Funcs.getTimeMIN_SEC(seconds);
+        String time = Funcs.strLogTime(seconds);
         intent.putExtra(MY_TIMER_SERVICE_TIME, time);
         sendBroadcast(intent);
     }
@@ -115,7 +115,7 @@ public class MyTimerService extends Service {
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(getBaseContext().getResources().getString(R.string.str_service_start))// Заголовок уведомления
                 //.setContentText(res.getString(R.string.notifytext))
-                .setContentText(Funcs.getTimeMIN_SEC(seconds)); // Текст уведомления
+                .setContentText(Funcs.strLogTime(seconds)); // Текст уведомления
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         notifbuild.setContentIntent(pendingIntent);
         notification = notifbuild.build();
