@@ -2,16 +2,12 @@ package com.arny.myapidemo;//Package name
 
 // imports start==========
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,10 +33,7 @@ import com.arny.myapidemo.activities.TabsActivity;
 import com.arny.myapidemo.activities.TimerTaskActivity;
 import com.arny.myapidemo.activities.VolleyTestActivity;
 import com.arny.myapidemo.activities.XmlActivity;
-import com.arny.myapidemo.fragments.SplashFragment;
 import com.arny.myapidemo.preferences.Preferences;
-
-import java.util.Arrays;
 
 //==============Activity start=========================
 public class HomeActivity extends AppCompatActivity {
@@ -66,14 +59,6 @@ public class HomeActivity extends AppCompatActivity {
             ChronosTestActivity.class,
             NavigationActivity.class,
     };
-    boolean CheckboxPreference;
-    String ListPreference;
-    String editTextPreference;
-    String ringtonePreference;
-    String secondEditTextPreference;
-    String customPref;
-    // ==============Forms variables start==============
-    FragmentManager fragmentManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,85 +84,19 @@ public class HomeActivity extends AppCompatActivity {
     AdapterView.OnItemClickListener onListItemClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(getBaseContext(), sActivities[position]);
-            startActivity(intent);
+            startActivity(new Intent(getBaseContext(), sActivities[position]));
         }
     };
-
-    public void getPrefs() {
-        // Get the xml/preferences.xml preferences
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        CheckboxPreference = prefs.getBoolean("checkboxPref", true);
-        ListPreference = prefs.getString("listPref", "Black");
-        editTextPreference = prefs.getString("editTextPref", "Nothing has been entered");
-        ringtonePreference = prefs.getString("ringtonePref", "DEFAULT_RINGTONE_URI");
-        secondEditTextPreference = prefs.getString("SecondEditTextPref", "Nothing has been entered");
-        // Get the custom preference
-        SharedPreferences mySharedPreferences = getSharedPreferences( "myCustomSharedPrefs", Activity.MODE_PRIVATE);
-        customPref = mySharedPreferences.getString("myCusomPref", "");
-    }
-
-    public void runSplash() {
-            fragmentManager = getSupportFragmentManager();
-            SplashFragment splashFragment = new SplashFragment();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, splashFragment)
-                    .addToBackStack(null)
-                    .commit();
-    }
-
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "HomeActivity: onRestart()");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "HomeActivity: onStart()");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "HomeActivity: onResume()");
-        getPrefs();
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "HomeActivity: onPause()");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "HomeActivity: onStop()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "HomeActivity: onDestroy()");
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        MenuItem splashItem = menu.findItem(R.id.menu_action_splash);
-//        splashItem.setChecked(preferenceHelper.getBoolean(PreferenceHelper.SPLASH_IS_INVISIBLE));
-        return true;
-    }
 
     @Override
     public void onBackPressed() {
         openQuitDialog();
-//        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
@@ -185,11 +104,7 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
-                Intent settingsActivity = new Intent(getBaseContext(),
-                        Preferences.class);
-                startActivity(settingsActivity);
-              /*  item.setChecked(!item.isChecked());
-                preferenceHelper.putBoolean(PreferenceHelper.SPLASH_IS_INVISIBLE, item.isChecked());*/
+                startActivity(new Intent(getBaseContext(), Preferences.class));
                 break;
             default:
 
@@ -197,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void openQuitDialog() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(
