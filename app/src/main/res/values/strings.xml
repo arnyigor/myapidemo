@@ -10,40 +10,14 @@
         dolores eos eveniet impedit ipsa iste natus nemo nisi possimus qui quo,
         ratione repellendus vel, veniam voluptate voluptatem voluptatibus.</string>
     <!--ArrayActivities-->
-    <string-array name="arrayActivities">
-        <item>TabsActivity</item>
-        <item>XmlActivity</item>
-        <item>ScrollViewActivity</item>
-        <item>DialogActivity</item>
-        <item>SqlLiteActivity</item>
-        <item>LayoutInflaterActivity</item>
-        <item>SimpleAdapterActivity</item>
-        <item>AnimActivity</item>
-        <item>FragmentActivity</item>
-        <item>AlertCustomActivity</item>
-        <item>NavigationActivity</item>
-        <item>SimpleUIActivity</item>
-        <item>RandomLoaderActivity</item>
-        <item>CoordinatorActivity</item>
-        <item>TimerTaskActivity</item>
-        <item>StartAlarmActivity</item>
-        <item>VolleyTestActivity</item>
-        <item>IntentServiceActivity</item>
-        <item>ChronosTestActivity</item>
-        <item>NavigationActivity</item>
-    </string-array>
 
     <!--Volley-->
     <string name="str_eror_response">Ошибка соединения!</string>
     <string name="str_progress_wait">Загрузка…</string>
 
     <!--fragment-->
-    <string name="title_top">Top fragment</string>
-
-    <string name="action_websearch">web search</string>
 
     <!--drawer-->
-    <string name="app_not_available">app_not_available</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
 
@@ -70,84 +44,18 @@
         <item>Бублик (у Экслера)</item>
         <item>Дорофей (у Димона)</item>
     </string-array>
-    <string-array name="cats_array">
-        <item>vaska</item>
-        <item>barsik</item>
-        <item>murzik</item>
-        <item>ryzhik</item>
-        <item>begemot</item>
-        <item>matroskin</item>
-        <item>bublik</item>
-        <item>dorofey</item>
-    </string-array>
 
     <string name="str_new">New</string>
-    <string name="str_btn">btn</string>
 
 
     <!--YandexMap-->
-    <string name="sample1">Объект на карте/Простое добавление объекта на карту</string>
-    <string name="sample1_head">Объект на карте</string>
-    <string name="sample2">Стандартный балун/Простое использование</string>
-    <string name="sample2_head">Стандартный балун</string>
-    <string name="sample2one">Нестандартный балун 1/Гибкая настройка балуна объекта, обработка нажатия на балун, расширение</string>
-    <string name="sample2one_head">Нестандартный балун расширение</string>
-    <string name="sample2two">Нестандартный балун 2/Гибкая настройка балуна объекта, обработка нажатия на балун, расширение</string>
-    <string name="sample2two_head">Нестандартный балун </string>
-    <string name="sample3">Нестандартный объект/Настройка отображения объекта на карте путём изменения его свойств</string>
-    <string name="sample3_head">Нестандартный объект</string>
-    <string name="sample4">Передвигаемый объект/Возможность перетаскивания добавленного объекта по карте</string>
-    <string name="sample4_head">Передвигаемый объект</string>
-    <string name="sample5">Отображение пробок/Демонстрирует показ пробок на карте</string>
-    <string name="sample5_head">Отображение пробок</string>
-    <string name="sample6">Настройка слоёв карты/Выбор активного слоя на карте Схема, Гибрид, Народная карта</string>
-    <string name="sample6_head">Настройка слоёв карты</string>
-    <string name="sample7">HD карта, ночной режим/Выбор HD карты, ночного режима</string>
-    <string name="sample7_head">HD карта, ночной режим</string>
-    <string name="sample8">Сообщения от карты/Возможность получения сообщения от карты </string>
-    <string name="sample8_head">Сообщения от карты</string>
-    <string name="sample9">Карта в ScrollView/Добавление карты в ScrollView</string>
-    <string name="sample9_head">Карта в ScrollView</string>
-    <string name="sample10">Карта в ListView/Добавление карты в ListView</string>
-    <string name="sample10_head">Карта в ListView</string>
-    <string name="sample11">Местоположение/Позволяет получать данные при изменении местоположения</string>
-    <string name="sample11_head">Местоположение</string>
-    <string name="sample12">Путь/Позволяет рисовать путь</string>
-    <string name="sample12_head">Путь</string>
-    <string name="sample13">GeoCode/Получать данные по координатам</string>
-    <string name="sample13_head">GeoCode</string>
-    <string name="sample14">ZoomSpan/Устанавливает зум чтоб поместились все объекты</string>
-    <string name="sample14_head">ZoomSpan</string>
-    <string name="kremlin">Кремль</string>
-    <string name="yandex">Яндекс</string>
-    <string name="omsk">Омск</string>
-    <string name="berlin">Берлин</string>
-    <string name="drag">Перетащи меня!</string>
 
-    <string name="menu_item_text">Exit</string>
-    <string name="text1">Data 1</string>
-    <string name="btn_text">Click</string>
     <string name="Tabs">Tabs</string>
     <string name="Dialog">Dialog</string>
     <string name="Scroll">Scroll</string>
     <string name="XML">XML</string>
-    <string name="Sql">Sql</string>
-    <string name="text_tab1">Это первое Activity</string>
-    <string name="text_tab2">Это второе Activity</string>
     <string name="ToDoList">ToDoList</string>
-    <string name="strLatitude">Широта</string>
-    <string name="strLongitude">Долгота</string>
     <string name="SqlLite">SqlLite</string>
-    <string name="Circle">Круговая орбита</string>
-    <string name="txt_result">Результат:</string>
-    <string name="btn_calc">Расчет</string>
-    <string name="planet_mass">Масса</string>
-    <string name="planet_radius">Радиус</string>
-    <string name="body_height">Высота</string>
-    <string name="body_periapsis">Перигелий</string>
-    <string name="geocen_height">Высота геоцентра</string>
-    <string name="body_apoapsis">Апогелий</string>
-    <string name="Results">Результаты</string>
     <string name="SqlList">SqlList</string>
     <string name="SqlView">SqlView</string>
     <string name="action_settings">action_settings</string>
@@ -155,12 +63,8 @@
     <string name="exit_question">Выйти?</string>
     <string name="no_answer">Нет</string>
     <string name="yes_answer">Да</string>
-    <string name="delete_item">Удалить запись</string>
     <string name="res_main_title">Main</string>
-    <string name="pref_header_general">Настройки</string>
     <string name="settings">Настройки</string>
-    <string name="add_record">Добавить запись</string>
-    <string name="edt_record">Редактировать запись</string>
     <string name="delete_record">Удалить запись</string>
     <string name="clearall">Clear all</string>
     <string name="frag1_text">Fragment 1</string>
@@ -187,18 +91,9 @@
 
     <!--loader-->
     <string name="hello_world">Hello world!</string>
-    <string name="start_button">Start</string>
     <string name="str_service_start">Сервист стартанул</string>
-    <string name="format_short">Short</string>
-    <string name="format_long">Long</string>
-    <string name="get_time">Get time</string>
-    <string name="observer">Observer</string>
 
     <!--Robospice-->
-    <string name="robo_name">RoboSpice Example</string>
-    <string name="title_activity_sample_spice">SampleSpiceActivity</string>
-    <string name="textview_text">textview_text</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

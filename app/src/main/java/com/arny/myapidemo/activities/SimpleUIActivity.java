@@ -1,67 +1,86 @@
 package com.arny.myapidemo.activities;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.helpers.BaseUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class SimpleUIActivity extends AppCompatActivity {
-	List<String> arrayList = new ArrayList<String>();
-	ProgressBar progessBar;
-	TextView seekbattv,progressbartv,ratingtv,spinnertv,radiogrtv,autoCompltv;
-	SeekBar seekBar;
-	RatingBar ratingBar;
-	Handler handler = new Handler();
-	Spinner spinner;
-	Switch switchspinneradapter;
-	AutoCompleteTextView autoComplit;
-	String[] spinnerarray = {"Spinner 01","Spinner 02","Spinner 03","Spinner 04"};
-	int progress = 0,spinnerPosition;
-	RadioGroup radioGroup;
-	ActionBar actionBar;
+public class SimpleUIActivity extends AppCompatActivity implements View.OnClickListener {
+	private ArrayList<String> arrayList;
+	private ArrayAdapter<String> simpleSpinnerAdapter,simpleListAdapter;
+	private ArrayAdapter<CharSequence> resourceAdapter;
+	private ProgressBar progessBar;
+	private TextView seekbattv,progressbartv,ratingtv,spinnertv,radiogrtv,autoCompltv,tvTaskName;
+	private SeekBar seekBar;
+	private RatingBar ratingBar;
+	private Handler handler = new Handler();
+	private Spinner spinner;
+	private Switch switchspinneradapter;
+	private AutoCompleteTextView autoComplit;
+	private String[] spinnerarray = {"Spinner 01","Spinner 02","Spinner 03","Spinner 04"};
+	private int progress = 0,spinnerPosition;
+	private RadioGroup radioGroup;
+	private EditText edtTaskName;
+	private boolean modeEditor;
+	private String editedParam;
+	private Button btnEditingOk;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.simpleui);
-		try {
+		if	(getSupportActionBar()!=null){
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		//IDs
-		progessBar = (ProgressBar) findViewById(R.id.progressBar1);
-		seekbattv = (TextView) findViewById(R.id.seekbattv);
-		progressbartv = (TextView) findViewById(R.id.progressbartv);
-		ratingtv = (TextView) findViewById(R.id.ratingtv);
-		seekBar = (SeekBar) findViewById(R.id.seekBar);
-		ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-		spinnertv = (TextView) findViewById(R.id.spinnertv);
-		spinner = (Spinner) findViewById(R.id.spinner);
-		switchspinneradapter = (Switch) findViewById(R.id.switchspinneradapter);
-		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-		radiogrtv = (TextView) findViewById(R.id.radiogrtv);
-		autoComplit = (AutoCompleteTextView) findViewById(R.id.autoComplit);
-		autoCompltv = (TextView) findViewById(R.id.autoCompltv);
-		//init
-		arrayList.add("Android");
-		arrayList.add("IOS");
-		final ArrayAdapter<?> adapter = new ArrayAdapter<Object>(this, android.R.layout.simple_spinner_dropdown_item, spinnerarray);
-		ArrayAdapter<String> adapterList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
-		final ArrayAdapter<?> resourceAdapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_dropdown_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
-		autoComplit.setAdapter(adapterList);
-		//listeners
+		initUI();
+		initLists();
+		initListeners();
+		initProgressBar();
+		initUIState();
+	}
+
+	private void initUIState() {
+		setModeEditor(false);
+		refreshEditingMode();
+	}
+
+	private void initProgressBar() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (progress <= 100) {
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+						progessBar.setProgress(progress);
+						progressbartv.setText(String.format("Progress:%d",progress));
+						}
+					});
+					try {
+						TimeUnit.MILLISECONDS.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					progress++;
+					if (progress == 100) {
+						progress=0;
+					}
+				}
+			}
+		}).start();
+	}
+
+	private void initListeners() {
 		autoComplit.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -94,7 +113,7 @@ public class SimpleUIActivity extends AppCompatActivity {
 		switchspinneradapter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				ArrayAdapter<?> adapter1 = isChecked ? adapter : resourceAdapter;
+				ArrayAdapter<?> adapter1 = isChecked ? simpleSpinnerAdapter : resourceAdapter;
 				spinner.setAdapter(adapter1);
 				adapter1.notifyDataSetChanged();
 				String selected = String.valueOf(spinner.getSelectedItem());
@@ -137,29 +156,44 @@ public class SimpleUIActivity extends AppCompatActivity {
 
 			}
 		});
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (progress <= 100) {
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-							progessBar.setProgress(progress);
-							progressbartv.setText("ProgressBar progress:" + String.valueOf(progress));
-						}
-					});
-					try {
-						TimeUnit.MILLISECONDS.sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					progress++;
-					if (progress == 100) {
-						progress=0;
-					}
-				}
-			}
-		}).start();
+	}
+
+	private void initLists() {
+		arrayList = new ArrayList<>();
+		arrayList.add("Android");
+		arrayList.add("IOS");
+		simpleSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerarray);
+		simpleListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,arrayList);
+		resourceAdapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_dropdown_item);
+		simpleSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(simpleSpinnerAdapter);
+		autoComplit.setAdapter(simpleListAdapter);
+	}
+
+	private void initUI() {
+		progessBar = (ProgressBar) findViewById(R.id.progressBar1);
+		seekBar = (SeekBar) findViewById(R.id.seekBar);
+		ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+		spinner = (Spinner) findViewById(R.id.spinner);
+		switchspinneradapter = (Switch) findViewById(R.id.switchspinneradapter);
+		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+		autoComplit = (AutoCompleteTextView) findViewById(R.id.autoComplit);
+		spinnertv = (TextView) findViewById(R.id.spinnertv);
+		seekbattv = (TextView) findViewById(R.id.seekbattv);
+		progressbartv = (TextView) findViewById(R.id.progressbartv);
+		ratingtv = (TextView) findViewById(R.id.ratingtv);
+		radiogrtv = (TextView) findViewById(R.id.radiogrtv);
+		autoCompltv = (TextView) findViewById(R.id.autoCompltv);
+		tvTaskName = (TextView) findViewById(R.id.tvTaskName);
+		edtTaskName = (EditText) findViewById(R.id.edtTaskName);
+		btnEditingOk = (Button) findViewById(R.id.btnEditingOk);
+		btnEditingOk.setOnClickListener(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.simple_ui_menu, menu);
+		return true;
 	}
 
 	@Override
@@ -170,7 +204,51 @@ public class SimpleUIActivity extends AppCompatActivity {
 				// ProjectsActivity is my 'home' activity
 				super. onBackPressed();
 				return true;
+			case R.id.action_mode_edit:
+				setModeEditor(true);
+				refreshEditingMode();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void refreshEditingMode() {
+		if (isModeEditor()){
+			if (!BaseUtils.empty(editedParam)){
+				edtTaskName.setText(editedParam);
+			}
+			edtTaskName.setVisibility(View.VISIBLE);
+			tvTaskName.setVisibility(View.GONE);
+			btnEditingOk.setVisibility(View.VISIBLE);
+		}else{
+			if (!BaseUtils.empty(edtTaskName.getText().toString())){
+				editedParam = edtTaskName.getText().toString().trim();
+			}else{
+				editedParam = "no text";
+			}
+			tvTaskName.setText(editedParam);
+			edtTaskName.setVisibility(View.GONE);
+			tvTaskName.setVisibility(View.VISIBLE);
+			btnEditingOk.setVisibility(View.GONE);
+		}
+
+	}
+
+	public boolean isModeEditor() {
+		return modeEditor;
+	}
+
+	public void setModeEditor(boolean modeEditor) {
+		this.modeEditor = modeEditor;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.btnEditingOk:
+				setModeEditor(false);
+				refreshEditingMode();
+			break;
+		}
 	}
 }

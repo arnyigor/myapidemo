@@ -26,7 +26,6 @@ import com.arny.myapidemo.activities.CoordinatorActivity;
 import com.arny.myapidemo.activities.DialogActivity;
 import com.arny.myapidemo.activities.FragmentActivity;
 import com.arny.myapidemo.activities.IntentServiceActivity;
-import com.arny.myapidemo.activities.LayoutInflaterActivity;
 import com.arny.myapidemo.activities.NavigationActivity;
 import com.arny.myapidemo.activities.RandomLoaderActivity;
 import com.arny.myapidemo.activities.ScrollViewActivity;
@@ -41,6 +40,8 @@ import com.arny.myapidemo.activities.XmlActivity;
 import com.arny.myapidemo.fragments.SplashFragment;
 import com.arny.myapidemo.preferences.Preferences;
 
+import java.util.Arrays;
+
 //==============Activity start=========================
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "LOG_TAG";
@@ -50,7 +51,6 @@ public class HomeActivity extends AppCompatActivity {
             ScrollViewActivity.class,
             DialogActivity.class,
             SqlLiteActivity.class,
-            LayoutInflaterActivity.class,
             SimpleAdapterActivity.class,
             AnimActivity.class,
             FragmentActivity.class,
@@ -74,19 +74,26 @@ public class HomeActivity extends AppCompatActivity {
     String customPref;
     // ==============Forms variables start==============
     FragmentManager fragmentManager;
-    // =============Variables end================
-    private ListView listView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(getString(R.string.res_main_title));
-        runSplash();
-        Log.d(TAG, "HomeActivity: onCreate()");
-        listView = (ListView) findViewById(R.id.main_list);
-        String[] titles = getResources().getStringArray(R.array.arrayActivities);
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titles));
-        listView.setOnItemClickListener(onListItemClick);
+        ListView listView = (ListView) findViewById(R.id.main_list);
+        String[] classesNames = getClassesNames();
+        if (classesNames.length>0){
+            listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classesNames));
+            listView.setOnItemClickListener(onListItemClick);
+        }
+    }
+
+    private String[] getClassesNames() {
+        String[] names = new String[sActivities.length];
+        for (int i = 0; i < sActivities.length; i++) {
+            names[i] = sActivities[i].getSimpleName();
+        }
+        return names;
     }
 
     AdapterView.OnItemClickListener onListItemClick = new AdapterView.OnItemClickListener() {

@@ -58,17 +58,11 @@
             android:name=".activities.SqlViewActivity"
             android:label="@string/SqlView"/>
         <activity
-            android:name=".activities.LayoutInflaterActivity"
-            android:label="Results"/>
-        <activity
             android:name=".activities.SimpleAdapterActivity"
             android:label="@string/SimpleAdapter"/>
         <activity
             android:name=".preferences.Preferences"
             android:label="@string/action_settings"/>
-        <activity
-            android:name=".activities.LoadActivity"
-            android:label="Load Activity"/>
         <activity
             android:name=".activities.AnimActivity"
             android:label="AnimActivity"/>

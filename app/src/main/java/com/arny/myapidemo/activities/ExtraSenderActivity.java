@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.helpers.Consts;
 
-public class IntentSenderActivity extends AppCompatActivity {
+public class ExtraSenderActivity extends AppCompatActivity {
 
 
 	int activityResult;
