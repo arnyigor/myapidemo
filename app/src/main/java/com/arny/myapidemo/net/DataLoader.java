@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.arny.myapidemo.helpers.Utils;
+import com.arny.myapidemo.helpers.BaseUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -80,7 +80,7 @@ public class DataLoader extends Loader<String> {
                 e.printStackTrace();
             }
             Log.i(TAG, "doInBackground: end huge task!!!!!!");
-            return Utils.getDateTime(0,null);
+            return BaseUtils.getDateTime(0,null);
         }
 
         @Override

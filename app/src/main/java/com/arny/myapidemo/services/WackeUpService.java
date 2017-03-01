@@ -7,11 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.Utils;
+import com.arny.myapidemo.helpers.BaseUtils;
 
 import static com.arny.myapidemo.helpers.Consts.TAG;
 
@@ -23,14 +22,14 @@ public class WackeUpService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i(TAG, "onHandleIntent: intent = " + intent.getExtras().toString());
-        Log.i(TAG, "onHandleIntent: intent time= " + Utils.getDateTime(0,null));
+        Log.i(TAG, "onHandleIntent: intent time= " + BaseUtils.getDateTime(0,null));
         // Create Notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
                 .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_launcher))
                 .setSmallIcon(android.R.drawable.ic_menu_info_details)
                 .setContentTitle(getApplicationContext().getResources().getString(R.string.app_name))
                 .setTicker(getApplicationContext().getResources().getString(R.string.app_name))
-                .setContentText(Utils.getDateTime(0,"dd MMM yyyy HH:mm:ss"))
+                .setContentText(BaseUtils.getDateTime(0,"dd MMM yyyy HH:mm:ss"))
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setOnlyAlertOnce(true);
