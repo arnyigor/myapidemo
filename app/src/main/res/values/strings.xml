@@ -152,4 +152,16 @@
         <item>18</item>
     </string-array>
 
+    <string name="movies_categories_key">categoriesKey</string>
+    <string name="default_movies_categories">popular</string>
+
+    <string-array name="categories">
+        <item>Popular Movies</item>
+        <item>Top Rated Movies</item>
+    </string-array>
+    <string-array name="categories_value">
+        <item>popular</item>
+        <item>top_rated</item>
+    </string-array>
+
 </resources>

@@ -25,6 +25,7 @@ import com.arny.myapidemo.activities.IntentServiceActivity;
 import com.arny.myapidemo.activities.NavigationActivity;
 import com.arny.myapidemo.activities.RandomLoaderActivity;
 import com.arny.myapidemo.activities.ScrollViewActivity;
+import com.arny.myapidemo.activities.SettingsActivity;
 import com.arny.myapidemo.activities.SimpleAdapterActivity;
 import com.arny.myapidemo.activities.SimpleUIActivity;
 import com.arny.myapidemo.activities.SqlLiteActivity;
@@ -58,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
             IntentServiceActivity.class,
             ChronosTestActivity.class,
             NavigationActivity.class,
+            SettingsActivity.class,
     };
 
     @Override
