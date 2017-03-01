@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.arny.myapidemo.helpers.Funcs;
+import com.arny.myapidemo.helpers.Utils;
 
 
 public class MyLoader extends AsyncTaskLoader<String> {
@@ -41,7 +41,7 @@ public class MyLoader extends AsyncTaskLoader<String> {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        String result = Funcs.getDateTime(0, null);
+        String result = Utils.getDateTime(0, null);
         Log.i(TAG, "backgroundOperation: result = " + result);
         return result;
     }

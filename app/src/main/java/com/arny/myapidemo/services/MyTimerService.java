@@ -12,7 +12,7 @@ import android.util.Log;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.activities.TimerTaskActivity;
 import com.arny.myapidemo.helpers.Consts;
-import com.arny.myapidemo.helpers.Funcs;
+import com.arny.myapidemo.helpers.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -89,7 +89,7 @@ public class MyTimerService extends Service {
         Intent intent = new Intent(TimerTaskActivity.BROADCAST_ACTION);
         updateNotification();
 
-        String time = Funcs.strLogTime(seconds);
+        String time = Utils.strLogTime(seconds);
         intent.putExtra(MY_TIMER_SERVICE_TIME, time);
         sendBroadcast(intent);
     }
@@ -115,7 +115,7 @@ public class MyTimerService extends Service {
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(getBaseContext().getResources().getString(R.string.str_service_start))// Заголовок уведомления
                 //.setContentText(res.getString(R.string.notifytext))
-                .setContentText(Funcs.strLogTime(seconds)); // Текст уведомления
+                .setContentText(Utils.strLogTime(seconds)); // Текст уведомления
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         notifbuild.setContentIntent(pendingIntent);
         notification = notifbuild.build();

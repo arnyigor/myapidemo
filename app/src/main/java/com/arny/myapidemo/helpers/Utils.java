@@ -1,5 +1,13 @@
 package com.arny.myapidemo.helpers;
 
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Vibrator;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,7 +17,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-public class Funcs {
+public class Utils {
 
 	public static boolean matcher(String preg,String string) {
 	    return Pattern.matches(preg, string);
@@ -95,5 +103,28 @@ public class Funcs {
         Random rnd = new Random();
         int range = max - min + 1;
         return rnd.nextInt(range) + min;
+    }
+
+    /**
+     * Повибрировать :)
+     *
+     * @param duration Длительность в ms, например, 500 - полсекунды
+     */
+    public static void vibrate(Context context,int duration) {
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(duration);
+    }
+
+    //Get an alarm sound. Try for an alarm. If none set, try notification,
+    //Otherwise, ringtone.
+    private Uri getAlarmUri() {
+        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (alert == null) {
+            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if (alert == null) {
+                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            }
+        }
+        return alert;
     }
 }

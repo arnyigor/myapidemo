@@ -28,7 +28,7 @@
 
         <fragment
             android:id="@+id/fragment1"
-            android:name="com.arny.myapidemo.fragments.FragmentOne"
+            android:name="com.arny.myapidemo.fragments.FragmentAlarms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

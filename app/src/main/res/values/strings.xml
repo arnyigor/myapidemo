@@ -70,6 +70,7 @@
     <string name="frag1_text">Fragment 1</string>
     <string name="frag2_text">Fragment 2</string>
     <string name="log">Log</string>
+    <string name="str_test">Test</string>
     <string name="find">Find</string>
     <string name="dialog_1">Dialog 1</string>
     <string name="dialog_2">Dialog 2</string>
@@ -97,5 +98,58 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Preferences arrays -->
+    <string-array name="pref_reminder_times">
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+    </string-array>
+
+    <string-array name="pref_reminder_values">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+    </string-array>
+
+    <string-array name="pref_alarm_times">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+    </string-array>
+
+    <string-array name="pref_alarm_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+    </string-array>
+
+    <string-array name="pref_default_hour">
+        <item>Midnight</item>
+        <item>6:00 am</item>
+        <item>9:00 am</item>
+        <item>Noon</item>
+        <item>3:00 pm</item>
+        <item>6:00 pm</item>
+    </string-array>
+
+    <string-array name="pref_default_hour_values">
+        <item>0</item>
+        <item>6</item>
+        <item>9</item>
+        <item>12</item>
+        <item>15</item>
+        <item>18</item>
+    </string-array>
 
 </resources>

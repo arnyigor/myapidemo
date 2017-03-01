@@ -16,7 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.fragments.FragmentOne;
+import com.arny.myapidemo.fragments.FragmentAlarms;
 import com.arny.myapidemo.fragments.MyServicefragment;
 
 public class NavigationActivity extends AppCompatActivity
@@ -102,13 +102,13 @@ public class NavigationActivity extends AppCompatActivity
         Fragment fragment;
         switch (id) {
             case R.id.nav_camera:
-                fragment = new FragmentOne();
+                fragment = new FragmentAlarms();
                 break;
             case R.id.nav_gallery:
                 fragment = new MyServicefragment();
                 break;
             default:
-                fragment = new FragmentOne();
+                fragment = new FragmentAlarms();
                 break;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
