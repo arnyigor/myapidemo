@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.arny.myapidemo.helpers.BaseUtils;
+import com.arny.myapidemo.utils.BaseUtils;
 
 
 public class MyLoader extends AsyncTaskLoader<String> {

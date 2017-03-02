@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -16,11 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.Consts;
 import com.arny.myapidemo.services.MyAlarmReceiver;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class FragmentAlarms extends Fragment {
 	private Button btnFragmAlarmStart,btnFragmAlarmEnd;

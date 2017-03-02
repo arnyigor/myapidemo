@@ -16,7 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.ParseJSON;
 import com.arny.myapidemo.adapters.VolleyList;
-import com.arny.myapidemo.helpers.Consts;
+import com.arny.myapidemo.utils.Consts;
 import org.json.JSONObject;
 
 public class GitHubActivity extends AppCompatActivity {

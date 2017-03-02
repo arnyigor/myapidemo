@@ -11,13 +11,13 @@ import android.util.Log;
 
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.activities.TimerTaskActivity;
-import com.arny.myapidemo.helpers.BaseUtils;
-import com.arny.myapidemo.helpers.Consts;
+import com.arny.myapidemo.utils.BaseUtils;
+import com.arny.myapidemo.utils.Consts;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.arny.myapidemo.helpers.Consts.TAG;
+import static com.arny.myapidemo.utils.Consts.TAG;
 
 public class MyTimerService extends Service {
 

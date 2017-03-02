@@ -1,4 +1,4 @@
-package com.arny.myapidemo.helpers;
+package com.arny.myapidemo.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -79,7 +79,7 @@ public class BaseUtils {
         }
         try {
             milliseconds = (milliseconds == 0) ? Calendar.getInstance().getTimeInMillis() : milliseconds;
-            format = (format == null) ? "dd MMM yyyy HH:mm:ss.sss" : format;
+            format = (format == null || empty(format)) ? "dd MMM yyyy HH:mm:ss.sss" : format;
             return (new SimpleDateFormat(format, Locale.getDefault())).format(new Date(milliseconds));
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,7 +187,6 @@ public class BaseUtils {
         int range = max - min + 1;
         return rnd.nextInt(range) + min;
     }
-
 
     public static int convertStringToTime(String time) {
         int hours = 0;

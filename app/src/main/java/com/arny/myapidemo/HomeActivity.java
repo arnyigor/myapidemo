@@ -16,26 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.arny.myapidemo.activities.AlertCustomActivity;
-import com.arny.myapidemo.activities.AnimActivity;
-import com.arny.myapidemo.activities.ChronosTestActivity;
-import com.arny.myapidemo.activities.CoordinatorActivity;
-import com.arny.myapidemo.activities.DialogActivity;
-import com.arny.myapidemo.activities.FragmentActivity;
-import com.arny.myapidemo.activities.IntentServiceActivity;
-import com.arny.myapidemo.activities.NavigationActivity;
-import com.arny.myapidemo.activities.RandomLoaderActivity;
-import com.arny.myapidemo.activities.ScrollViewActivity;
-import com.arny.myapidemo.activities.SettingsActivity;
-import com.arny.myapidemo.activities.SimpleAdapterActivity;
-import com.arny.myapidemo.activities.SimpleUIActivity;
-import com.arny.myapidemo.activities.SqlLiteActivity;
-import com.arny.myapidemo.activities.StartAlarmActivity;
-import com.arny.myapidemo.activities.TabsActivity;
-import com.arny.myapidemo.activities.TimerTaskActivity;
-import com.arny.myapidemo.activities.VolleyTestActivity;
-import com.arny.myapidemo.activities.XmlActivity;
-import com.arny.myapidemo.preferences.Preferences;
+import com.arny.myapidemo.activities.*;
 
 //==============Activity start=========================
 public class HomeActivity extends AppCompatActivity {
@@ -50,7 +31,6 @@ public class HomeActivity extends AppCompatActivity {
             AnimActivity.class,
             FragmentActivity.class,
             AlertCustomActivity.class,
-            NavigationActivity.class,
             SimpleUIActivity.class,
             RandomLoaderActivity.class,
             CoordinatorActivity.class,
@@ -59,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
             VolleyTestActivity.class,
             IntentServiceActivity.class,
             ChronosTestActivity.class,
-            NavigationActivity.class,
+            LocationActivity.class,
     };
     private Toolbar toolbar;
 
@@ -81,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            toolbar.setTitle(getString(R.string.res_main_title));
+            setTitle(getString(R.string.res_main_title));
         }
     }
 

@@ -1,118 +1,112 @@
 package com.arny.myapidemo.activities;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.utils.BasePermissions;
+import com.arny.myapidemo.utils.BaseUtils;
+import com.arny.myapidemo.utils.ToastMaker;
 
-//==============ActivityName start=========================
-public class LocationActivity extends Activity implements LocationListener {
-	static Location imHere; // здесь будет всегда доступна самая последняя информация о местоположении пользователя.
-	// =============Variables start================
-	String latLongString;
-	String provider = LocationManager.GPS_PROVIDER;
-	int t = 1000; // миллисекунды
-	int distance = 1; // meters
-	LocationManager locationManager;
-	String context = Context.LOCATION_SERVICE;
-	// =============Variables end================
-	// ==============Forms variables start==============
-	TextView myLocationText;
-	final LocationListener locationListener = new LocationListener() {
-		public void onLocationChanged(Location location) {
-			updateWithNewLocation(location);
-		}
+public class LocationActivity extends AppCompatActivity {
 
-		public void onProviderDisabled(String provider) {
-			updateWithNewLocation(null);
-		}
+    private LocationManager mLocMgr;
+    private TextView myLocationText;
+    private long locationTime;
 
-		public void onProviderEnabled(String provider) {
-		}
 
-		public void onStatusChanged(String provider, int status,
-									Bundle extras) {
-		}
-	};
+    private static final int LOCATION_REQUEST = 100;
+    private Toolbar toolbar;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.location);
-		setTitle("location");
-		SetUpLocationListener(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.location);
+        initToolbar();
+        myLocationText = (TextView) findViewById(R.id.myLocationText);
+        mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-		// ==================onCreateCode end=========================
-	}
+    }
 
-	public void SetUpLocationListener(Context context) // это нужно запустить в самом начале работы программы
-	{
-		LocationManager locationManager = (LocationManager)
-				context.getSystemService(Context.LOCATION_SERVICE);
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            setTitle(getString(R.string.title_location));
+        }
+    }
 
-		LocationListener locationListener = new LocationActivity();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_REQUEST:
+                if (BasePermissions.permissionGranted(grantResults)) {
+                    getLocation();
+                } else {
+                    ToastMaker.toast(this, "Включите GPS и откройте интернет подключение", true);
+                }
+                break;
+        }
+    }
 
-		if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			// TODO: Consider calling
-			//    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-			// here to request the missing permissions, and then overriding
-			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-			//                                          int[] grantResults)
-			// to handle the case where the user grants the permission. See the documentation
-			// for Activity#requestPermissions for more details.
-			return;
-		}
-		locationManager.requestLocationUpdates(
-				LocationManager.GPS_PROVIDER,
-				5000,
-				10,
-				locationListener); // здесь можно указать другие более подходящие вам параметры
 
-		imHere = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!BasePermissions.canAccessLocation(this, LOCATION_REQUEST)) {
+            ToastMaker.toast(this, "Включите GPS и откройте интернет подключение", true);
+        } else {
+            getLocation();
+        }
+    }
 
-	// ==================CustomCode start=========================
-	private void updateWithNewLocation(Location location) {
-		myLocationText = (TextView) findViewById(R.id.myLocationText);
-		if (location != null) {
-			double lat = location.getLatitude();
-			double lng = location.getLongitude();
-			latLongString = "Lat:" + lat + "\nLong:" + lng;
-		} else {
-			latLongString = "No location found";
-		}
-		myLocationText.setText("Your Current Position is:\n" + latLongString);
-	}
+    @Override
+    protected void onDestroy() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mLocMgr.removeUpdates(locationListener);
+        super.onDestroy();
+    }
 
-	@Override
-	public void onLocationChanged(Location location) {
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ToastMaker.toast(this, "Включите разрешение местоположения", true);
+            return;
+        }
+        mLocMgr.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 300, 0, locationListener);
+    }
 
-	}
 
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
+    private LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            long updateTeme = 0;
+            if (locationTime==0){
+                locationTime = location.getTime();
+            }else{
+                updateTeme = location.getTime() - locationTime;
+                locationTime = location.getTime();
+            }
+            myLocationText.setText(String.format("Провайдер:%s\nВремя: %s\n Время обновления:%d\nLat = %.6f Long = %.6f",
+                    location.getProvider(), BaseUtils.getDateTime(location.getTime(),null),updateTeme,location.getLatitude(),location.getLongitude()));
+        }
 
-	}
+        public void onProviderDisabled(String provider) {
+        }
 
-	@Override
-	public void onProviderEnabled(String provider) {
+        public void onProviderEnabled(String provider) {
+        }
 
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-
-	}
-
-	// ====================OnClicks======================================
-
-	// ====================OnClicks end======================================
-
-}// ===================ActivityName end==================================
-// ===================SimpleActivity==================================
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+    };
+}

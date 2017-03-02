@@ -1,4 +1,4 @@
-package com.arny.myapidemo.helpers;
+package com.arny.myapidemo.utils;
 
 import android.content.ContentValues;
 import android.content.Context;

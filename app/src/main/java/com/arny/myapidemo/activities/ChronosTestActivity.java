@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.SimpleOperation;
+import com.arny.myapidemo.utils.SimpleOperation;
 import com.redmadrobot.chronos.ChronosConnector;
 import com.redmadrobot.chronos.gui.activity.ChronosAppCompatActivity;
 

@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.DB;
+import com.arny.myapidemo.utils.DB;
 
 //==============Activity start=========================
 public class SimpleAdapterActivity extends ListActivity {

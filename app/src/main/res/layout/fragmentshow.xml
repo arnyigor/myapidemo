@@ -6,34 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/btnFind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:onClick="onClick"
-            android:text="@string/find" >
-        </Button>
-    </LinearLayout>
+    <include
+            android:id="@+id/toolbar"
+            layout="@layout/tool_bar" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <fragment
-            android:id="@+id/fragment1"
-            android:name="com.arny.myapidemo.fragments.FragmentAlarms"
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:layout="@layout/fragment_one" >
-        </fragment>
-    </LinearLayout>
+            android:orientation="vertical"/>
 
 </LinearLayout>

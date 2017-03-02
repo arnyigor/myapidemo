@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.services.MyIntentService;
 
-import static com.arny.myapidemo.helpers.Consts.TAG;
+import static com.arny.myapidemo.utils.Consts.TAG;
 
 public class MyServicefragment extends Fragment {
     private static final String DATA_SAVE_STATE = "data_save_update";

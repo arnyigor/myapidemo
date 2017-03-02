@@ -6,13 +6,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.arny.myapidemo.helpers.BaseUtils;
+import com.arny.myapidemo.utils.BaseUtils;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.arny.myapidemo.helpers.Consts.INTENT_NAME_TEST;
-import static com.arny.myapidemo.helpers.Consts.TAG;
-import static com.arny.myapidemo.helpers.Consts.TEST_STRING_DATA;
+import static com.arny.myapidemo.utils.Consts.INTENT_NAME_TEST;
+import static com.arny.myapidemo.utils.Consts.TAG;
+import static com.arny.myapidemo.utils.Consts.TEST_STRING_DATA;
 
 public class DataLoader extends Loader<String> {
     private DataTask datatask;

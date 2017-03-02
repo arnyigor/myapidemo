@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.Consts;
+import com.arny.myapidemo.utils.Consts;
 
 public class ExtraSenderActivity extends AppCompatActivity {
 

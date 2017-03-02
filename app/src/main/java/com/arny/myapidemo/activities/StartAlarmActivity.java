@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.Consts;
+import com.arny.myapidemo.utils.Consts;
 import com.arny.myapidemo.services.BootBroadcastReceiver;
 import com.arny.myapidemo.services.MyAlarmReceiver;
 

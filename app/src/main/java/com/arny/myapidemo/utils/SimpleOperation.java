@@ -1,4 +1,4 @@
-package com.arny.myapidemo.helpers;
+package com.arny.myapidemo.utils;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

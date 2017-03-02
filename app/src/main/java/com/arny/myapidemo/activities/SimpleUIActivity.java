@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.BaseUtils;
+import com.arny.myapidemo.utils.BaseUtils;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;

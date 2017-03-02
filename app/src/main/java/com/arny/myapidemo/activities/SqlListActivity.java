@@ -11,8 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.DatabaseHelper;
-import com.arny.myapidemo.helpers.TestObject;
+import com.arny.myapidemo.utils.DatabaseHelper;
+import com.arny.myapidemo.utils.TestObject;
 
 import java.util.ArrayList;
 

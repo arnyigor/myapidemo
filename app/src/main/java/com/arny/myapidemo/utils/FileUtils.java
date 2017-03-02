@@ -1,17 +1,14 @@
-package com.arny.myapidemo.helpers;
+package com.arny.myapidemo.utils;
 
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -20,10 +17,7 @@ public class FileUtils {
 
     private static final String DOCUMENT_SEPARATOR = ":";
     private static final String FOLDER_SEPARATOR = "/";
-    private static String[] PERMISSIONS_STORAGE = {
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+
 
     public static String getSDFilePath(Context context, Uri uri) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -97,7 +91,7 @@ public class FileUtils {
         return null;
     }
 
-    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};
@@ -114,7 +108,7 @@ public class FileUtils {
         return null;
     }
 
-    public static boolean isExternalStorageDocument(Uri uri) {
+    private static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
@@ -122,7 +116,7 @@ public class FileUtils {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadsProvider.
      */
-    public static boolean isDownloadsDocument(Uri uri) {
+    private static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
@@ -130,7 +124,7 @@ public class FileUtils {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is MediaProvider.
      */
-    public static boolean isMediaDocument(Uri uri) {
+    private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
@@ -138,37 +132,22 @@ public class FileUtils {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is Google Photos.
      */
-    public static boolean isGooglePhotosUri(Uri uri) {
+    private static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    public static boolean checkSDRRWPermessions(Context context, Activity activity, int requestCode) {
+    public static boolean checkStoragePermissions(Activity activity, int requestCode) {
         try {
             boolean mlolipop = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP;
             boolean permissionGranded = false;
             if (mlolipop) {
-                permissionGranded = verifyStoragePermissions(activity,requestCode);// Do something for lollipop and above versions
+                permissionGranded = BasePermissions.canAccessStorage(activity,requestCode);// Do something for lollipop and above versions
             }
             return permissionGranded || !mlolipop;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-    }
-
-    private static boolean verifyStoragePermissions(Activity activity,int requestCode) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    requestCode
-            );
-        }
-        return permission == PackageManager.PERMISSION_GRANTED;
     }
 
     public static boolean isExternalStorageReadOnly() {
@@ -181,7 +160,7 @@ public class FileUtils {
         return Environment.MEDIA_MOUNTED.equals(extStorageState);
     }
 
-    public static boolean isFileExist(Context context,String fileName) {
+    public static boolean isFileExist(String fileName) {
         if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
             return false;
         }

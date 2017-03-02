@@ -6,16 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="actionBarItemBackground">@drawable/selectable_background_appbase</item>
-        <item name="popupMenuStyle">@style/PopupMenu.Appbase</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Appbase</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Appbase</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Appbase</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Appbase</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_appbase</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_appbase</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Appbase</item>
         <!--for settings preference theme -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
@@ -23,75 +13,5 @@
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
-
-    <style name="ActionBar.Solid.Appbase" parent="@style/Widget.AppCompat.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_appbase</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_appbase</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_appbase</item>
-        <item name="progressBarStyle">@style/ProgressBar.Appbase</item>
-        <!--<item name="background">@color/colorPrimary</item>-->
-        <item name="titleTextStyle">@style/MyActionBarTitle</item>
-    </style>
-
-    <style name="ActionBar.Transparent.Appbase" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="background">@drawable/ab_transparent_appbase</item>
-        <item name="progressBarStyle">@style/ProgressBar.Appbase</item>
-    </style>
-
-    <style name="PopupMenu.Appbase" parent="@style/Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_appbase</item>
-    </style>
-
-    <style name="DropDownListView.Appbase" parent="@style/Widget.AppCompat.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_appbase</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Appbase" parent="@style/Widget.AppCompat.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_appbase</item>
-    </style>
-
-    <style name="DropDownNav.Appbase" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
-        <item name="android:background">@drawable/spinner_background_ab_appbase</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_appbase</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_appbase</item>
-    </style>
-
-    <style name="ProgressBar.Appbase" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_appbase</item>
-    </style>
-
-    <style name="ActionButton.CloseMode.Appbase" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_appbase</item>
-    </style>
-
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Appbase.Widget" parent="@style/Theme.AppCompat">
-        <item name="popupMenuStyle">@style/PopupMenu.Appbase</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Appbase</item>
-    </style>
-
-
-    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
-        <item name="color">@android:color/white</item>
-    </style>
-
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/colorPrimary</item>
-        <item name="titleTextStyle">@style/MyActionBarTitle</item>
-    </style>
-
-    <style name="MyActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/colorText</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

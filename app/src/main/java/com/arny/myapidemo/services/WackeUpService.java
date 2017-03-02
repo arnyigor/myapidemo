@@ -10,9 +10,9 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.BaseUtils;
+import com.arny.myapidemo.utils.BaseUtils;
 
-import static com.arny.myapidemo.helpers.Consts.TAG;
+import static com.arny.myapidemo.utils.Consts.TAG;
 
 public class WackeUpService extends IntentService {
     public WackeUpService() {

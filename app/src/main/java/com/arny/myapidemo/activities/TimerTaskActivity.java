@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.*;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.helpers.Consts;
+import com.arny.myapidemo.utils.Consts;
 import com.arny.myapidemo.services.MyTimerService;
 
 public class TimerTaskActivity extends AppCompatActivity {
