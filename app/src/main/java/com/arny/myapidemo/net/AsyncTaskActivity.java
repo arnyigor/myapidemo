@@ -12,7 +12,7 @@ import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.utils.Consts;
+import com.arny.myapidemo.models.Consts;
 import org.json.JSONObject;
 
 public class AsyncTaskActivity extends Activity {

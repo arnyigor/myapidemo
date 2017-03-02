@@ -1,9 +1,10 @@
-package com.arny.myapidemo.utils;
+package com.arny.myapidemo.models;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.arny.myapidemo.utils.BaseUtils;
 import com.redmadrobot.chronos.ChronosOperation;
 import com.redmadrobot.chronos.ChronosOperationResult;
 

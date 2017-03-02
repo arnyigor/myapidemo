@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.utils.Consts;
+import com.arny.myapidemo.models.Consts;
 
 public class EnterIntentAcivity extends AppCompatActivity {
 	TextView textView;

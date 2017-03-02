@@ -1,4 +1,4 @@
-package com.arny.myapidemo.utils;
+package com.arny.myapidemo.models;
 public class Consts {
 	public static final String TAG = "LOG_TAG";
 	public static final String TEST_STRING_DATA = "test_string_data";

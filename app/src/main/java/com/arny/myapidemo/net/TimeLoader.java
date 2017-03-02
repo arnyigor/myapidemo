@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static com.arny.myapidemo.utils.Consts.TAG;
+import static com.arny.myapidemo.models.Consts.TAG;
 
 public class TimeLoader extends Loader<String> {
     public final static String ARGS_TIME_FORMAT = "time_format";

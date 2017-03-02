@@ -1,9 +1,6 @@
 package com.arny.myapidemo.services;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -12,14 +9,14 @@ import android.util.Log;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.activities.TimerTaskActivity;
 import com.arny.myapidemo.utils.BaseUtils;
-import com.arny.myapidemo.utils.Consts;
+import com.arny.myapidemo.models.Consts;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.arny.myapidemo.utils.Consts.TAG;
+import static com.arny.myapidemo.models.Consts.TAG;
 
-public class MyTimerService extends Service {
+public class MyTimerService extends IntentService {
 
     public static final int NOTIFICATION_ID = 111;
     public static final String MY_TIMER_SERVICE_BROADCAST = "MyTimerService";
@@ -30,6 +27,15 @@ public class MyTimerService extends Service {
     private int seconds = 0;
     private int startId;
     private boolean stels = false;
+
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public MyTimerService(String name) {
+        super(name);
+    }
 
     @Override
     public void onCreate() {
@@ -71,24 +77,21 @@ public class MyTimerService extends Service {
         return START_STICKY;
     }
 
+
     @Override
-    public IBinder onBind(Intent intent) {
-        Log.i(TAG, "onBind service " + startId + " hash: " + this.hashCode());
-        return null;
+    protected void onHandleIntent(Intent intent) {
+
     }
 
     @Override
     public void onDestroy() {
         timer.cancel();
-        Log.i(TAG, "onDestroy service " + startId + " hash: " + this.hashCode());
         super.onDestroy();
     }
 
     private void displaySeconds(int secs) {
-        Log.i(TAG, "entered displaySeconds " + secs);
         Intent intent = new Intent(TimerTaskActivity.BROADCAST_ACTION);
         updateNotification();
-
         String time = BaseUtils.strLogTime(seconds);
         intent.putExtra(MY_TIMER_SERVICE_TIME, time);
         sendBroadcast(intent);

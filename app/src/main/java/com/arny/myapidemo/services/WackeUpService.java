@@ -12,7 +12,7 @@ import android.util.Log;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.utils.BaseUtils;
 
-import static com.arny.myapidemo.utils.Consts.TAG;
+import static com.arny.myapidemo.models.Consts.TAG;
 
 public class WackeUpService extends IntentService {
     public WackeUpService() {

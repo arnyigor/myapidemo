@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
 public class BaseUtils {
 
     private static final String APP_PREFERENCES = "app_preferences";
-    public static final String TIME_SEPARATOR_TWICE_DOT = ":";
-    public static final String TIME_SEPARATOR_DOT = ".";
+    private static final String TIME_SEPARATOR_TWICE_DOT = ":";
+    private static final String TIME_SEPARATOR_DOT = ".";
 
     public static boolean matcher(String preg, String string) {
         return Pattern.matches(preg, string);
@@ -33,6 +33,19 @@ public class BaseUtils {
             }
         }
         return null;
+    }
+
+    public static int[] bubbleSort(int[] arr) {
+        for (int i = arr.length - 1; i >= 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int t = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = t;
+                }
+            }
+        }
+        return arr;
     }
 
     public static String dateFormatChooser(String myTimestamp) {
@@ -106,9 +119,9 @@ public class BaseUtils {
     }
 
     private static String convertByteArrayToHexString(byte[] arrayBytes) {
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < arrayBytes.length; i++) {
-            stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16)
+        StringBuilder stringBuffer = new StringBuilder();
+        for (byte arrayByte : arrayBytes) {
+            stringBuffer.append(Integer.toString((arrayByte & 0xff) + 0x100, 16)
                     .substring(1));
         }
         return stringBuffer.toString();
@@ -150,8 +163,16 @@ public class BaseUtils {
         }
     }
 
-    public static SharedPreferences getPrefs(Context context) {
-        return context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+    public static String getPrefStringKey(Context context,String key,String defaultVal) {
+        return context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getString(key,defaultVal);
+    }
+
+    public static boolean getPrefBoolKey(Context context,String key) {
+        return context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getBoolean(key,false);
+    }
+
+    public static int getPrefIntKey(Context context,String key,int defaulVal) {
+        return context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getInt(key,defaulVal);
     }
 
     public static String strLogTime(int logtime) {
@@ -160,11 +181,16 @@ public class BaseUtils {
         return pad(h) + TIME_SEPARATOR_TWICE_DOT + pad(m);
     }
 
-    public static String pad(int c) {
-        if (c >= 10) {
-            return String.valueOf(c);
+    /**
+     * add '0' to number before 10
+     * @param number
+     * @return
+     */
+    public static String pad(int number) {
+        if (number >= 10) {
+            return String.valueOf(number);
         } else {
-            return "0" + String.valueOf(c);
+            return "0" + String.valueOf(number);
         }
     }
 

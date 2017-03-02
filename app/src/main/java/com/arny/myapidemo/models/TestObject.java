@@ -1,4 +1,4 @@
-package com.arny.myapidemo.utils;
+package com.arny.myapidemo.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

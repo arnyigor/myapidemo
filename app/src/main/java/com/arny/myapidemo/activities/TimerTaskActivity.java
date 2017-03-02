@@ -12,38 +12,28 @@ import android.view.View;
 import android.widget.*;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.utils.Consts;
+import com.arny.myapidemo.models.Consts;
 import com.arny.myapidemo.services.MyTimerService;
 
-public class TimerTaskActivity extends AppCompatActivity {
+//TODO переделать под интент сервис
+public class TimerTaskActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String BROADCAST_ACTION = "com.arny.myapidemo.activities.servicebackbroadcast";
     public static final String INTENT_PARAM_TIME = "serviceparamtime";
     public static final String INTENT_PARAM_HIDE = "serviceparamhide";
     private static final String TAG = "LOG_TAG";
-    TextView tvInterval;
-    Intent intent;
+    private TextView tvInterval;
+    private Intent intent;
     private Button btnStart, btnStop;
     private boolean bolBroacastRegistred = false,stels = false;
     private EditText edtTime;
     private CheckBox chbStels;
+
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "onReceive: ");
             updateUI(intent);
-        }
-    };
-    View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btnStart:
-                    onBtnStartService();
-                    break;
-                case R.id.btnStop:
-                    onBtnStopService();
-                    break;
-            }
         }
     };
 
@@ -54,8 +44,8 @@ public class TimerTaskActivity extends AppCompatActivity {
         setContentView(R.layout.timer_task_activity);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnStop = (Button) findViewById(R.id.btnStop);
-        btnStart.setOnClickListener(listener);
-        btnStop.setOnClickListener(listener);
+        btnStart.setOnClickListener(this);
+        btnStop.setOnClickListener(this);
         chbStels = (CheckBox) findViewById(R.id.chbStels);
         chbStels.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -169,5 +159,17 @@ public class TimerTaskActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnStart:
+                onBtnStartService();
+                break;
+            case R.id.btnStop:
+                onBtnStopService();
+                break;
+        }
     }
 }
