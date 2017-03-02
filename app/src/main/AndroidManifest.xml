@@ -40,7 +40,6 @@
         <activity android:name=".activities.SqlLiteActivity" android:label="@string/SqlLite"/>
         <activity android:name=".activities.SqlListActivity" android:label="@string/SqlList"/>
         <activity android:name=".activities.SqlViewActivity" android:label="@string/SqlView"/>
-        <activity android:name=".activities.SimpleAdapterActivity" android:label="@string/SimpleAdapter"/>
         <activity android:name=".activities.AnimActivity" android:label="AnimActivity"/>
         <activity android:name=".activities.AlertCustomActivity" android:label="AlertCustomActivity"/>
         <activity android:name=".activities.SimpleUIActivity" android:label="SimpleUIActivity"/>

@@ -13,7 +13,7 @@ public class BasePermissions {
     private static final String PERM_WRITE_EXTERN = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
-    private static String[] STORAGE_PERMS = {
+    private static final String[] STORAGE_PERMS = {
             PERM_READ_EXTERN,
             PERM_WRITE_EXTERN
     };
