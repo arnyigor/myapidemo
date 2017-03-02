@@ -33,15 +33,13 @@
         <activity android:name=".activities.XmlActivity" android:label="@string/XML"/>
         <activity android:name=".activities.ScrollViewActivity" android:label="@string/Scroll"/>
         <activity android:name=".activities.DialogActivity" android:label="@string/Dialog"/>
-        <activity android:name=".activities.TabsActivity" android:label="@string/Tabs"/>
+        <activity android:name=".activities.TabsActivity" android:label="@string/title_tabs"/>
         <activity android:name=".activities.ToDoListActivity" android:label="@string/ToDoList"/>
         <activity android:name=".activities.SqlLiteActivity" android:label="@string/SqlLite"/>
         <activity android:name=".activities.SqlListActivity" android:label="@string/SqlList"/>
         <activity android:name=".activities.SqlViewActivity" android:label="@string/SqlView"/>
-        <activity android:name=".activities.LayoutInflaterActivity" android:label="Results"/>
         <activity android:name=".activities.SimpleAdapterActivity" android:label="@string/SimpleAdapter"/>
         <activity android:name=".preferences.Preferences" android:label="@string/action_settings"/>
-        <activity android:name=".activities.LoadActivity" android:label="Load Activity"/>
         <activity android:name=".activities.AnimActivity" android:label="AnimActivity"/>
         <activity android:name=".activities.AlertCustomActivity" android:label="AlertCustomActivity"/>
         <activity android:name=".activities.NavigationActivity" android:label="NavigationActivity"
@@ -66,8 +64,8 @@
         <activity android:name=".activities.VolleyTestActivity" android:label="VolleyTestActivity"/>
         <activity android:name=".activities.IntentServiceActivity" android:label="IntentServiceActivity"/>
         <activity android:name=".activities.ChronosTestActivity" android:label="ChronosTestActivity"/>
-        <activity android:name=".activities.RecyclerTestActivity">
-        </activity>
+        <activity android:name=".activities.RecyclerTestActivity"/>
+        <activity android:name=".activities.SettingsActivity"/>
 
 
     </application>

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,19 +60,28 @@ public class HomeActivity extends AppCompatActivity {
             IntentServiceActivity.class,
             ChronosTestActivity.class,
             NavigationActivity.class,
-            SettingsActivity.class,
     };
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle(getString(R.string.res_main_title));
+        initToolbar();
+
         ListView listView = (ListView) findViewById(R.id.main_list);
         String[] classesNames = getClassesNames();
         if (classesNames.length>0){
             listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classesNames));
             listView.setOnItemClickListener(onListItemClick);
+        }
+    }
+
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            toolbar.setTitle(getString(R.string.res_main_title));
         }
     }
 
@@ -103,13 +113,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
-                startActivity(new Intent(getBaseContext(), Preferences.class));
-                break;
-            default:
-
+                startActivity(new Intent(getBaseContext(), SettingsActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

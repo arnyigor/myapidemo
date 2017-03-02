@@ -4,6 +4,9 @@
     android:layout_height="fill_parent"
     android:id="@+id/container"
     android:orientation="vertical" >
+    <include
+            android:id="@+id/toolbar"
+            layout="@layout/tool_bar" />
 
     <ListView
         android:id="@+id/main_list"

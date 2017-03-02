@@ -6,8 +6,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-
 import com.arny.myapidemo.R;
+
 
 /**
  * shows the settings option for choosing the movie categories in ListPreference.

@@ -46,11 +46,7 @@
     </string-array>
 
     <string name="str_new">New</string>
-
-
-    <!--YandexMap-->
-
-    <string name="Tabs">Tabs</string>
+    <string name="title_tabs">Табы</string>
     <string name="Dialog">Dialog</string>
     <string name="Scroll">Scroll</string>
     <string name="XML">XML</string>
@@ -58,7 +54,7 @@
     <string name="SqlLite">SqlLite</string>
     <string name="SqlList">SqlList</string>
     <string name="SqlView">SqlView</string>
-    <string name="action_settings">action_settings</string>
+    <string name="action_settings">Настройки</string>
     <string name="SimpleAdapter">SimpleAdapter</string>
     <string name="exit_question">Выйти?</string>
     <string name="no_answer">Нет</string>
