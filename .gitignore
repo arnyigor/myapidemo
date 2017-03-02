@@ -25,7 +25,6 @@ captures/
 
 # Intellij
 .idea/
-.idea/libraries
 
 # Keystore files
 *.jks
