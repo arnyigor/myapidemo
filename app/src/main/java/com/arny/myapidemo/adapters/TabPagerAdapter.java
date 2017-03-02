@@ -5,8 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.arny.myapidemo.R;
-import com.arny.myapidemo.fragments.FragmentOne;
+import com.arny.myapidemo.fragments.FragmentAlarms;
 import com.arny.myapidemo.fragments.FragmentTwo;
 import com.arny.myapidemo.fragments.MyServicefragment;
 import com.arny.myapidemo.fragments.SplashFragment;
@@ -14,7 +13,7 @@ import com.arny.myapidemo.fragments.SplashFragment;
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
     private String[] tabsFragments = {
-            "Fragment one",
+            "Fragment alarms",
             "Fragment two",
             "Fragment splash",
             "Fragment service",
@@ -32,7 +31,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return new FragmentOne();
+                return new FragmentAlarms();
             case 1:
                 return new FragmentTwo();
             case 2:

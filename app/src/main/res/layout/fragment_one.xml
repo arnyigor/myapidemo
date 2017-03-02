@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#77ff0000"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <Button
+        android:id="@+id/btnFragmAlarmStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/frag1_text" >
-    </TextView>
+        android:text="Start"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnFragmAlarmEnd"
+        android:layout_toStartOf="@+id/btnFragmAlarmEnd"
+        android:layout_marginRight="57dp"
+        android:layout_marginEnd="57dp" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnFragmAlarmEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/log" >
-    </Button>
+        android:text="End"
+        android:layout_marginRight="77dp"
+        android:layout_marginEnd="77dp"
+        android:layout_alignBaseline="@+id/btnFragmAlarmStart"
+        android:layout_alignBottom="@+id/btnFragmAlarmStart"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-</LinearLayout>
+</RelativeLayout>

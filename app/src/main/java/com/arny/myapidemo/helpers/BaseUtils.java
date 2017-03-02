@@ -1,14 +1,8 @@
 package com.arny.myapidemo.helpers;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +23,6 @@ public class BaseUtils {
     public static boolean matcher(String preg, String string) {
         return Pattern.matches(preg, string);
     }
-
 
     public static String match(String where, String pattern, int groupnum) {
         Pattern p = Pattern.compile(pattern);
@@ -160,7 +153,6 @@ public class BaseUtils {
     public static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
-
 
     public static String strLogTime(int logtime) {
         int h = logtime / 60;

@@ -28,7 +28,7 @@ public final class SimpleOperation extends ChronosOperation<String> {
             e.printStackTrace();
         }
         Log.i(TAG, "run: mAction = ends");
-        String result = "ChronosOperation ends in " + Funcs.getDateTime(0, null);
+        String result = "ChronosOperation ends in " + BaseUtils.getDateTime(0, null);
         Log.i(TAG, "run: result = " + result);
         return result;
     }

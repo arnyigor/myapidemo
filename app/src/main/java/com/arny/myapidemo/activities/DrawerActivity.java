@@ -18,7 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.fragments.FragmentOne;
+import com.arny.myapidemo.fragments.FragmentAlarms;
 import com.arny.myapidemo.fragments.FragmentTwo;
 
 public class DrawerActivity extends AppCompatActivity {
@@ -162,13 +162,13 @@ public class DrawerActivity extends AppCompatActivity {
 	private Fragment getFragment(int position, Fragment fragment) {
 		switch (position) {
 			case 0:
-				fragment = new FragmentOne();
+				fragment = new FragmentAlarms();
 				break;
 			case 1:
 				fragment = new FragmentTwo();
 				break;
 			default:
-				fragment = new FragmentOne();
+				fragment = new FragmentAlarms();
 				break;
 		}
 		return fragment;

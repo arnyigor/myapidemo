@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.helpers.Consts;
+import com.arny.myapidemo.services.BootBroadcastReceiver;
 import com.arny.myapidemo.services.MyAlarmReceiver;
 
 public class StartAlarmActivity extends AppCompatActivity {
@@ -39,9 +40,9 @@ public class StartAlarmActivity extends AppCompatActivity {
     // Setup a recurring alarm every half hour
     public void scheduleAlarm() {
         // Construct an intent that will execute the AlarmReceiver
-        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        Intent intent = new Intent(getApplicationContext(), BootBroadcastReceiver.class);
         // Create a PendingIntent to be triggered when the alarm goes off
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Setup periodic alarm every 5 seconds
         long firstMillis = System.currentTimeMillis(); // alarm is set right away
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
@@ -51,7 +52,7 @@ public class StartAlarmActivity extends AppCompatActivity {
     }
 
     public void cancelAlarm() {
-        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        Intent intent = new Intent(getApplicationContext(), BootBroadcastReceiver.class);
         final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarm.cancel(pIntent);
