@@ -35,7 +35,6 @@ public class MyServicefragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_service, container, false);
         context = container.getContext();
-        // int i = getArguments().getInt(FRAGMENT_BUNDLE_NUMBER);
         initUI(rootView);
         initListeners();
         if (savedInstanceState == null) {

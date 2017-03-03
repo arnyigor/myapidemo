@@ -48,6 +48,7 @@
     <string name="no_answer">Нет</string>
     <string name="yes_answer">Да</string>
     <string name="res_main_title">Main</string>
+    <string name="title_timer_service">Сервис таймер</string>
     <string name="settings">Настройки</string>
     <string name="delete_record">Удалить запись</string>
     <string name="clearall">Clear all</string>
@@ -67,7 +68,7 @@
 
     <!--loader-->
     <string name="hello_world">Hello world!</string>
-    <string name="str_service_start">Сервист стартанул</string>
+    <string name="str_service_running">Сервис работает</string>
 
     <!--Robospice-->
 

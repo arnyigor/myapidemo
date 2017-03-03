@@ -1,7 +1,6 @@
 package com.arny.myapidemo;//Package name
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +12,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.arny.myapidemo.activities.*;
 
 public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "LOG_TAG";
     private final Class[] sActivities = new Class[] {
             TabsActivity.class,
             XmlActivity.class,
@@ -47,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.main_list);
         String[] classesNames = getClassesNames();
+
         if (classesNames.length>0){
             listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classesNames));
             listView.setOnItemClickListener(onListItemClick);

@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.arny.myapidemo.R;
 
-public class FragmentTwo extends Fragment {
-
-	final String TAG = "LOG_TAG";
+public class FragmentClearFolders extends Fragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -21,7 +19,6 @@ public class FragmentTwo extends Fragment {
 		Button button = (Button) v.findViewById(R.id.button2);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Log.i(TAG, "Button click in Fragment2");
 				Toast.makeText(getActivity().getBaseContext(), "Helo from fagment two", Toast.LENGTH_SHORT).show();
 			}
 		});

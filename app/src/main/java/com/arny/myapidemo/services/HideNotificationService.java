@@ -7,7 +7,6 @@ import android.os.IBinder;
 
 import com.arny.myapidemo.R;
 
-import static com.arny.myapidemo.services.MyTimerService.NOTIFICATION_ID;
 
 public class HideNotificationService extends Service {
     @Override
@@ -21,7 +20,7 @@ public class HideNotificationService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher);
         Notification notification;
         notification = builder.build();
-        startForeground(NOTIFICATION_ID, notification);
+        startForeground(MyTimerService.NOTIFICATION_ID, notification);
         stopForeground(true);
     }
 

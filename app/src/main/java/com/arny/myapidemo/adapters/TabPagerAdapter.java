@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.arny.myapidemo.fragments.FragmentAlarms;
-import com.arny.myapidemo.fragments.FragmentTwo;
+import com.arny.myapidemo.fragments.FragmentClearFolders;
 import com.arny.myapidemo.fragments.MyServicefragment;
 import com.arny.myapidemo.fragments.SplashFragment;
 
@@ -33,7 +33,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new FragmentAlarms();
             case 1:
-                return new FragmentTwo();
+                return new FragmentClearFolders();
             case 2:
                 return new SplashFragment();
             case 3:

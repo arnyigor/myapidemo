@@ -21,7 +21,6 @@ public class MyIntentService extends IntentService {
     public static final String EXTRA_KEY_FINISH_SUCCESS = "EXTRA_PROCESS_FINISH_GOOD";
     private static final String TAG = "LOG_TAG";
 
-
     private int total = 1;
     private boolean mIsSuccess;
     private boolean mIsStopped;
