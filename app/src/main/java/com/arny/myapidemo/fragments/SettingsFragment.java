@@ -2,10 +2,13 @@ package com.arny.myapidemo.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceManager;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.*;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import com.arny.myapidemo.R;
 
 
@@ -14,43 +17,79 @@ import com.arny.myapidemo.R;
  */
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String PREF_CATEGORIES = "categoriesKey";
+    private static final String PREF_EDIT_TEST = "test_key";
+    private static final String PREF_EDIT_2_TEST = "test_2_key";
+    private static final String PREF_CHBX_TEST = "test_3_key";
+    private static final String PREF_MULTI_SEL = "multi_select_list_preference";
     SharedPreferences sharedPreferences;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        //add xml
+//        //add xml
         addPreferencesFromResource(R.xml.preferences);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        onSharedPreferenceChanged(sharedPreferences, getString(R.string.movies_categories_key));
-    }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        //unregister the preferenceChange listener
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
         if (preference instanceof ListPreference) {
-            ListPreference listPreference = (ListPreference) preference;
-            int prefIndex = listPreference.findIndexOfValue(sharedPreferences.getString(key, ""));
-            if (prefIndex >= 0) {
-                preference.setSummary(listPreference.getEntries()[prefIndex]);
-            }
-        } else {
-            preference.setSummary(sharedPreferences.getString(key, ""));
+            listPrefListener(sharedPreferences, preference, key);
+        } else if (preference instanceof CheckBoxPreference) {
+            checkboxListener(preference,key);
+        } else if (preference instanceof EditTextPreference) {
+            edttextPrefListener(preference,key);
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        //unregister the preference change listener
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    private void edttextPrefListener(Preference preference, String key) {
+        EditTextPreference editTextPreference = (EditTextPreference) preference;
+        switch (key) {
+            case PREF_EDIT_TEST:
+                Log.i(SettingsFragment.class.getSimpleName(), "onSharedPreferenceChanged: editTextPreference.getText() = " + editTextPreference.getText());
+                break;
+            case PREF_EDIT_2_TEST:
+                Log.i(SettingsFragment.class.getSimpleName(), "onSharedPreferenceChanged: editTextPreference.getText() = " + editTextPreference.getText());
+                break;
+        }
+    }
+
+    private void checkboxListener(Preference preference,String key) {
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) preference;
+        switch (key) {
+            case PREF_CHBX_TEST:
+                Log.i(SettingsFragment.class.getSimpleName(), "onSharedPreferenceChanged: checkBoxPreference.isChecked() = " + checkBoxPreference.isChecked());
+                break;
+        }
+    }
+
+    private void listPrefListener(SharedPreferences sharedPreferences, Preference preference, String key) {
+        switch (key) {
+            case PREF_CATEGORIES:
+                ListPreference listPreference = (ListPreference) preference;
+                int prefIndex = listPreference.findIndexOfValue(sharedPreferences.getString(key, ""));
+                if (prefIndex >= 0) {
+                    preference.setSummary(listPreference.getEntries()[prefIndex]);
+                }
+                Log.i(SettingsFragment.class.getSimpleName(), "onSharedPreferenceChanged: prefIndex = " + prefIndex);
+                break;
+        }
     }
 }

@@ -73,7 +73,13 @@
 
     <!-- Preferences arrays -->
 
-    <string name="movies_categories_key">categoriesKey</string>
+    <string name="prefs_movies_categories_key">categoriesKey</string>
+    <string name="prefs_test_key">test_key</string>
+    <string name="prefs_test_2_key">test_2_key</string>
+    <string name="prefs_test_3_key">test_3_key</string>
+    <string name="prefs_multi_list_preference">multi_select_list_preference</string>
+    <string name="title_multi_list_preference">title_multi_list_preference</string>
+    <string name="summary_multi_list_preference">summary_multi_list_preference</string>
 
     <string-array name="categories">
         <item>Popular Movies</item>

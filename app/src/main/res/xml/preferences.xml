@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
         android:defaultValue="popular"
         android:entries="@array/categories"
         android:entryValues="@array/categories_value"
         android:summary="Select categories of movies"
         android:title="Categories"
-        android:key="@string/movies_categories_key" />
+        android:key="categoriesKey" />
+
+    <EditTextPreference
+            android:key="@string/prefs_test_key"
+            android:title="Размер шрифта"
+            android:summary="Устанавливает новый размер шрифта"
+            android:defaultValue="14"
+            android:dialogTitle="Введите размер шрифта (от 10 до 32)" />
+
+    <EditTextPreference
+            android:key="@string/prefs_test_2_key"
+            android:title="Размер шрифта 2"
+            android:summary="Устанавливает новый размер шрифта 2"
+            android:defaultValue="14"
+            android:dialogTitle="Введите размер шрифта (от 10 до 32)" />
+
+    <CheckBoxPreference
+            android:key="@string/prefs_test_3_key"
+            android:title="@string/maybe"/>
+
 </PreferenceScreen>

@@ -1,7 +1,5 @@
 package com.arny.myapidemo;//Package name
 
-// imports start==========
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,7 +16,6 @@ import android.widget.ListView;
 
 import com.arny.myapidemo.activities.*;
 
-//==============Activity start=========================
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "LOG_TAG";
     private final Class[] sActivities = new Class[] {
