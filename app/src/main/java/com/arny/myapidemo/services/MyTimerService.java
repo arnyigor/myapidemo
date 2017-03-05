@@ -6,9 +6,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.activities.TimerTaskActivity;
@@ -24,11 +24,11 @@ public class MyTimerService extends Service {
     public static final String ACTION_UPDATE = "MyTimerService.action.update";
     public static final String EXTRA_KEY_TIME = "MyTimerService.extra.time";
     public static final String EXTRA_KEY_STELS = "MyTimerService.extra.stels";
+    public static final String EXTRA_KEY_PAUSE = "MyTimerService.extra.pause";
 
     private Timer timer = new Timer();
-    private int seconds = 0,startId;
-    private boolean stels;
-
+    private int tastSec = 0,pauseSec,startId;
+    private boolean stels,pause;
 
 
     @Override
@@ -37,9 +37,25 @@ public class MyTimerService extends Service {
         updateNotification();
     }
 
-    private void startOperation() {
+    private void downTimeOperation() {
+        reInitTimer();
+        timer.scheduleAtFixedRate(new downTimeTask(), 0, 1000);
+    }
+
+    private void pauseTimeOperation() {
+        reInitTimer();
+        timer.scheduleAtFixedRate(new pouseTimeOperation(), 0, 1000);
+    }
+
+    private void reInitTimer() {
+        Log.i(MyTimerService.class.getSimpleName(), "downTimeOperation: timer 1= " + timer);
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        Log.i(MyTimerService.class.getSimpleName(), "downTimeOperation: timer 2= " + timer);
         timer = new Timer();
-        timer.scheduleAtFixedRate(new mainTask(), 0, 1000);
+        Log.i(MyTimerService.class.getSimpleName(), "downTimeOperation: timer 3= " + timer);
     }
 
 
@@ -47,9 +63,20 @@ public class MyTimerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.startId = startId;
         Bundle extras = intent.getExtras();
-        seconds = extras.getInt(EXTRA_KEY_TIME, 60);
+        Log.i(MyTimerService.class.getSimpleName(), "onStartCommand: pause 1= " + pause);
+        Log.i(MyTimerService.class.getSimpleName(), "onStartCommand: tastSec 1= " + tastSec);
+        Log.i(MyTimerService.class.getSimpleName(), "onStartCommand: stels 1= " + stels);
+        pause = extras.getBoolean(EXTRA_KEY_PAUSE, false);
+        tastSec = extras.getInt(EXTRA_KEY_TIME, 60);
         stels = extras.getBoolean(EXTRA_KEY_STELS, false);
-        startOperation();
+        Log.i(MyTimerService.class.getSimpleName(), "onStartCommand: pause 2= " + pause);
+        Log.i(MyTimerService.class.getSimpleName(), "onStartCommand: tastSec 2= " + tastSec);
+        Log.i(MyTimerService.class.getSimpleName(), "onStartCommand: stels 2= " + stels);
+        if (!pause) {
+            downTimeOperation();
+        }else{
+            pauseTimeOperation();
+        }
         if (stels){
             Intent hideIntent = new Intent(this, HideNotificationService.class);
             startService(hideIntent);
@@ -65,7 +92,6 @@ public class MyTimerService extends Service {
         super.onDestroy();
     }
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -76,7 +102,7 @@ public class MyTimerService extends Service {
             updateNotification();
         }
         Intent intent = new Intent(ACTION_UPDATE);
-        intent.putExtra(EXTRA_KEY_TIME, BaseUtils.strLogTime(seconds));
+        intent.putExtra(EXTRA_KEY_TIME, BaseUtils.strLogTime(tastSec));
         sendBroadcast(intent);
     }
 
@@ -93,7 +119,7 @@ public class MyTimerService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher)// маленькая иконка
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(getBaseContext().getResources().getString(R.string.str_service_running))// Заголовок уведомления
-                .setContentText(BaseUtils.strLogTime(seconds)); // Текст уведомления
+                .setContentText(BaseUtils.strLogTime(tastSec)); // Текст уведомления
 //        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         notifbuild.setContentIntent(pendingIntent);
         notification = notifbuild.build();
@@ -108,19 +134,31 @@ public class MyTimerService extends Service {
 
     private void stopTimerService() {
         timer.cancel();
-        stopForeground(true);
-        stopSelf();
+        timer = null;
+        if (stels) {
+           stopForeground(true);
+        }
+        stopSelf(startId);
     }
 
-    private class mainTask extends TimerTask {
+    private class downTimeTask extends TimerTask {
         public void run() {
-            Log.i(mainTask.class.getSimpleName(), "run: sec = " + seconds);
-            if (seconds<=0){
+            Log.i(pouseTimeOperation.class.getSimpleName(), "downTimeTask: sec = " + tastSec +" pauseSec = " + pauseSec+ " taskid = " + startId);
+            displaySeconds();
+            if (tastSec <=0){
                 stopTimerService();
             }else{
-                displaySeconds();
-                seconds--;
+                tastSec--;
             }
+        }
+    }
+
+
+    private class pouseTimeOperation extends TimerTask {
+        public void run() {
+            Log.i(pouseTimeOperation.class.getSimpleName(), "pouseTimeOperation: sec = " + tastSec +" pauseSec = " + pauseSec+ " taskid = " + startId);
+            displaySeconds();
+            pauseSec++;
         }
     }
 

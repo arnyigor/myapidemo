@@ -9,17 +9,32 @@
             layout="@layout/tool_bar"/>
 
 
-    <Button
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
             android:id="@+id/btnStart"
+            android:layout_weight="1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Start"/>
+            android:src="@drawable/ic_action_start"/>
 
-    <Button
-            android:id="@+id/btnStop"
+        <ImageButton
+            android:id="@+id/btnPause"
+            android:layout_weight="1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Cancel"/>
+            android:src="@drawable/ic_action_pause"/>
+
+        <ImageButton
+            android:id="@+id/btnStop"
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_stop"/>
+    </LinearLayout>
+
 
     <TextView
             android:layout_width="wrap_content"

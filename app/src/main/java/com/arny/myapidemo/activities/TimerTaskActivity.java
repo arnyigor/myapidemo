@@ -1,10 +1,13 @@
 package com.arny.myapidemo.activities;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,7 +21,7 @@ import com.arny.myapidemo.utils.BaseUtils;
 public class TimerTaskActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private TextView tvInterval;
     private Intent intent;
-    private Button btnStart, btnStop;
+    private ImageButton btnStart,btnPause, btnStop;
     private boolean stels = false;
     private CheckBox chbStels;
     private Toolbar toolbar;
@@ -34,9 +37,11 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
 
 
     private void initUI() {
-        btnStart = (Button) findViewById(R.id.btnStart);
-        btnStop = (Button) findViewById(R.id.btnStop);
+        btnStart = (ImageButton) findViewById(R.id.btnStart);
+        btnPause = (ImageButton) findViewById(R.id.btnPause);
+        btnStop = (ImageButton) findViewById(R.id.btnStop);
         btnStart.setOnClickListener(this);
+        btnPause.setOnClickListener(this);
         btnStop.setOnClickListener(this);
         chbStels = (CheckBox) findViewById(R.id.chbStels);
         chbStels.setOnCheckedChangeListener(this);
@@ -56,13 +61,12 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void onBtnStartService() {
-        //TODO проверять по операции,а не только запущенную
-        if (!BaseUtils.isMyServiceRunning(MyTimerService.class, this)){
-            intent.putExtra(MyTimerService.EXTRA_KEY_TIME, 35);
+        if (!BaseUtils.isMyServiceRunning(MyTimerService.class,this)){
+            intent.putExtra(MyTimerService.EXTRA_KEY_TIME, 15);
             intent.putExtra(MyTimerService.EXTRA_KEY_STELS, stels);
-            Log.i(TimerTaskActivity.class.getSimpleName(), "onBtnStartService: intent = " + intent.hashCode());
-            startService(intent);
         }
+        startService(intent);
+
     }
 
     @Override
@@ -70,6 +74,10 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.btnStart:
                 onBtnStartService();
+                break;
+            case R.id.btnPause:
+                intent.putExtra(MyTimerService.EXTRA_KEY_PAUSE, true);
+                startService(intent);
                 break;
             case R.id.btnStop:
                 onBtnStopService();
@@ -85,7 +93,7 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-            onRegisterReciever();
+        onRegisterReciever();
     }
 
     @Override
@@ -93,7 +101,6 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
         super.onPause();
         onUnregisterReciever();
     }
-
 
     private void updateUI(Bundle extras) {
         String time = extras.getString(MyTimerService.EXTRA_KEY_TIME);
