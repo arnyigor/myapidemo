@@ -100,6 +100,19 @@ public class BaseUtils {
             return null;
         }
     }
+    /**
+     * Возвращает текущее время в формате
+     * @return String datetime
+     */
+    public static String getDateTime() {
+        try {
+            return (new SimpleDateFormat("dd MMM yyyy HH:mm:ss.sss", Locale.getDefault())).format(new Date(Calendar.getInstance().getTimeInMillis()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * @param date

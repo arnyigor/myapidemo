@@ -3,16 +3,16 @@ package com.arny.myapidemo.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import com.arny.myapidemo.utils.BaseUtils;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
-    public static final int REQUEST_CODE = 12345;
+    public static final int REQUEST_CODE = 101;
 
     // Triggered by the Alarm periodically (starts the service to run task)
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent(context, WackeUpService.class);
-        i.putExtra("code", REQUEST_CODE);
-        context.startService(i);
+        Log.i(MyAlarmReceiver.class.getSimpleName(), "onReceive: time  =" + BaseUtils.getDateTime());
     }
 }

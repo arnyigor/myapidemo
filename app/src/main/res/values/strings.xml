@@ -35,6 +35,7 @@
 
     <string name="str_new">New</string>
     <string name="title_tabs">Табы</string>
+    <string name="title_alarm_manager">Alarm manager</string>
     <string name="Dialog">Dialog</string>
     <string name="Scroll">Scroll</string>
     <string name="XML">XML</string>
@@ -70,10 +71,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="str_service_running">Сервис работает</string>
 
-    <!--Robospice-->
-
     <!-- Preferences arrays -->
-
     <string name="prefs_movies_categories_key">categoriesKey</string>
     <string name="prefs_test_key">test_key</string>
     <string name="prefs_test_2_key">test_2_key</string>

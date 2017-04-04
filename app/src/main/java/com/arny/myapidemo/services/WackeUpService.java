@@ -6,36 +6,35 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.activities.VolleyTestActivity;
+import com.arny.myapidemo.net.NetworkJSONLoader;
+import com.arny.myapidemo.net.NetworkStringLoader;
 import com.arny.myapidemo.utils.BaseUtils;
 
 import static com.arny.myapidemo.models.Consts.TAG;
 
 public class WackeUpService extends IntentService {
     public WackeUpService() {
-        super("WackeUpService");
+        super("WakeUpService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i(TAG, "onHandleIntent: intent = " + intent.getExtras().toString());
-        Log.i(TAG, "onHandleIntent: intent time= " + BaseUtils.getDateTime(0,null));
-        // Create Notification
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_launcher))
-                .setSmallIcon(android.R.drawable.ic_menu_info_details)
-                .setContentTitle(getApplicationContext().getResources().getString(R.string.app_name))
-                .setTicker(getApplicationContext().getResources().getString(R.string.app_name))
-                .setContentText(BaseUtils.getDateTime(0,"dd MMM yyyy HH:mm:ss"))
-                .setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setOnlyAlertOnce(true);
-
-        NotificationManager nManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        nManager.notify(777, mBuilder.build());
-        BootBroadcastReceiver.completeWakefulIntent(intent);
+        Bundle extras = intent.getExtras();
+        Log.i(WackeUpService.class.getSimpleName(), "onHandleIntent: extras = " + extras.toString());
+        Log.i(WackeUpService.class.getSimpleName(), "onHandleIntent: extras test= " + extras.get("test"));
+        Log.i(WackeUpService.class.getSimpleName(), "onHandleIntent: extras code= " + extras.get("code"));
+        Log.i(WackeUpService.class.getSimpleName(), "onHandleIntent: intent time= " + BaseUtils.getDateTime(0,null));
+        NetworkStringLoader loader = new NetworkStringLoader(getApplicationContext(),null);
+        String lat = String.valueOf(BaseUtils.randInt(15, 35) + ".08400000000002");
+        String lon = String.valueOf(BaseUtils.randInt(15, 180) + ".08400000000002");
+        String timestamp = String.valueOf(System.currentTimeMillis()/1000);
+        String params = "http://dev.aristos.pw:5055?id=666666&lat=" + lat + "&lon="+lon+"&timestamp=" + timestamp;
+        loader.requestString(params);
     }
 }

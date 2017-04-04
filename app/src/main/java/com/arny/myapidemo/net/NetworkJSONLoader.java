@@ -46,8 +46,7 @@ public class NetworkJSONLoader {
         });
 
         // Adding request to request queue
-        VolleySingleton.getInstance().addToRequestQueue(jsonObjReq,
-                tag_json_obj);
+        VolleySingleton.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
 }

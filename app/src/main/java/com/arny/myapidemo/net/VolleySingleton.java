@@ -1,50 +1,66 @@
 package com.arny.myapidemo.net;
 
-import android.app.Application;
-import android.text.TextUtils;
+import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-public class VolleySingleton extends Application {
+/**
+ * Volley Singleton.
+ * <p>
+ * 1. Responsibility.
+ * 1.a. Singleton class used to provide single instance volley components.
+ * 1.b. Provides "Request Queue" & allows as to add "Request" to the queue.
+ *
+ * @author Vasanth
+ */
+public class VolleySingleton {
 
-    public static final String TAG = VolleySingleton.class.getSimpleName();
     private static VolleySingleton mInstance;
     private RequestQueue mRequestQueue;
 
-    public static synchronized VolleySingleton getInstance() {
+    /**
+     * Constructor.
+     *
+     * @param context Application Context.
+     */
+    private VolleySingleton(final Context context) {
+        // getApplicationContext() is key, it keeps you from leaking the
+        // Activity or BroadcastReceiver if someone passes one in.
+        mRequestQueue = Volley.newRequestQueue(context.getApplicationContext());
+
+    }
+
+    /**
+     * Used to singleton instance of VolleySingleton.
+     *
+     * @param context Context.
+     * @return Singleton instance of VolleySingleton.
+     */
+    static synchronized VolleySingleton getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new VolleySingleton(context);
+        }
         return mInstance;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mInstance = this;
-    }
-
-    public RequestQueue getRequestQueue() {
-        if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
-
+    /**
+     * Used to get volley request queue.
+     *
+     * @return Volley request queue.
+     */
+    RequestQueue getRequestQueue() {
         return mRequestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        // set the default tag if tag is empty
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
+    /**
+     * Used to add the request to the request queue.
+     *
+     * @param request Request to be added to the queue.
+     */
+    <T> void addToRequestQueue(Request<T> request) {
+        getRequestQueue().add(request);
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
-        req.setTag(TAG);
-        getRequestQueue().add(req);
-    }
-
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
 }
