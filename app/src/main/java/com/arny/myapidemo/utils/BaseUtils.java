@@ -215,6 +215,11 @@ public class BaseUtils {
         return rnd.nextInt(range) + min;
     }
 
+    public static double randDouble(double min, double max) {
+        Random random = new Random();
+        return min + (max - min) * random.nextDouble();
+    }
+
     public static int convertStringToTime(String time) {
         int hours = 0;
         int mins = 0;

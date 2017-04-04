@@ -12,10 +12,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import com.arny.myapidemo.activities.*;
 
 public class HomeActivity extends AppCompatActivity {
-    private final Class[] sActivities = new Class[] {
+    private final Class[] sActivities = new Class[]{
             TabsActivity.class,
             XmlActivity.class,
             ScrollViewActivity.class,
@@ -33,8 +34,8 @@ public class HomeActivity extends AppCompatActivity {
             IntentServiceActivity.class,
             ChronosTestActivity.class,
             LocationActivity.class,
+            RecyclerTestActivity.class,
     };
-    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,14 +46,14 @@ public class HomeActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.main_list);
         String[] classesNames = getClassesNames();
 
-        if (classesNames.length>0){
+        if (classesNames.length > 0) {
             listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classesNames));
             listView.setOnItemClickListener(onListItemClick);
         }
     }
 
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             setTitle(getString(R.string.res_main_title));
@@ -95,7 +96,6 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     private void openQuitDialog() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(
                 HomeActivity.this);
@@ -111,5 +111,4 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog alert = quitDialog.create();
         alert.show();
     }
-
 }

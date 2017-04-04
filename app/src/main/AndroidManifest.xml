@@ -124,7 +124,6 @@
             android:label="ChronosTestActivity" />
         <activity android:name=".activities.RecyclerTestActivity" />
         <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.CardViewActivity"></activity>
     </application>
 
 </manifest>
