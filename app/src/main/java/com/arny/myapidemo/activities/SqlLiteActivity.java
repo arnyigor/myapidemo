@@ -16,20 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.arny.myapidemo.R;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 
-//==============Activity start=========================
 public class SqlLiteActivity extends AppCompatActivity {
     private static final String TABLE_NAME = "myDB";
     final Random random = new Random();
-    // =============Variables start================
     DBHelper dbHelper;
-    // =============Variables end================
-    // ==============Forms variables start==============
     Button btnAdd, btnRead, btnClear, btnUpd, btnDel, btnCreate, btnDrop;
     EditText etText, etID;
     TextView dbgTxt;
@@ -179,15 +176,11 @@ public class SqlLiteActivity extends AppCompatActivity {
             dbHelper.close();
         }
     };
-    // ====================CustomCode start======================================
 
-    // ==============Forms variables end==============
-//====================onCreate start=========================
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sqllite);
-        // ================Forms Ids start=========================
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(onClickListener);
         btnRead = (Button) findViewById(R.id.btnRead);
@@ -205,12 +198,8 @@ public class SqlLiteActivity extends AppCompatActivity {
         etText = (EditText) findViewById(R.id.etText);
         etID = (EditText) findViewById(R.id.etID);
         dbgTxt = (TextView) findViewById(R.id.debugtext);
-        // ================Forms Ids end=========================
         dbHelper = new DBHelper(this);
-        // ==================onCreateCode start=========================
-        // ==================onCreateCode end=========================
-    }//============onCreate end====================
-// ====================CustomCode end======================================
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -219,7 +208,6 @@ public class SqlLiteActivity extends AppCompatActivity {
         return true;
     }
 
-    // ====================OnClicks======================================
     public void onViewDataClick(MenuItem item) {
     }
 
@@ -240,13 +228,10 @@ public class SqlLiteActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // ====================OnClicks======================================
-    //======================Exit dialog==============================
     @Override
     public void onBackPressed() {
         openQuitDialog();
     }
-    // ====================CustomCode end======================================
 
     private void openQuitDialog() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(SqlLiteActivity.this);
@@ -277,9 +262,6 @@ public class SqlLiteActivity extends AppCompatActivity {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         }
     }
-    //======================Exit dialog end==============================
-    // ====================OnClicks end======================================
 
 
-}// ===================Activity end==================================
-//===================SimpleActivity==================================
+}

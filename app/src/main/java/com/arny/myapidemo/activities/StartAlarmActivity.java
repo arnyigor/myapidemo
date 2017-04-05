@@ -7,21 +7,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.models.Consts;
+import com.arny.myapidemo.services.BootBroadcastReceiver;
 import com.arny.myapidemo.services.MyAlarmReceiver;
-import com.arny.myapidemo.utils.BaseUtils;
 
 public class StartAlarmActivity extends AppCompatActivity {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_alarm_activity);
-        initToolbar();
         Button buttonStart = (Button) findViewById(R.id.btnStartAlarm);
         Button buttonStop = (Button) findViewById(R.id.btnStopAlarm);
         buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -39,31 +38,29 @@ public class StartAlarmActivity extends AppCompatActivity {
         });
     }
 
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setTitle(getString(R.string.title_alarm_manager));
-        }
-    }
-
 
     // Setup a recurring alarm every half hour
     public void scheduleAlarm() {
-        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
-        intent.putExtra("test","test 1");
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), BootBroadcastReceiver.class);
+        // Create a PendingIntent to be triggered when the alarm goes off
+        intent.putExtra("test",333);
         PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every 5 seconds
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        Log.i(StartAlarmActivity.class.getSimpleName(), "scheduleAlarm: SystemClock.elapsedRealtime() = " + SystemClock.elapsedRealtime());
+        Log.i(StartAlarmActivity.class.getSimpleName(), "scheduleAlarm: System.currentTimeMillis() = " + System.currentTimeMillis());
+//        alarm.setRepeating(AlarmManager.RTC_WAKEUP, firstMillis, 60000, pIntent);
         alarm.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), 60000, pIntent);
-        Log.i(StartAlarmActivity.class.getSimpleName(), "scheduleAlarm: " + MyAlarmReceiver.REQUEST_CODE + " time:" + BaseUtils.getDateTime());
     }
 
     public void cancelAlarm() {
-        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        Intent intent = new Intent(getApplicationContext(), BootBroadcastReceiver.class);
         final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarm.cancel(pIntent);
-        Log.i(StartAlarmActivity.class.getSimpleName(), "cancelAlarm: " + MyAlarmReceiver.REQUEST_CODE+ " time:" + BaseUtils.getDateTime());
     }
 }
