@@ -68,7 +68,6 @@ public class BaseUtils {
         return format;
     }
 
-
     public static synchronized boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -112,7 +111,6 @@ public class BaseUtils {
             return null;
         }
     }
-
 
     /**
      * @param date

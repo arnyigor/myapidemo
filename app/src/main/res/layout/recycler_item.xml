@@ -5,37 +5,45 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="8dp"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardElevation="5dp"
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_margin="5dp">
 
         <ImageView
             android:id="@+id/imgGoodPhoto"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_action_stop"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_centerHorizontal="true"/>
         <TextView
             android:id="@+id/tvGoodName"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             tools:text="test"
             android:maxLines="2"
             android:ellipsize="end"
-            android:layout_alignTop="@+id/imgGoodPhoto"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/imgGoodPhoto" />
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/imgGoodPhoto"
+            android:layout_alignParentStart="true"/>
         <TextView
             android:id="@+id/tvGoodPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="1231231231"
+            android:gravity="center_horizontal"
             android:layout_below="@+id/tvGoodName"
             android:layout_alignStart="@+id/tvGoodName"
             android:layout_marginTop="5dp"
