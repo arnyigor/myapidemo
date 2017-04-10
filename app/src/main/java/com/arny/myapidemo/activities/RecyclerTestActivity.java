@@ -31,7 +31,7 @@ public class RecyclerTestActivity extends AppCompatActivity  implements Recycler
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         goodItems = getGoodItems();
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mLayoutManager = new GridLayoutManager(this,2);
+        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         // создаем адаптер
         mAdapter = new RecyclerAdapter(goodItems,this,this);

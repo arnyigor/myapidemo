@@ -2,35 +2,22 @@ package com.arny.myapidemo.adapters;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.PointF;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.arny.myapidemo.BuildConfig;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.utils.MathUtils;
-import com.arny.myapidemo.utils.ToastMaker;
 import com.arny.myapidemo.utils.TouchImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.signature.StringSignature;
 
 import java.util.ArrayList;
 
@@ -74,6 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ViewHolder(View v, ArrayList<GoodItem> goodItems, Context context) {
             super(v);
             this.context = context;
+            itemView.setOnTouchListener(itemTouchListener);
             this.goodItems = goodItems;
             itemName = (TextView) v.findViewById(R.id.tvGoodName);
             itemImage = (ImageView) v.findViewById(R.id.imgGoodPhoto);
@@ -118,6 +106,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             });
         }
     }
+
+    private View.OnTouchListener itemTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    v.setBackgroundResource(R.drawable.background_item_pressed);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    // CANCEL triggers when you press the view for too long
+                    // It prevents UP to trigger which makes the 'pressed' background permanent which isn't what we want
+                case MotionEvent.ACTION_OUTSIDE:
+                    // OUTSIDE triggers when the user's finger moves out of the view
+                case MotionEvent.ACTION_UP:
+                    v.setBackgroundResource(R.drawable.background_item);
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        }
+    };
+
 
     // Создает новые views (вызывается layout manager-ом)
     @Override
