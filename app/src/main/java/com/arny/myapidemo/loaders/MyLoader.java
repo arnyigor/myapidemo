@@ -3,6 +3,7 @@ package com.arny.myapidemo.loaders;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.arny.myapidemo.utils.BaseUtils;
@@ -10,41 +11,39 @@ import com.arny.myapidemo.utils.BaseUtils;
 
 public class MyLoader extends AsyncTaskLoader<String> {
 
-    public static final String EXTRA_LOADER_STRING = "EXTRA_STRING";
-    private static final String TAG = "LOG_TAG";
-    private  String  mData;
+    private LoaderOperation currentOperation = null;
+    public enum LoaderOperation {load,calc};
+
+    public static final String EXTRA_LOADER_OPERATION = "MyLoader.loader.operation";
+    private static final String TAG = MyLoader.class.getSimpleName();
 
     public MyLoader(Context context,Bundle bundle) {
         super(context);
         if (bundle !=null){
-            Log.i(TAG, "MyLoader: bundle = " + bundle.toString());
+            currentOperation = (LoaderOperation) bundle.get(EXTRA_LOADER_OPERATION);
+            Log.i(MyLoader.class.getSimpleName(), "MyLoader: currentOperation = " + currentOperation);
         }
-        Log.i(TAG, "MyLoader: context = " + context);
     }
-    //сюда помещаем рабочий код, то, что возвращается, колбэчится в onLoadFinished
-    //без необходимости вызова deliverResult
     @Override
     public String loadInBackground() {
-        Log.i(TAG, hashCode() + " loadInBackground start");
-        String result = backgroundOperation();
-        Log.i(TAG, "loadInBackground: result - " + result);
-        return result;
-    }
-
-
-    private String backgroundOperation() {
-        try {
-            for (int i = 0; i < 10; i++) {
-                Thread.sleep(1000);
-                Log.i(TAG, "backgroundOperation: i = " + i);
+        Log.i(TAG, "loader:" + hashCode() + " loadInBackground start operation "+ currentOperation+" in " + BaseUtils.getDateTime(0, null));
+        if (currentOperation != null) {
+            switch (currentOperation) {
+                case load:
+                    SystemClock.sleep(5000);
+                    break;
+                case calc:
+                    SystemClock.sleep(3000);
+                    break;
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        }else{
+            SystemClock.sleep(1000);
         }
-        String result = BaseUtils.getDateTime(0, null);
-        Log.i(TAG, "backgroundOperation: result = " + result);
-        return result;
+        String finish = BaseUtils.getDateTime(0, null);
+        Log.i(TAG, "loader:" + hashCode() + " loadInBackground: finish " + finish);
+        return finish;
     }
+
 
     //У класса AsyncTaskLoader есть метод отмены: cancelLoad. Отмененный лоадер
     // по окончании работы вызовет уже не onLoadFinished, а onCanceled в AsyncTaskLoader.

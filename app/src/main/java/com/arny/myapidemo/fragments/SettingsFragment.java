@@ -2,13 +2,9 @@ package com.arny.myapidemo.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceManager;
 import android.support.v7.preference.*;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import com.arny.myapidemo.R;
 
 
@@ -17,11 +13,11 @@ import com.arny.myapidemo.R;
  */
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String PREF_CATEGORIES = "categoriesKey";
-    private static final String PREF_EDIT_TEST = "test_key";
-    private static final String PREF_EDIT_2_TEST = "test_2_key";
-    private static final String PREF_CHBX_TEST = "test_3_key";
-    private static final String PREF_MULTI_SEL = "multi_select_list_preference";
+    public static final String PREF_CATEGORIES = "categoriesKey";
+    public static final String PREF_EDIT_TEST = "test_key";
+    public static final String PREF_EDIT_2_TEST = "test_2_key";
+    public static final String PREF_CHBX_TEST = "test_3_key";
+    public static final String PREF_MULTI_SEL = "multi_select_list_preference";
     SharedPreferences sharedPreferences;
 
     @Override

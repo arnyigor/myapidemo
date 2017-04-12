@@ -7,22 +7,40 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".activities.RandomLoaderActivity">
+                tools:context=".activities.LoaderActivity">
 
     <TextView
-        android:id="@+id/resultTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+            android:id="@+id/resultLoad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_world"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/resultCalc"/>
+    <TextView
+            android:id="@+id/resultCalc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_world"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/calcTask"/>
 
 
     <Button
-        android:id="@+id/initLoader"
+        android:id="@+id/loadTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/resultTxt"
-        android:text="start" />
+        android:layout_below="@+id/resultLoad"
+        android:text="Load" />
+
+    <Button
+            android:id="@+id/calcTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calc"
+            android:layout_alignBaseline="@+id/loadTask"
+            android:layout_alignBottom="@+id/loadTask"
+            android:layout_toEndOf="@+id/loadTask"
+            android:layout_marginStart="22dp"/>
 
 </RelativeLayout>

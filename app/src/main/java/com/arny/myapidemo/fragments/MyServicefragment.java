@@ -1,7 +1,6 @@
 package com.arny.myapidemo.fragments;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,63 +17,55 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.services.MyIntentService;
+import com.arny.myapidemo.services.BackgroundOperations;
 
-import static com.arny.myapidemo.models.Consts.TAG;
 
-public class MyServicefragment extends Fragment {
+public class MyServicefragment extends Fragment implements View.OnClickListener {
+
     private static final String DATA_SAVE_STATE = "data_save_update";
+    private static final String TAG = MyServicefragment.class.getSimpleName();
     private Context context;
-    private Button btnServStart;
-    private TextView tvServInfo;
-    private int update;
+    private Button btnOper1;
+    private TextView tvInfo1;
     private boolean finish;
-    private ProgressDialog pDialog;
+    private Button btnOper2;
+    private Button btnOper3;
+    private TextView tvInfo2;
+    private TextView tvInfo3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_service, container, false);
         context = container.getContext();
         initUI(rootView);
-        initListeners();
-        if (savedInstanceState == null) {
-            update = 0;
-        } else {
-            update = savedInstanceState.getInt(DATA_SAVE_STATE, 0);
-        }
-        tvServInfo.setText(String.valueOf(update));
+//        tvServInfo.setText(String.valueOf(update));
         return rootView;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(DATA_SAVE_STATE,update);
     }
 
 
     // Launching the service
-    public void onStartService(View v) {
-        Log.i(TAG, "onStartService: ");
-        Intent i = new Intent(context, MyIntentService.class);
-        context.startService(i.putExtra(MyIntentService.EXTRA_KEY_UPDATE_TOTAL, 50));
+    public void onStartOperation(int code) {
+        Log.i(TAG, "onStartOperation: code = " + code);
+        Intent i = new Intent(context, BackgroundOperations.class);
+        context.startService(i.putExtra(BackgroundOperations.EXTRA_KEY_OPERATION_CODE, code));
     }
 
     private void initUI(View rootView) {
         Log.i(TAG, "initUI: ");
-        btnServStart = (Button) rootView.findViewById(R.id.btnServStart);
-        tvServInfo = (TextView) rootView.findViewById(R.id.tvServInfo);
-        pDialog = new ProgressDialog(context);
-    }
-
-    private void initListeners() {
-        Log.i(TAG, "initListeners: ");
-        btnServStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onStartService(view);
-            }
-        });
+        btnOper1 = (Button) rootView.findViewById(R.id.btnOper1);
+        btnOper2 = (Button) rootView.findViewById(R.id.btnOper2);
+        btnOper3 = (Button) rootView.findViewById(R.id.btnOper3);
+        btnOper1.setOnClickListener(this);
+        btnOper2.setOnClickListener(this);
+        btnOper3.setOnClickListener(this);
+        tvInfo1 = (TextView) rootView.findViewById(R.id.tvInfo1);
+        tvInfo2 = (TextView) rootView.findViewById(R.id.tvInfo2);
+        tvInfo3 = (TextView) rootView.findViewById(R.id.tvInfo3);
     }
 
     private void showDialog(String result) {
@@ -95,7 +86,7 @@ public class MyServicefragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume: ");
-        IntentFilter filter = new IntentFilter(MyIntentService.ACTION_UPDATE);
+        IntentFilter filter = new IntentFilter(BackgroundOperations.ACTION);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(context).registerReceiver(updateReciever, filter);
     }
@@ -110,30 +101,35 @@ public class MyServicefragment extends Fragment {
 
     private BroadcastReceiver updateReciever = new BroadcastReceiver() {
         public boolean success;
-        public int percent;
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "onReceive: intent = " + intent.toString());
-            Log.i(TAG, "onReceive: pDialog = " + pDialog);
             try {
-                update = intent.getIntExtra(MyIntentService.EXTRA_KEY_UPDATE, 1);
-                finish = intent.getBooleanExtra(MyIntentService.EXTRA_KEY_FINISH, false);
-                success = intent.getBooleanExtra(MyIntentService.EXTRA_KEY_FINISH_SUCCESS, false);
-                percent = intent.getIntExtra(MyIntentService.EXTRA_KEY_UPDATE_PROGRESS, 0);
+                finish = intent.getBooleanExtra(BackgroundOperations.EXTRA_KEY_FINISH, false);
+                success = intent.getBooleanExtra(BackgroundOperations.EXTRA_KEY_FINISH_SUCCESS, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (!finish){
-                String strProgress ="Loading... " + String.valueOf(percent) + " %";
-                pDialog.setMessage(strProgress);
-                pDialog.setCancelable(false);
-                pDialog.show();
+                String strProgress ="Loading... ";
             }else{
-                pDialog.dismiss();
                 showDialog("Операция завершена");
             }
-            tvServInfo.setText(String.valueOf(update));
+//            tvServInfo.setText(String.valueOf(update));
         }
     };
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnOper1:
+                onStartOperation(1);
+                break;
+            case R.id.btnOper2:
+                break;
+            case R.id.btnOper3:
+                break;
+        }
+    }
 }

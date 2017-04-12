@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.arny.myapidemo.activities.*;
+import com.arny.myapidemo.fragments.SettingsFragment;
+import com.arny.myapidemo.utils.Config;
 
 public class HomeActivity extends AppCompatActivity {
     private final Class[] sActivities = new Class[]{
@@ -26,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
             FragmentActivity.class,
             AlertCustomActivity.class,
             SimpleUIActivity.class,
-            RandomLoaderActivity.class,
+            LoaderActivity.class,
             CoordinatorActivity.class,
             TimerTaskActivity.class,
             StartAlarmActivity.class,
@@ -50,6 +53,8 @@ public class HomeActivity extends AppCompatActivity {
             listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classesNames));
             listView.setOnItemClickListener(onListItemClick);
         }
+        String test = Config.getString(SettingsFragment.PREF_EDIT_TEST, this);
+        if (BuildConfig.DEBUG) Log.i(HomeActivity.class.getSimpleName(), "onCreate: test = " + test);
     }
 
     private void initToolbar() {
