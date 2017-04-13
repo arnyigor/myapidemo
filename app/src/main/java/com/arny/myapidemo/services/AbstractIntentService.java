@@ -19,39 +19,38 @@ import java.util.concurrent.ThreadPoolExecutor;
 public abstract class AbstractIntentService extends IntentService {
     /*Extras*/
     public static final String ACTION = "AbstractIntentService.action";
-    public static final String EXTRA_KEY_OPERATION_CODE = "AbstractIntentService.operation.code";
+    public static final String EXTRA_KEY_OPERATION_ID = "AbstractIntentService.operaton.id";
     public static final String EXTRA_KEY_TYPE = "AbstractIntentService.type";
+    public static final String EXTRA_KEY_OPERATION = "AbstractIntentService.operaton";
     public static final int EXTRA_KEY_TYPE_SYNC = 0;
     public static final int EXTRA_KEY_TYPE_ASYNC = 1;
-    public static final String EXTRA_KEY_OPERATION_RESULT = "AbstractIntentService.operation.result";
-    public static final String EXTRA_KEY_FINISH_SUCCESS = "AbstractIntentService.operation.success";
-    public static final String EXTRA_KEY_OPERATION_DATA = "AbstractIntentService.operation.data";
+    public static final String EXTRA_KEY_OPERATION_RESULT = "AbstractIntentService.operaton.result";
+    public static final String EXTRA_KEY_OPERATION_FINISH = "AbstractIntentService.operaton.finish";
+    public static final String EXTRA_KEY_OPERATION_FINISH_SUCCESS = "AbstractIntentService.operaton.success";
+    public static final String EXTRA_KEY_OPERATION_DATA = "AbstractIntentService.operatonId.data";
     /*other*/
-    protected static int operation;
-    protected boolean mIsSuccess;
-    protected HashMap<String, Object> resultData;
-    private ArrayList<Integer> operationsQueue;
+    protected static OperationProvider operation;
+    private static ArrayList<OperationProvider> operationsQueue;
 
-    protected abstract void runOperation(int operation);
+    protected abstract void runOperation(OperationProvider provider,OnOperationResult result);
 
-    protected abstract String getSuccessResult(int operation);
-
-    protected abstract String getFailResult(int operation);
-
-    protected static int getOperation() {
+    protected static OperationProvider getOperation() {
         return operation;
     }
 
-    protected void setOperation(int operation) {
-        Log.i(AbstractIntentService.class.getSimpleName(), "setOperation: operation = " + operation);
+    protected void setOperation(OperationProvider operation) {
+        Log.i(AbstractIntentService.class.getSimpleName(), "setOperation: operatonId = " + operation.getId());
         AbstractIntentService.operation = operation;
+    }
+
+    protected interface OnOperationResult {
+        void resultSuccess(OperationProvider provider);
+        void resultFail(OperationProvider provider);
     }
 
     public AbstractIntentService() {
         super("AbstractIntentService");
-        mIsSuccess = false;
         operationsQueue = new ArrayList<>();
-        resultData = new HashMap<>();
     }
 
 
@@ -85,10 +84,8 @@ public abstract class AbstractIntentService extends IntentService {
             final int active_count = tasks_left.decrementAndGet();
             Log.i(ParallelThreadPoolExecutor.class.getSimpleName(), "afterExecute: active_count = " + active_count);
             if (active_count == 0) {
-                Log.i(ParallelThreadPoolExecutor.class.getSimpleName(), "afterExecute: 1");
                 onDestroy();
             } else {
-                Log.i(ParallelThreadPoolExecutor.class.getSimpleName(), "afterExecute: 2");
                 tasksLeft(active_count);
             }
         }
@@ -104,32 +101,10 @@ public abstract class AbstractIntentService extends IntentService {
         public void run() {
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                executeOperation(extras.getInt(EXTRA_KEY_OPERATION_CODE));
+                OperationProvider provider = extras.getParcelable(EXTRA_KEY_OPERATION);
+                executeOperation(provider);
             }
         }
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.i(AbstractIntentService.class.getSimpleName(), "onCreate: ");
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.i(AbstractIntentService.class.getSimpleName(), "onDestroy: ");
-        super.onDestroy();
-    }
-
-    private String getResultNotif(int operation) {
-        Log.i(AbstractIntentService.class.getSimpleName(), "getResultNotif: ");
-        String notice;
-        if (mIsSuccess) {
-            notice = getSuccessResult(operation);
-        } else {
-            notice = getFailResult(operation);
-        }
-        return notice;
     }
 
     @NonNull
@@ -145,26 +120,30 @@ public abstract class AbstractIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            int type = extras.getInt(EXTRA_KEY_TYPE);
+            OperationProvider provider = extras.getParcelable(EXTRA_KEY_OPERATION);
+            Log.i(AbstractIntentService.class.getSimpleName(), "onHandleIntent: provider = " + provider.getId());
+            int type = provider.getType();
             if (type == EXTRA_KEY_TYPE_SYNC) {
-                setQueue(extras.getInt(EXTRA_KEY_OPERATION_CODE));
+                setQueue(provider);
             } else {
                 ThreadPoolExecutor.execute(new Task(intent));
             }
         }
     }
 
-    private void setQueue(int operation) {
+    private void setQueue(OperationProvider provider) {
+        Log.i(AbstractIntentService.class.getSimpleName(), "setQueue: provider = " + provider.getId());
         if (operationsQueue.isEmpty()) {
-            operationsQueue.add(operation);
+            operationsQueue.add(provider);
             restartOperation();
         } else {
-            operationsQueue.add(operation);
+            operationsQueue.add(provider);
         }
-        Log.i(AbstractIntentService.class.getSimpleName(), "setQueue: operationsQueue = " + operationsQueue);
+        Log.i(AbstractIntentService.class.getSimpleName(), "setQueue: operationsQueue size = " + operationsQueue.size());
     }
 
     private void restartOperation() {
+        Log.i(AbstractIntentService.class.getSimpleName(), "restartOperation: operationsQueue = " + operationsQueue);
         if (!operationsQueue.isEmpty()) {
             executeOperation(operationsQueue.get(0));
             operationsQueue.remove(0);
@@ -174,20 +153,30 @@ public abstract class AbstractIntentService extends IntentService {
         }
     }
 
-    private void executeOperation(int operation) {
+    private void executeOperation(final OperationProvider operation) {
+        Log.i(AbstractIntentService.class.getSimpleName(), "executeOperation: operation = " + operation.getId());
         setOperation(operation);
-        runOperation(getOperation());
-        mIsSuccess = true;
-        sendOperationResult(getResultNotif(operation), operation);
+        runOperation(getOperation(), new OnOperationResult() {
+            @Override
+            public void resultSuccess(OperationProvider provider) {
+                sendOperationResult(provider);
+            }
+
+            @Override
+            public void resultFail(OperationProvider provider) {
+                sendOperationResult(provider);
+            }
+        });
     }
 
-    private void sendOperationResult(String result, int operation) {
-        Log.i(AbstractIntentService.class.getSimpleName(), "sendOperationResult: ");
+    private void sendOperationResult(OperationProvider provider) {
+        Log.i(AbstractIntentService.class.getSimpleName(), "sendOperationResult: operation "+provider.getId()+" data " + provider.getOperationData());
         Intent intent = initProadcastIntent();
-        intent.putExtra(EXTRA_KEY_FINISH_SUCCESS, mIsSuccess);
-        intent.putExtra(EXTRA_KEY_OPERATION_CODE, operation);
-        intent.putExtra(EXTRA_KEY_OPERATION_RESULT, result);
-        intent.putExtra(EXTRA_KEY_OPERATION_DATA, resultData);
+        intent.putExtra(EXTRA_KEY_OPERATION_FINISH,  provider.isFinished());
+        intent.putExtra(EXTRA_KEY_OPERATION_FINISH_SUCCESS, provider.isSuccess());
+        intent.putExtra(EXTRA_KEY_OPERATION_ID, provider.getId());
+        intent.putExtra(EXTRA_KEY_OPERATION_RESULT, provider.getResult());
+        intent.putExtra(EXTRA_KEY_OPERATION_DATA, provider.getOperationData());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

@@ -14,7 +14,7 @@ public class MyLoader extends AsyncTaskLoader<String> {
     private LoaderOperation currentOperation = null;
     public enum LoaderOperation {load,calc};
 
-    public static final String EXTRA_LOADER_OPERATION = "MyLoader.loader.operation";
+    public static final String EXTRA_LOADER_OPERATION = "MyLoader.loader.operatonId";
     private static final String TAG = MyLoader.class.getSimpleName();
 
     public MyLoader(Context context,Bundle bundle) {
@@ -26,7 +26,7 @@ public class MyLoader extends AsyncTaskLoader<String> {
     }
     @Override
     public String loadInBackground() {
-        Log.i(TAG, "loader:" + hashCode() + " loadInBackground start operation "+ currentOperation+" in " + BaseUtils.getDateTime(0, null));
+        Log.i(TAG, "loader:" + hashCode() + " loadInBackground start operatonId "+ currentOperation+" in " + BaseUtils.getDateTime(0, null));
         if (currentOperation != null) {
             switch (currentOperation) {
                 case load:

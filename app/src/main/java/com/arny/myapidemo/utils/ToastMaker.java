@@ -23,13 +23,13 @@ public class ToastMaker {
      *
      * @param context
      * @param message
-     * @param error
+     * @param success
      */
-    public static void toast(Context context, String message, boolean error) {
-        if (error) {
-            Toasty.error(context, message, Toast.LENGTH_SHORT).show();
-        } else {
+    public static void toast(Context context, String message, boolean success) {
+        if (success) {
             Toasty.success(context, message, Toast.LENGTH_SHORT).show();
+        } else {
+            Toasty.error(context, message, Toast.LENGTH_SHORT).show();
         }
     }
 

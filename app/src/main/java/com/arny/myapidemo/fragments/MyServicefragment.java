@@ -16,10 +16,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.amitshekhar.utils.Utils;
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.services.OperationProvider;
 import com.arny.myapidemo.services.Operations;
 import com.arny.myapidemo.utils.BaseUtils;
+import com.arny.myapidemo.utils.ToastMaker;
+
+import java.util.HashMap;
 
 
 public class MyServicefragment extends Fragment implements View.OnClickListener {
@@ -47,13 +50,6 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
         super.onSaveInstanceState(outState);
     }
 
-
-    // Launching the service
-    public void onStartOperation(Context context,int type,int code) {
-        context.startService(new Intent(context, Operations.class)
-                .putExtra(Operations.EXTRA_KEY_OPERATION_CODE, code)
-                .putExtra(Operations.EXTRA_KEY_TYPE,type));
-}
 
     private void initUI(View rootView) {
         Log.i(TAG, "initUI: ");
@@ -99,28 +95,37 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
     }
 
 
+    // Launching the service
+    public void onStartOperation(Context context, int type, int code, HashMap<String,Object> operationData) {
+        context.startService(new Intent(context, Operations.class)
+                .putExtra(Operations.EXTRA_KEY_OPERATION,
+                new OperationProvider(code,type,operationData)));
+    }
+
     private BroadcastReceiver updateReciever = new BroadcastReceiver() {
-        public boolean success;
+        public boolean success,operationFinished;
         public int operation;
+        public String operationResult = "";
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(MyServicefragment.class.getSimpleName(), "onReceive: ");
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras EXTRA_KEY_FINISH_SUCCESS= " + extras.getBoolean(Operations.EXTRA_KEY_FINISH_SUCCESS));
-                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras EXTRA_KEY_OPERATION_DATA= " + extras.getSerializable(Operations.EXTRA_KEY_OPERATION_DATA));
-                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras EXTRA_KEY_OPERATION_CODE= " + extras.getInt(Operations.EXTRA_KEY_OPERATION_CODE));
+                OperationProvider provider = new OperationProvider(extras);
+                operationFinished = provider.isFinished();
+                success = provider.isSuccess();
+                operation = provider.getId();
+                operationResult = provider.getResult();
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras operation= " + operation);
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras operationFinished= " + operationFinished);
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras success= " + success);
+//                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras getOperationData= " + provider.getOperationData());
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras operationResult= " + operationResult);
                 Log.i(MyServicefragment.class.getSimpleName(), "onReceive: time = " + BaseUtils.getDateTime());
-                try {
-                    success = extras.getBoolean(Operations.EXTRA_KEY_FINISH_SUCCESS);
-                    operation = extras.getInt(Operations.EXTRA_KEY_OPERATION_CODE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-            if (success) {
-                showDialog("Операция "+operation+" завершена");
+            if (operationFinished) {
+                ToastMaker.toast(context,"Результат операции " + operation + ":"+ operationResult, success);
             }
+
         }
     };
 
@@ -129,15 +134,17 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btnOper1:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:1 time = " + BaseUtils.getDateTime());
-                onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,1);
+                onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,1,null);
                 break;
             case R.id.btnOper2:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:2 time = " + BaseUtils.getDateTime());
-                onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,2);
+                onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,2,null);
                 break;
             case R.id.btnOper3:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:3 time = " + BaseUtils.getDateTime());
-                onStartOperation(context,Operations.EXTRA_KEY_TYPE_ASYNC,3);
+                HashMap<String, Object> map3 = new HashMap<>();
+                map3.put("key05", 4);
+                onStartOperation(context,Operations.EXTRA_KEY_TYPE_ASYNC,3,map3);
                 break;
         }
     }
