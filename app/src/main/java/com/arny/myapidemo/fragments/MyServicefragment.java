@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.amitshekhar.utils.Utils;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.services.BackgroundOperations;
+import com.arny.myapidemo.services.Operations;
+import com.arny.myapidemo.utils.BaseUtils;
 
 
 public class MyServicefragment extends Fragment implements View.OnClickListener {
@@ -27,7 +29,6 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
     private Context context;
     private Button btnOper1;
     private TextView tvInfo1;
-    private boolean finish;
     private Button btnOper2;
     private Button btnOper3;
     private TextView tvInfo2;
@@ -38,7 +39,6 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
         View rootView = inflater.inflate(R.layout.fragment_service, container, false);
         context = container.getContext();
         initUI(rootView);
-//        tvServInfo.setText(String.valueOf(update));
         return rootView;
     }
 
@@ -49,11 +49,9 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
 
 
     // Launching the service
-    public void onStartOperation(int code) {
-        Log.i(TAG, "onStartOperation: code = " + code);
-        Intent i = new Intent(context, BackgroundOperations.class);
-        context.startService(i.putExtra(BackgroundOperations.EXTRA_KEY_OPERATION_CODE, code));
-    }
+    public void onStartOperation(int code,Context context) {
+        context.startService(new Intent(context, Operations.class).putExtra(Operations.EXTRA_KEY_OPERATION_CODE, code));
+}
 
     private void initUI(View rootView) {
         Log.i(TAG, "initUI: ");
@@ -86,7 +84,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume: ");
-        IntentFilter filter = new IntentFilter(BackgroundOperations.ACTION);
+        IntentFilter filter = new IntentFilter(Operations.ACTION);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(context).registerReceiver(updateReciever, filter);
     }
@@ -101,22 +99,26 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
 
     private BroadcastReceiver updateReciever = new BroadcastReceiver() {
         public boolean success;
-
+        public int operation;
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "onReceive: intent = " + intent.toString());
-            try {
-                finish = intent.getBooleanExtra(BackgroundOperations.EXTRA_KEY_FINISH, false);
-                success = intent.getBooleanExtra(BackgroundOperations.EXTRA_KEY_FINISH_SUCCESS, false);
-            } catch (Exception e) {
-                e.printStackTrace();
+            Log.i(MyServicefragment.class.getSimpleName(), "onReceive: ");
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras EXTRA_KEY_FINISH_SUCCESS= " + extras.getBoolean(Operations.EXTRA_KEY_FINISH_SUCCESS));
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras EXTRA_KEY_OPERATION_DATA= " + extras.getSerializable(Operations.EXTRA_KEY_OPERATION_DATA));
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras EXTRA_KEY_OPERATION_CODE= " + extras.getInt(Operations.EXTRA_KEY_OPERATION_CODE));
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: time = " + BaseUtils.getDateTime());
+                try {
+                    success = extras.getBoolean(Operations.EXTRA_KEY_FINISH_SUCCESS);
+                    operation = extras.getInt(Operations.EXTRA_KEY_OPERATION_CODE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            if (!finish){
-                String strProgress ="Loading... ";
-            }else{
-                showDialog("Операция завершена");
+            if (success) {
+                showDialog("Операция "+operation+" завершена");
             }
-//            tvServInfo.setText(String.valueOf(update));
         }
     };
 
@@ -124,11 +126,16 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnOper1:
-                onStartOperation(1);
+                Log.i(MyServicefragment.class.getSimpleName(), "onClick:1 time = " + BaseUtils.getDateTime());
+                onStartOperation(1,context);
                 break;
             case R.id.btnOper2:
+                Log.i(MyServicefragment.class.getSimpleName(), "onClick:2 time = " + BaseUtils.getDateTime());
+                onStartOperation(2,context);
                 break;
             case R.id.btnOper3:
+                Log.i(MyServicefragment.class.getSimpleName(), "onClick:3 time = " + BaseUtils.getDateTime());
+                onStartOperation(3,context);
                 break;
         }
     }
