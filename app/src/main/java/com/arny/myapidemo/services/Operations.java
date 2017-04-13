@@ -27,21 +27,27 @@ public class Operations extends AbstractIntentService {
         switch (operation) {
             case 1:
                 Log.i(Operations.class.getSimpleName(), "runOperation:1 time = " + BaseUtils.getDateTime());
+                long start = System.currentTimeMillis();
                 SystemClock.sleep(5000);
                 resultData.put("key1", 1);
-                resultData.put("key2", "ok 1");
+                String finish = String.valueOf((System.currentTimeMillis() - start));
+                resultData.put("key2", finish);
                 break;
             case 2:
                 Log.i(Operations.class.getSimpleName(), "runOperation:2 time = " + BaseUtils.getDateTime());
+                long start2 = System.currentTimeMillis();
                 SystemClock.sleep(10000);
                 resultData.put("key1", 2);
-                resultData.put("key2", "ok 2");
+                String finish2 = String.valueOf((System.currentTimeMillis() - start2));
+                resultData.put("key2", finish2);
                 break;
             case 3:
                 Log.i(Operations.class.getSimpleName(), "runOperation:3 time = " + BaseUtils.getDateTime());
-                SystemClock.sleep(3000);
+                long start3 = System.currentTimeMillis();
+                SystemClock.sleep(15000);
                 resultData.put("key1", 3);
-                resultData.put("key2", "ok 3");
+                String finish3 = String.valueOf((System.currentTimeMillis() - start3));
+                resultData.put("key2", finish3);
                 break;
         }
     }

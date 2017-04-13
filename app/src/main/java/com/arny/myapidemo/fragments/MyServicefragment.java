@@ -49,8 +49,10 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
 
 
     // Launching the service
-    public void onStartOperation(int code,Context context) {
-        context.startService(new Intent(context, Operations.class).putExtra(Operations.EXTRA_KEY_OPERATION_CODE, code));
+    public void onStartOperation(Context context,int type,int code) {
+        context.startService(new Intent(context, Operations.class)
+                .putExtra(Operations.EXTRA_KEY_OPERATION_CODE, code)
+                .putExtra(Operations.EXTRA_KEY_TYPE,type));
 }
 
     private void initUI(View rootView) {
@@ -127,15 +129,15 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btnOper1:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:1 time = " + BaseUtils.getDateTime());
-                onStartOperation(1,context);
+                onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,1);
                 break;
             case R.id.btnOper2:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:2 time = " + BaseUtils.getDateTime());
-                onStartOperation(2,context);
+                onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,2);
                 break;
             case R.id.btnOper3:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:3 time = " + BaseUtils.getDateTime());
-                onStartOperation(3,context);
+                onStartOperation(context,Operations.EXTRA_KEY_TYPE_ASYNC,3);
                 break;
         }
     }

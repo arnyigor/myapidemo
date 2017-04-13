@@ -111,6 +111,15 @@ public class BaseUtils {
             return null;
         }
     }
+    public static String getDateTime(long milliseconds) {
+        try {
+            milliseconds = (milliseconds == 0) ? Calendar.getInstance().getTimeInMillis() : milliseconds;
+            return (new SimpleDateFormat("dd MMM yyyy HH:mm:ss.sss", Locale.getDefault())).format(new Date(milliseconds));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * @param date
