@@ -3,6 +3,8 @@ package com.arny.myapidemo.services;
 import android.os.SystemClock;
 import android.util.Log;
 import com.arny.myapidemo.utils.BaseUtils;
+import pw.aristos.arnylib.service.AbstractIntentService;
+import pw.aristos.arnylib.service.OperationProvider;
 
 import java.util.HashMap;
 
@@ -12,11 +14,10 @@ public class Operations extends AbstractIntentService {
     }
 
     @Override
-    protected void runOperation(OperationProvider provider,OnOperationResult operationResult) {
-        Log.i(Operations.class.getSimpleName(), "runOperation: provider = " + provider.getId());
+    protected void runOperation(OperationProvider provider, OnOperationResult operationResult) {
         switch (provider.getId()) {
             case 1:
-                Log.i(Operations.class.getSimpleName(), "runOperation:1 time = " + BaseUtils.getDateTime() + " startData = " + provider.getOperationData());
+                Log.i(Operations.class.getSimpleName(), "runJSONRequest:1 time = " + BaseUtils.getDateTime() + " startData = " + provider.getOperationData());
                 long start = System.currentTimeMillis();
                 SystemClock.sleep(5000);
                 try {
@@ -37,7 +38,7 @@ public class Operations extends AbstractIntentService {
                 }
                 break;
             case 2:
-                Log.i(Operations.class.getSimpleName(), "runOperation:2 time = " + BaseUtils.getDateTime() + " startData = " + provider.getOperationData());
+                Log.i(Operations.class.getSimpleName(), "runJSONRequest:2 time = " + BaseUtils.getDateTime() + " startData = " + provider.getOperationData());
                 long start2 = System.currentTimeMillis();
                 SystemClock.sleep(10000);
                 HashMap<String, Object> data = new HashMap<>();
@@ -50,7 +51,7 @@ public class Operations extends AbstractIntentService {
                 operationResult.resultSuccess(provider);
                 break;
             case 3:
-                Log.i(Operations.class.getSimpleName(), "runOperation:3 time = " + BaseUtils.getDateTime() + " startData = " + provider.getOperationData());
+                Log.i(Operations.class.getSimpleName(), "runJSONRequest:3 time = " + BaseUtils.getDateTime() + " startData = " + provider.getOperationData());
                 long start3 = System.currentTimeMillis();
                 SystemClock.sleep(15000);
                 HashMap<String, Object> data2 = new HashMap<>();

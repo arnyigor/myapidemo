@@ -39,7 +39,7 @@ public class ChronosTestActivity extends ChronosAppCompatActivity {
         public void onClick(View view) {
             Log.i(TAG, "onClick: btnStartListener");
             runOperationBroadcast(new SimpleOperation(EXTRA_DATA),TAG_DATA_LOADING);
-//            final int firstRunId = runOperation(new SimpleOperation(EXTRA_DATA),TAG_DATA_LOADING);
+//            final int firstRunId = runJSONRequest(new SimpleOperation(EXTRA_DATA),TAG_DATA_LOADING);
         }
     };
 
@@ -77,7 +77,7 @@ public class ChronosTestActivity extends ChronosAppCompatActivity {
         super.onResume();
         Log.i(TAG, "onResume: mData = " + mData);
         if (mData == null) {
-//            runOperation(new SimpleOperation(EXTRA_DATA),TAG_DATA_LOADING);
+//            runJSONRequest(new SimpleOperation(EXTRA_DATA),TAG_DATA_LOADING);
             showData("Данных нет");
         } else {
             showData(mData);

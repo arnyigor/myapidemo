@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
             CoordinatorActivity.class,
             TimerTaskActivity.class,
             StartAlarmActivity.class,
-            VolleyTestActivity.class,
+            NetworkActivity.class,
             IntentServiceActivity.class,
             ChronosTestActivity.class,
             LocationActivity.class,

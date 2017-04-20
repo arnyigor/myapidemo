@@ -117,7 +117,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".activities.VolleyTestActivity"
+            android:name=".activities.NetworkActivity"
             android:label="VolleyTestActivity" />
         <activity
             android:name=".activities.IntentServiceActivity"
