@@ -133,7 +133,6 @@ public class MyTimerService extends Service {
     }
 
     private void stopTimerService() {
-        timer.cancel();
         timer = null;
         if (stels) {
            stopForeground(true);

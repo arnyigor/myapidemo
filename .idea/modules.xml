@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arnylib/arnylib.iml" filepath="$PROJECT_DIR$/arnylib/arnylib.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapidemo.iml" filepath="$PROJECT_DIR$/myapidemo.iml" />
     </modules>
   </component>

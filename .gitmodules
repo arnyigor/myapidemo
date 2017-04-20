@@ -1,0 +1,3 @@
+[submodule "arnylib"]
+	path = arnylib
+	url = https://github.com/arnyigor/arnylib.git

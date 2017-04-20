@@ -54,3 +54,5 @@ freeline.py
 freeline/
 freeline_project_description.json
 
+/app/app.iml
+/myapidemo.iml

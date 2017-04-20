@@ -93,6 +93,7 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TimerTaskActivity.class.getSimpleName(), "onResume: isMyServiceRunning " + BaseUtils.isMyServiceRunning(MyTimerService.class,this));
         onRegisterReciever();
     }
 
