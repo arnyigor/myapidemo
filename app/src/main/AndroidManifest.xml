@@ -105,7 +105,7 @@
             android:name=".services.MyIntentService"
             android:label="MyIntentService" />
         <service
-            android:name="pw.aristos.arnylib.service.Operations"
+            android:name=".services.Operations"
             android:label="BackgroundOperations" />
 
         <receiver

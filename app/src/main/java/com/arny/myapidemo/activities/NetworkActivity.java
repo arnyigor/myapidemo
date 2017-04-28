@@ -1,6 +1,5 @@
 package com.arny.myapidemo.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.arny.myapidemo.R;
-import org.json.JSONObject;
-import pw.aristos.arnylib.network.ApiSendService;
 import pw.aristos.arnylib.network.MyResultReceiver;
-import pw.aristos.arnylib.network.OnStringRequestResult;
 import pw.aristos.arnylib.service.AbstractIntentService;
-import pw.aristos.arnylib.service.Operations;
+import com.arny.myapidemo.services.Operations;
 
 import static android.app.DownloadManager.*;
 
@@ -38,7 +34,7 @@ public class NetworkActivity extends AppCompatActivity  implements MyResultRecei
         stringLoaderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Operations.onStartOperation(NetworkActivity.this, AbstractIntentService.EXTRA_KEY_TYPE_SYNC,1,null);
+                Operations.onStartOperation(NetworkActivity.this, Operations.EXTRA_KEY_TYPE_SYNC,2,null);
             }
         });
         jsonLoaderBtn = (Button) findViewById(R.id.buttonJSONRequest);
