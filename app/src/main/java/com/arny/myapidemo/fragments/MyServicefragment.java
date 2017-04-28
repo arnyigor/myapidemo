@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.arny.myapidemo.R;
 import pw.aristos.arnylib.service.AbstractIntentService;
 import pw.aristos.arnylib.service.OperationProvider;
-import com.arny.myapidemo.services.Operations;
+import pw.aristos.arnylib.service.Operations;
 import com.arny.myapidemo.utils.BaseUtils;
 import com.arny.myapidemo.utils.ToastMaker;
 
