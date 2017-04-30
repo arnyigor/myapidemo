@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -17,16 +18,24 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.arny.myapidemo.R;
+
+import pw.aristos.arnylib.network.MyResultReceiver;
 import pw.aristos.arnylib.service.AbstractIntentService;
 import pw.aristos.arnylib.service.OperationProvider;
+
+import com.arny.myapidemo.activities.NetworkActivity;
 import com.arny.myapidemo.services.Operations;
 import com.arny.myapidemo.utils.BaseUtils;
 import com.arny.myapidemo.utils.ToastMaker;
 
 import java.util.HashMap;
 
+import static android.app.DownloadManager.STATUS_FAILED;
+import static android.app.DownloadManager.STATUS_RUNNING;
+import static android.app.DownloadManager.STATUS_SUCCESSFUL;
 
-public class MyServicefragment extends Fragment implements View.OnClickListener {
+
+public class MyServicefragment extends Fragment implements View.OnClickListener, MyResultReceiver.Receiver  {
 
     private static final String DATA_SAVE_STATE = "data_save_update";
     private static final String TAG = MyServicefragment.class.getSimpleName();
@@ -37,11 +46,14 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
     private Button btnOper3;
     private TextView tvInfo2;
     private TextView tvInfo3;
+    private MyResultReceiver mReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_service, container, false);
         context = container.getContext();
+        mReceiver = new MyResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
         initUI(rootView);
         return rootView;
     }
@@ -139,6 +151,21 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
                 HashMap<String, Object> map3 = new HashMap<>();
                 map3.put("key05", 4);
                 AbstractIntentService.onStartOperation(context,Operations.EXTRA_KEY_TYPE_ASYNC,3,map3);
+                break;
+        }
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        Log.d(NetworkActivity.class.getSimpleName(), "onReceiveResult: code = " +resultCode + " resultData = " + resultData.get("result") );
+        switch (resultCode) {
+            case STATUS_RUNNING:
+                //show progress
+                break;
+            case STATUS_SUCCESSFUL:
+                break;
+            case STATUS_FAILED:
+                // handle the error;
                 break;
         }
     }

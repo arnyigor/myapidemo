@@ -7,7 +7,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pw.aristos.arnylib.network.ApiSendService;
+import pw.aristos.arnylib.network.ApiService;
 import pw.aristos.arnylib.network.MyResultReceiver;
 import pw.aristos.arnylib.network.OnStringRequestResult;
 import pw.aristos.arnylib.service.AbstractIntentService;
@@ -24,14 +24,15 @@ public class Operations extends AbstractIntentService {
 
     @Override
     protected void runOperation(OperationProvider provider, OnOperationResult operationResult) {
-        Log.d(Operations.class.getSimpleName(), "runOperation: " + provider.getId());
-        switch (provider.getId()) {
+        int operationId = provider.getId();
+        Log.d(Operations.class.getSimpleName(), "operationId: " + operationId);
+        switch (operationId) {
             case 1:
                 String test_url ="https://pik.ru/luberecky/singlepage?data=ChessPlan&id=2b3ecc9b-bfad-e611-9fbe-001ec9d5643c&private_key=1&format=json&domain=pik.ru";
-                    ApiSendService.apiRequest(getApplicationContext(), test_url, new JSONObject(), new OnStringRequestResult() {
+                    ApiService.apiRequest(getApplicationContext(), test_url, new JSONObject(), new OnStringRequestResult() {
                         @Override
                         public void onSuccess(String result) {
-                            Log.d(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
+//                            Log.d(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
                             receiver = new MyResultReceiver(new Handler());
                             Bundle bundle = new Bundle();
                             bundle.putString("result", "test_test_test");
@@ -51,7 +52,7 @@ public class Operations extends AbstractIntentService {
     }
 
     private void getKorpuses() {
-       ApiSendService.apiRequest(getApplicationContext(), API_BASE_URL +API_URL_GEN_PLAN , new JSONObject(), new OnStringRequestResult() {
+       ApiService.apiRequest(getApplicationContext(), API_BASE_URL +API_URL_GEN_PLAN , new JSONObject(), new OnStringRequestResult() {
            @Override
            public void onSuccess(String result) {
                JSONArray genPlanArray;
@@ -75,10 +76,10 @@ public class Operations extends AbstractIntentService {
     private void parseKorpuses(final JSONArray korpuses) throws JSONException {
         for (int i = 0; i < korpuses.length(); i++) {
             JSONObject korpusObject = new JSONObject(korpuses.get(i).toString());
-            ApiSendService.apiRequest(getApplicationContext(), API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"), new JSONObject(), new OnStringRequestResult() {
+            ApiService.apiRequest(getApplicationContext(), API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"), new JSONObject(), new OnStringRequestResult() {
                 @Override
                 public void onSuccess(String result) {
-                    Log.d(Operations.class.getSimpleName(), "onSuccess parseKorpuses: result = " + result);
+                    Log.i(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
                 }
 
                 @Override
