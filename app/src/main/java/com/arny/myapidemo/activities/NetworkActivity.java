@@ -36,7 +36,7 @@ public class NetworkActivity extends AppCompatActivity  implements MyResultRecei
         stringLoaderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Operations.onStartOperation(intent,NetworkActivity.this,Operations.EXTRA_KEY_TYPE_SYNC,1,null);
+                Operations.onStartOperation(intent,NetworkActivity.this,Operations.EXTRA_KEY_TYPE_SYNC,2,null);
             }
         });
         jsonLoaderBtn = (Button) findViewById(R.id.buttonJSONRequest);

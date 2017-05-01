@@ -4,9 +4,23 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+
 import pw.aristos.arnylib.network.ApiService;
 import pw.aristos.arnylib.network.MyResultReceiver;
 import pw.aristos.arnylib.network.OnStringRequestResult;
@@ -33,10 +47,7 @@ public class Operations extends AbstractIntentService {
                         @Override
                         public void onSuccess(String result) {
                             Log.d(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
-                            receiver = new MyResultReceiver(new Handler());
-                            Bundle bundle = new Bundle();
-                            bundle.putString("result", "test_test_test");
-                            receiver.send(Activity.RESULT_OK, bundle);
+                            parseResultGSON(result);
                         }
 
                         @Override
@@ -46,8 +57,47 @@ public class Operations extends AbstractIntentService {
                     });
                 break;
             case 2:
-                getKorpuses();
+                Document doc = null;
+                try {
+                    doc = Jsoup.connect("http://www.dsk1.ru/novostroyki/nekrasovka/ceny-na-kvartiry/").get();
+                    Elements pages = doc.getElementsByClass("pages");
+                    Log.d(Operations.class.getSimpleName(), "runOperation: pages - " + pages);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 break;
+        }
+    }
+
+    private void parseResultGSON(String result) {
+        long start = System.currentTimeMillis();
+        Gson gson = new Gson();
+        JsonObject jsonObj = gson.fromJson (result, JsonElement.class).getAsJsonObject();
+        JsonElement elem = jsonObj.get("titleOfCorps");
+        JsonArray sections = jsonObj.getAsJsonArray("sections");
+        for (int i = 0; i < sections.size(); i++) {
+            String sectionName = sections.get(i).getAsJsonObject().get("name").getAsString();
+            Log.d(Operations.class.getSimpleName(), "parseResultGSON: sectionName = " + sectionName);
+        }
+        Log.d(Operations.class.getSimpleName(), "parseResultGson: time = " + (System.currentTimeMillis() - start));
+    }
+
+    private void parseResultJSON(String result){
+        long start = System.currentTimeMillis();
+        JSONObject object;
+        try {
+            object = new JSONObject(result);
+            String elem = object.getString("titleOfCorps");
+            JSONArray sections = object.getJSONArray("sections");
+            JSONObject section = sections.getJSONObject(0);
+            for (int i = 0; i < sections.length(); i++) {
+                String sectionName = sections.getJSONObject(i).get("name").toString();
+                Log.i(Operations.class.getSimpleName(), "parseResultJSON: sectionName = " + sectionName);
+            }
+            Log.d(Operations.class.getSimpleName(), "parseResultJSON: time = " + (System.currentTimeMillis() - start));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
