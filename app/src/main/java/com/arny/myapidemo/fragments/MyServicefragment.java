@@ -47,6 +47,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener,
     private TextView tvInfo2;
     private TextView tvInfo3;
     private MyResultReceiver mReceiver;
+    private Intent intent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener,
         context = container.getContext();
         mReceiver = new MyResultReceiver(new Handler());
         mReceiver.setReceiver(this);
+        intent = new Intent(context, Operations.class);
         initUI(rootView);
         return rootView;
     }
@@ -140,17 +142,17 @@ public class MyServicefragment extends Fragment implements View.OnClickListener,
         switch (v.getId()) {
             case R.id.btnOper1:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:1 time = " + BaseUtils.getDateTime());
-                AbstractIntentService.onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,1,null);
+                AbstractIntentService.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_SYNC,1,null);
                 break;
             case R.id.btnOper2:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:2 time = " + BaseUtils.getDateTime());
-                AbstractIntentService.onStartOperation(context,Operations.EXTRA_KEY_TYPE_SYNC,2,null);
+                AbstractIntentService.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_SYNC,2,null);
                 break;
             case R.id.btnOper3:
                 Log.i(MyServicefragment.class.getSimpleName(), "onClick:3 time = " + BaseUtils.getDateTime());
                 HashMap<String, Object> map3 = new HashMap<>();
                 map3.put("key05", 4);
-                AbstractIntentService.onStartOperation(context,Operations.EXTRA_KEY_TYPE_ASYNC,3,map3);
+                AbstractIntentService.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_ASYNC,3,map3);
                 break;
         }
     }

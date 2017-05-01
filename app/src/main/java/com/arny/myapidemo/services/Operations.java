@@ -32,7 +32,7 @@ public class Operations extends AbstractIntentService {
                     ApiService.apiRequest(getApplicationContext(), test_url, new JSONObject(), new OnStringRequestResult() {
                         @Override
                         public void onSuccess(String result) {
-//                            Log.d(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
+                            Log.d(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
                             receiver = new MyResultReceiver(new Handler());
                             Bundle bundle = new Bundle();
                             bundle.putString("result", "test_test_test");
