@@ -11,23 +11,19 @@ import pw.aristos.arnylib.database.DBObjects;
 import pw.aristos.arnylib.database.DBProvider;
 
 public class DatabaseHelper implements DBObjects<TestObject> {
-    private static class SingletonHolder {
-        static final DatabaseHelper HOLDER_INSTANCE = new DatabaseHelper();
-    }
+    private static final DatabaseHelper instance = new DatabaseHelper();
 
     public static DatabaseHelper getInstance() {
-        return SingletonHolder.HOLDER_INSTANCE;
+        return instance;
     }
 
     public static final String DB_KEY_ID = "_id";
     public static final String DB_KEY_TITLE = "title";
     public static final String DB_TABLE_TEST = "test";
 
-
     @Override
-    public ArrayList<TestObject> getObjList( Context context,String query, String orderby) {
-        Cursor cursor = DBProvider.selectDB(DB_TABLE_TEST, null, query, orderby, context);
-        return getCursorObjs(cursor);
+    public ArrayList<TestObject> getObjList(Context context, String query, String orderby) {
+        return getCursorObjs(DBProvider.selectDB(DB_TABLE_TEST, null, query, orderby, context));
     }
 
     @Override
@@ -43,6 +39,21 @@ public class DatabaseHelper implements DBObjects<TestObject> {
         }
         cursor.close();
         return itemList;
+    }
+
+    @Override
+    public TestObject getCursorObject(Cursor cursor, TestObject testObject) {
+        if (cursor.moveToFirst()) {
+            testObject.setID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(DB_KEY_ID))));
+            testObject.setTitle(cursor.getString(cursor.getColumnIndex(DB_KEY_TITLE)));
+        }
+        cursor.close();
+        return testObject;
+    }
+
+    @Override
+    public TestObject getObject(Context context, String query) {
+        return getCursorObject(DBProvider.selectDB(DB_TABLE_TEST, null, query, null, context), new TestObject());
     }
 
 }

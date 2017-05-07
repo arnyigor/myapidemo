@@ -68,7 +68,6 @@ public class TestObject implements Parcelable, DBObject {
     @Override
     public ContentValues getObjectValues() {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DB_KEY_ID,getID());
         contentValues.put(DB_KEY_TITLE,getTitle());
         return null;
     }

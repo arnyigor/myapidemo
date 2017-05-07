@@ -49,7 +49,6 @@ public class DBHelperActivity extends AppCompatActivity {
     private void getData() {
         testObject = new TestObject();
         testObject.setTitle("tit1");
-        testObject.setID(1);
          data.add("tit1");
     }
 
