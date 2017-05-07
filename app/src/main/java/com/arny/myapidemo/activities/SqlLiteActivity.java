@@ -219,7 +219,7 @@ public class SqlLiteActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.menu_action_viewdata:
-                Intent intent = new Intent(SqlLiteActivity.this, SqlListActivity.class);
+                Intent intent = new Intent(SqlLiteActivity.this, DBHelperActivity.class);
                 startActivity(intent);
                 break;
             default:

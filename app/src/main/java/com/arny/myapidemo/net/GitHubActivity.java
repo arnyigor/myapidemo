@@ -20,7 +20,7 @@ import com.arny.myapidemo.models.Consts;
 import org.json.JSONObject;
 
 public class GitHubActivity extends AppCompatActivity {
-	String url = "http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&APPID=" + Consts.OPEN_WEATHER_APIID;
+	String url = "http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&APPID=" + API.OPEN_WEATHER_APIID;
 	private String name = "ay";
 	private int pageNum = 1;
 	private int pageSize = 25;

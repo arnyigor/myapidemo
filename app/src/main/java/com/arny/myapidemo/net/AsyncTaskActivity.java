@@ -12,7 +12,7 @@ import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.models.Consts;
+
 import org.json.JSONObject;
 
 public class AsyncTaskActivity extends Activity {
@@ -21,7 +21,6 @@ public class AsyncTaskActivity extends Activity {
 	TextView tv;
 	private Context cnx = this;
 	private ProgressDialog progress;
-	private String JSON_BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +46,6 @@ public class AsyncTaskActivity extends Activity {
 		// удаляем из MyTask ссылку на старое MainActivity
 		mt.unLink();
 		return mt;
-	}
-
-	private String UrlInit(String town) {
-		return JSON_BASE_URL + town + "&units=metric&APPID=" + Consts.OPEN_WEATHER_APIID;
 	}
 
 	private void VolleyGet(String url) {

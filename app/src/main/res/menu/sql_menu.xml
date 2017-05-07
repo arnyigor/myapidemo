@@ -17,4 +17,9 @@
         android:title="Viewdata">
     </item>
 
+    <item
+        android:id="@+id/menu_action_get_object_fields"
+        android:title="Get object fields">
+    </item>
+
 </menu>

@@ -1,12 +1,8 @@
 package com.arny.myapidemo.services;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -16,12 +12,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-import pw.aristos.arnylib.network.ApiService;
+import pw.aristos.arnylib.network.NetworkService;
 import pw.aristos.arnylib.network.MyResultReceiver;
 import pw.aristos.arnylib.network.OnStringRequestResult;
 import pw.aristos.arnylib.service.AbstractIntentService;
@@ -43,7 +38,7 @@ public class Operations extends AbstractIntentService {
         switch (operationId) {
             case 1:
                 String test_url ="https://pik.ru/luberecky/singlepage?data=ChessPlan&id=2b3ecc9b-bfad-e611-9fbe-001ec9d5643c&private_key=1&format=json&domain=pik.ru";
-                    ApiService.apiRequest(getApplicationContext(), test_url, new JSONObject(), new OnStringRequestResult() {
+                    NetworkService.apiRequest(getApplicationContext(), test_url, new JSONObject(), new OnStringRequestResult() {
                         @Override
                         public void onSuccess(String result) {
                             Log.d(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
@@ -102,7 +97,7 @@ public class Operations extends AbstractIntentService {
     }
 
     private void getKorpuses() {
-       ApiService.apiRequest(getApplicationContext(), API_BASE_URL +API_URL_GEN_PLAN , new JSONObject(), new OnStringRequestResult() {
+       NetworkService.apiRequest(getApplicationContext(), API_BASE_URL +API_URL_GEN_PLAN , new JSONObject(), new OnStringRequestResult() {
            @Override
            public void onSuccess(String result) {
                JSONArray genPlanArray;
@@ -126,7 +121,7 @@ public class Operations extends AbstractIntentService {
     private void parseKorpuses(final JSONArray korpuses) throws JSONException {
         for (int i = 0; i < korpuses.length(); i++) {
             JSONObject korpusObject = new JSONObject(korpuses.get(i).toString());
-            ApiService.apiRequest(getApplicationContext(), API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"), new JSONObject(), new OnStringRequestResult() {
+            NetworkService.apiRequest(getApplicationContext(), API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"), new JSONObject(), new OnStringRequestResult() {
                 @Override
                 public void onSuccess(String result) {
                     Log.i(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());

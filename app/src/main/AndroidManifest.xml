@@ -56,7 +56,7 @@
             android:name=".activities.SqlLiteActivity"
             android:label="@string/SqlLite" />
         <activity
-            android:name=".activities.SqlListActivity"
+            android:name=".activities.DBHelperActivity"
             android:label="@string/SqlList" />
         <activity
             android:name=".activities.SqlViewActivity"

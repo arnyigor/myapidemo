@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
             XmlActivity.class,
             ScrollViewActivity.class,
             DialogActivity.class,
-            SqlLiteActivity.class,
+            DBHelperActivity.class,
             AnimActivity.class,
             FragmentActivity.class,
             AlertCustomActivity.class,
