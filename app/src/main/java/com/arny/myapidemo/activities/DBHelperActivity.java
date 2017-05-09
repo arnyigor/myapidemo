@@ -1,9 +1,11 @@
 package com.arny.myapidemo.activities;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,10 +14,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.adapters.DatabaseHelper;
+import com.arny.myapidemo.database.DB;
+import com.arny.myapidemo.models.CarFuel;
+import com.arny.myapidemo.models.Refills;
 import com.arny.myapidemo.models.TestObject;
 
 import java.util.ArrayList;
+
+import pw.aristos.arnylib.database.DBHelper;
+import pw.aristos.arnylib.database.DBProvider;
 
 public class DBHelperActivity extends AppCompatActivity {
     ArrayList<String> data = new ArrayList<String>();
@@ -25,6 +32,8 @@ public class DBHelperActivity extends AppCompatActivity {
     private Context context = this;
     private TestObject testObject;
     private Toolbar toolbar;
+    private ArrayList<Refills> refillses;
+    private ArrayList<CarFuel> carfuels;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +75,14 @@ public class DBHelperActivity extends AppCompatActivity {
             case R.id.action_additem:
                 return true;
             case R.id.menu_action_get_object_fields:
-                testObject.addObj(context);
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                         DB.testDb(DBHelperActivity.this);
+                        return null;
+                    }
+                }.execute();
+
                 return true;
             case R.id.action_clearall:
                 return true;

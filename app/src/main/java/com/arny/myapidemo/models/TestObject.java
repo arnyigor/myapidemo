@@ -2,13 +2,15 @@ package com.arny.myapidemo.models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import pw.aristos.arnylib.database.DBObject;
 import pw.aristos.arnylib.database.DBProvider;
 
-import static com.arny.myapidemo.adapters.DatabaseHelper.*;
+import static com.arny.myapidemo.database.DB.*;
+
 
 public class TestObject implements Parcelable, DBObject {
     private int ID;
@@ -73,19 +75,23 @@ public class TestObject implements Parcelable, DBObject {
     }
 
     @Override
-    public boolean removeObj(Context context) {
+    public boolean dbRemoveObj(Context context) {
         String condition = DB_KEY_ID + "=" + getID();
         return DBProvider.deleteDB(DB_TABLE_TEST, condition, context) > 0;
     }
 
     @Override
-    public boolean addObj(Context context) {
+    public boolean dbAddObj(Context context) {
         return DBProvider.insertDB(DB_TABLE_TEST, getObjectValues(), context)>0;
     }
 
-    @Override
-    public boolean updateObg(Context context) {
+    public boolean dbUpdateObg(Context context) {
         String where = DB_KEY_ID + "=" + getID();
         return DBProvider.updateDB(DB_TABLE_TEST, getObjectValues(), where, context)>0;
+    }
+
+    @Override
+    public void setCursorValues(Cursor cursor) {
+
     }
 }
