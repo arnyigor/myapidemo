@@ -17,13 +17,11 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 import pw.aristos.arnylib.network.NetworkService;
-import pw.aristos.arnylib.network.MyResultReceiver;
 import pw.aristos.arnylib.network.OnStringRequestResult;
 import pw.aristos.arnylib.service.AbstractIntentService;
 import pw.aristos.arnylib.service.OperationProvider;
 
 public class Operations extends AbstractIntentService {
-    private MyResultReceiver receiver;
     public static final String API_BASE_URL = "https://pik.ru/luberecky/";
     public static final String API_URL_GEN_PLAN = "datapages?data=GenPlan";
     public static final String API_URL_SINGLE_PAGE = "singlepage?data=ChessPlan&format=json&domain=pik.ru&id=";
@@ -52,14 +50,9 @@ public class Operations extends AbstractIntentService {
                     });
                 break;
             case 2:
-                Document doc = null;
-                try {
-                    doc = Jsoup.connect("http://www.dsk1.ru/novostroyki/nekrasovka/ceny-na-kvartiry/").get();
-                    Elements pages = doc.getElementsByClass("pages");
-                    Log.d(Operations.class.getSimpleName(), "runOperation: pages - " + pages);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Document doc = NetworkService.htmlGetRequest("http://www.dsk1.ru/novostroyki/nekrasovka/ceny-na-kvartiry/", new JSONObject());
+                Elements pages = doc != null ? doc.getElementsByClass("pages") : null;
+                Log.d(Operations.class.getSimpleName(), "runOperation: pages - " + pages);
 
                 break;
         }

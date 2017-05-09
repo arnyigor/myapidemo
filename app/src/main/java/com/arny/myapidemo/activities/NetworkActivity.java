@@ -11,16 +11,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.arny.myapidemo.R;
 
-import pw.aristos.arnylib.network.MyResultReceiver;
 import com.arny.myapidemo.services.Operations;
 
 import static android.app.DownloadManager.*;
 
-public class NetworkActivity extends AppCompatActivity  implements MyResultReceiver.Receiver {
+public class NetworkActivity extends AppCompatActivity  {
     Button stringLoaderBtn,jsonLoaderBtn;
     TextView tv;
     private Toolbar toolbar;
-    private MyResultReceiver mReceiver;
     private Intent intent;
 
     @Override
@@ -28,8 +26,6 @@ public class NetworkActivity extends AppCompatActivity  implements MyResultRecei
         super.onCreate(savedInstanceState);
         setContentView(R.layout.netwok_activity);
 
-        mReceiver = new MyResultReceiver(new Handler());
-        mReceiver.setReceiver(this);
         intent = new Intent(NetworkActivity.this, Operations.class);
         tv = (TextView) findViewById(R.id.textView1);
         stringLoaderBtn = (Button) findViewById(R.id.buttonLoadString);
@@ -61,7 +57,6 @@ public class NetworkActivity extends AppCompatActivity  implements MyResultRecei
     @Override
     public void onPause() {
         super.onPause();
-        mReceiver.setReceiver(null); // clear receiver so no leaks.
 //        LocalBroadcastManager.getInstance(this).unregisterReceiver(updateReciever);
     }
 
@@ -71,21 +66,6 @@ public class NetworkActivity extends AppCompatActivity  implements MyResultRecei
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle(getString(R.string.title_tabs));
-        }
-    }
-
-    @Override
-    public void onReceiveResult(int resultCode, Bundle resultData) {
-        Log.d(NetworkActivity.class.getSimpleName(), "onReceiveResult: code = " +resultCode + " resultData = " + resultData.get("result") );
-        switch (resultCode) {
-            case STATUS_RUNNING:
-                //show progress
-                break;
-            case STATUS_SUCCESSFUL:
-                break;
-            case STATUS_FAILED:
-                // handle the error;
-                break;
         }
     }
 }
