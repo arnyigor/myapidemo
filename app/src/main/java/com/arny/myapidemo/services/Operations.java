@@ -2,6 +2,7 @@ package com.arny.myapidemo.services;
 
 import android.util.Log;
 
+import com.arny.myapidemo.models.TestObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -10,16 +11,14 @@ import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
-import java.io.IOException;
+import java.util.ArrayList;
 
 import pw.aristos.arnylib.network.NetworkService;
 import pw.aristos.arnylib.network.OnStringRequestResult;
 import pw.aristos.arnylib.service.AbstractIntentService;
 import pw.aristos.arnylib.service.OperationProvider;
+import pw.aristos.arnylib.utils.Utility;
 
 public class Operations extends AbstractIntentService {
     public static final String API_BASE_URL = "https://pik.ru/luberecky/";
@@ -34,26 +33,37 @@ public class Operations extends AbstractIntentService {
         int operationId = provider.getId();
         Log.d(Operations.class.getSimpleName(), "operationId: " + operationId);
         switch (operationId) {
-            case 1:
-                String test_url ="https://pik.ru/luberecky/singlepage?data=ChessPlan&id=2b3ecc9b-bfad-e611-9fbe-001ec9d5643c&private_key=1&format=json&domain=pik.ru";
-                    NetworkService.apiRequest(getApplicationContext(), test_url, new JSONObject(), new OnStringRequestResult() {
-                        @Override
-                        public void onSuccess(String result) {
-                            Log.d(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
-                            parseResultGSON(result);
-                        }
-
-                        @Override
-                        public void onError(String error) {
-                            Log.d(Operations.class.getSimpleName(), "onError: error = " + error);
-                        }
-                    });
-                break;
             case 2:
-                Document doc = NetworkService.htmlGetRequest("http://www.dsk1.ru/novostroyki/nekrasovka/ceny-na-kvartiry/", new JSONObject());
-                Elements pages = doc != null ? doc.getElementsByClass("pages") : null;
-                Log.d(Operations.class.getSimpleName(), "runOperation: pages - " + pages);
+                NetworkService.apiRequest(getApplicationContext(), "http://beta.json-generator.com/api/json/get/EJj1IoaTM", new JSONObject(), new OnStringRequestResult() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Gson gson = new Gson();
+                        TestObject testObject = gson.fromJson(result, TestObject.class);
+                        testObject.setTitle("new title");
+                        try {
+                            JSONObject checkObject = new JSONObject(gson.fromJson(result, JsonElement.class).toString());
+                            ArrayList<String> checkKeys = Utility.getJsonArrayKeys(checkObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String paramVal = Utility.getJsonObjVal(result,"param1");
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("param1", paramVal);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String json1 = gson.toJson(jsonObject);
+                        String json2 = gson.toJson(testObject);
+                        Log.d(Operations.class.getSimpleName(), "onSuccess: json1 = " + json1);
+                        Log.d(Operations.class.getSimpleName(), "onSuccess: json2 = " + json2);
+                    }
 
+                    @Override
+                    public void onError(String error) {
+                        Log.d(Operations.class.getSimpleName(), "onError: error = " + error);
+                    }
+                });
                 break;
         }
     }

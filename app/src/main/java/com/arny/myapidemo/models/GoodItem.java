@@ -38,4 +38,9 @@ public class GoodItem {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "\nid:" + getId() + " name:" + getName()  + " imgUrl:" + getImgUrl() + " price:" + getPrice();
+    }
 }

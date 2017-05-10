@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 import pw.aristos.arnylib.database.DBObject;
 import pw.aristos.arnylib.database.DBProvider;
 
@@ -15,6 +17,7 @@ import static com.arny.myapidemo.database.DB.*;
 public class TestObject implements Parcelable, DBObject {
     private int ID;
     private String title;
+    private ArrayList<GoodItem> goodItems;
     public TestObject() {
     }
 
@@ -64,7 +67,7 @@ public class TestObject implements Parcelable, DBObject {
 
     @Override
     public String toString() {
-        return "\nid=" + this.getID() + "; title=" + this.getTitle();
+        return "\nid:" + this.getID() + ";title:" + this.getTitle() + ";goodItems:" + getGoodItems();
     }
 
     @Override
@@ -93,5 +96,13 @@ public class TestObject implements Parcelable, DBObject {
     @Override
     public void setCursorValues(Cursor cursor) {
 
+    }
+
+    public ArrayList<GoodItem> getGoodItems() {
+        return goodItems;
+    }
+
+    public void setGoodItems(ArrayList<GoodItem> goodItems) {
+        this.goodItems = goodItems;
     }
 }

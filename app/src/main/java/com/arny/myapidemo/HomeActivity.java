@@ -29,13 +29,11 @@ public class HomeActivity extends AppCompatActivity {
             FragmentActivity.class,
             AlertCustomActivity.class,
             SimpleUIActivity.class,
-            LoaderActivity.class,
             CoordinatorActivity.class,
             TimerTaskActivity.class,
             StartAlarmActivity.class,
             NetworkActivity.class,
             IntentServiceActivity.class,
-            ChronosTestActivity.class,
             LocationActivity.class,
             RecyclerTestActivity.class,
     };

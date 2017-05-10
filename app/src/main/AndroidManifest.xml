@@ -77,9 +77,6 @@
             android:name=".activities.CoordinatorActivity"
             android:label="CoordinatorActivity" />
         <activity
-            android:name=".activities.LoaderActivity"
-            android:label="RandomLoaderActivity" />
-        <activity
             android:name=".activities.TimerTaskActivity"
             android:label="TimerTaskActivity" />
         <activity
@@ -122,9 +119,6 @@
         <activity
             android:name=".activities.IntentServiceActivity"
             android:label="IntentServiceActivity" />
-        <activity
-            android:name=".activities.ChronosTestActivity"
-            android:label="ChronosTestActivity" />
         <activity android:name=".activities.RecyclerTestActivity" />
         <activity android:name=".activities.SettingsActivity" />
     </application>
