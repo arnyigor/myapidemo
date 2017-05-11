@@ -42,7 +42,8 @@ public class Operations extends AbstractIntentService {
                         testObject.setTitle("new title");
                         try {
                             JSONObject checkObject = new JSONObject(gson.fromJson(result, JsonElement.class).toString());
-                            ArrayList<String> checkKeys = Utility.getJsonArrayKeys(checkObject);
+	                        Log.d(Operations.class.getSimpleName(), "onSuccess: checkObject = " + checkObject);
+	                        ArrayList<String> checkKeys = Utility.getJsonArrayKeys(checkObject);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

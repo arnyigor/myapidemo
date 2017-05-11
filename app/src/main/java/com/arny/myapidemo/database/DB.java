@@ -1,6 +1,5 @@
 package com.arny.myapidemo.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -160,5 +159,4 @@ public class DB {
     public static Refills getObject(Context context, String where, Refills refills) {
         return getCursorObject(DBProvider.selectDB(DB_TABLE_CAR_FUEL, null, where, null, context), refills);
     }
-
 }
