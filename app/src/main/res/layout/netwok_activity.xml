@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/buttonLoadString"
                 android:layout_below="@+id/buttonLoadString"
-                android:text="Request JSON object"/>
+                android:text="Request JSON nodeObject"/>
 
         <TextView
                 android:id="@+id/textView1"

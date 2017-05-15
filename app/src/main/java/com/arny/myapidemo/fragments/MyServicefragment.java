@@ -23,8 +23,8 @@ import com.arny.myapidemo.utils.ToastMaker;
 
 import java.util.HashMap;
 
-import pw.aristos.arnylib.service.AbstractIntentService;
-import pw.aristos.arnylib.service.OperationProvider;
+import com.arny.arnylib.service.AbstractIntentService;
+import com.arny.arnylib.service.OperationProvider;
 
 
 public class MyServicefragment extends Fragment implements View.OnClickListener {
@@ -120,7 +120,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
                 Log.i(MyServicefragment.class.getSimpleName(), "onReceive: time = " + BaseUtils.getDateTime());
             }
             if (operationFinished) {
-                ToastMaker.toast(context,"Результат операции " + operation + ":"+ operationResult, success);
+                ToastMaker.toastSuccess(context,"Результат операции " + operation + ":"+ operationResult);
             }
 
         }

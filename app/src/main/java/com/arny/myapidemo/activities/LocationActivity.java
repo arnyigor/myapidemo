@@ -50,7 +50,7 @@ public class LocationActivity extends AppCompatActivity {
                 if (BasePermissions.permissionGranted(grantResults)) {
                     getLocation();
                 } else {
-                    ToastMaker.toast(this, "Включите GPS и откройте интернет подключение", true);
+                    ToastMaker.toastError(this, "Включите GPS и откройте интернет подключение");
                 }
                 break;
         }
@@ -61,7 +61,7 @@ public class LocationActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!BasePermissions.canAccessLocation(this, LOCATION_REQUEST)) {
-            ToastMaker.toast(this, "Включите GPS и откройте интернет подключение", true);
+            ToastMaker.toastError(this, "Включите GPS и откройте интернет подключение");
         } else {
             getLocation();
         }
@@ -80,7 +80,7 @@ public class LocationActivity extends AppCompatActivity {
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ToastMaker.toast(this, "Включите разрешение местоположения", true);
+            ToastMaker.toastError(this, "Включите разрешение местоположения");
             return;
         }
         mLocMgr.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 300, 0, locationListener);

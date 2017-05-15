@@ -8,8 +8,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-import pw.aristos.arnylib.database.DBObject;
-import pw.aristos.arnylib.database.DBProvider;
+import com.arny.arnylib.database.DBObject;
+import com.arny.arnylib.database.DBProvider;
 
 import static com.arny.myapidemo.database.DB.*;
 

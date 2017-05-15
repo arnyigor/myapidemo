@@ -83,6 +83,6 @@ public class RecyclerTestActivity extends AppCompatActivity  implements Recycler
 
     @Override
     public void onItemClick(int position) {
-        ToastMaker.toast(this,goodItems.get(position).getId(),false);
+        ToastMaker.toast(this,goodItems.get(position).getId());
     }
 }

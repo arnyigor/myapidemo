@@ -21,6 +21,7 @@ import com.arny.myapidemo.utils.Config;
 public class HomeActivity extends AppCompatActivity {
     private final Class[] sActivities = new Class[]{
             TabsActivity.class,
+		    NavDrawerActivity.class,
             XmlActivity.class,
             ScrollViewActivity.class,
             DialogActivity.class,
@@ -36,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
             IntentServiceActivity.class,
             LocationActivity.class,
             RecyclerTestActivity.class,
+		    PermissionsActivity.class,
     };
 
     @Override

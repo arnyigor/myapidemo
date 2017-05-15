@@ -8,29 +8,21 @@ import es.dmoral.toasty.Toasty;
 
 public class ToastMaker {
 
-    /**
-     * Displays a Toast notification for a short duration.
-     *
-     * @param context
-     * @param message
-     */
     public static void toast(Context context, String message) {
-        Toasty.info(context, message, Toast.LENGTH_SHORT).show();
+	    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Displays a new Toast notification for a short duration.
-     *
-     * @param context
-     * @param message
-     * @param success
-     */
-    public static void toast(Context context, String message, boolean success) {
-        if (success) {
-            Toasty.success(context, message, Toast.LENGTH_SHORT).show();
-        } else {
-            Toasty.error(context, message, Toast.LENGTH_SHORT).show();
-        }
-    }
+	public static void toastError(Context context, String message) {
+		Toasty.error(context, message, Toast.LENGTH_SHORT).show();
+	}
+
+	public static void toastInfo(Context context, String message) {
+		Toasty.info(context, message, Toast.LENGTH_SHORT).show();
+	}
+
+	public static void toastSuccess(Context context, String message) {
+		Toasty.success(context, message, Toast.LENGTH_SHORT).show();
+	}
+
 
 }

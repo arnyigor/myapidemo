@@ -8,7 +8,8 @@
     <string name="str_lorem">Lorem ipsum dolor sit amet,
         consectetur adipisicing elit. Ab consectetur distinctio
         dolores eos eveniet impedit ipsa iste natus nemo nisi possimus qui quo,
-        ratione repellendus vel, veniam voluptate voluptatem voluptatibus.</string>
+        ratione repellendus vel, veniam voluptate voluptatem voluptatibus.
+    </string>
     <!--ArrayActivities-->
 
     <!--Volley-->
@@ -80,6 +81,7 @@
     <string name="prefs_multi_list_preference">multi_select_list_preference</string>
     <string name="title_multi_list_preference">title_multi_list_preference</string>
     <string name="summary_multi_list_preference">summary_multi_list_preference</string>
+    <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
 
     <string-array name="categories">
         <item>Popular Movies</item>
@@ -89,5 +91,9 @@
         <item>popular</item>
         <item>top_rated</item>
     </string-array>
+    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

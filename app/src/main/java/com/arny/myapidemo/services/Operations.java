@@ -14,11 +14,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import pw.aristos.arnylib.network.NetworkService;
-import pw.aristos.arnylib.network.OnStringRequestResult;
-import pw.aristos.arnylib.service.AbstractIntentService;
-import pw.aristos.arnylib.service.OperationProvider;
-import pw.aristos.arnylib.utils.Utility;
+import com.arny.arnylib.network.NetworkService;
+import com.arny.arnylib.network.OnStringRequestResult;
+import com.arny.arnylib.service.AbstractIntentService;
+import com.arny.arnylib.service.OperationProvider;
+import com.arny.arnylib.utils.Params;
+import com.arny.arnylib.utils.Utility;
 
 public class Operations extends AbstractIntentService {
     public static final String API_BASE_URL = "https://pik.ru/luberecky/";
@@ -34,30 +35,34 @@ public class Operations extends AbstractIntentService {
         Log.d(Operations.class.getSimpleName(), "operationId: " + operationId);
         switch (operationId) {
             case 2:
-                NetworkService.apiRequest(getApplicationContext(), "http://beta.json-generator.com/api/json/get/EJj1IoaTM", new JSONObject(), new OnStringRequestResult() {
+                NetworkService.apiRequest(getApplicationContext(), "http://www.json-generator.com/api/json/get/cngBQrGyhu?indent=2", new JSONObject(), new OnStringRequestResult() {
                     @Override
                     public void onSuccess(String result) {
                         Gson gson = new Gson();
-                        TestObject testObject = gson.fromJson(result, TestObject.class);
+	                    try {
+		                    Params params = new Params(result);
+		                    Log.d(Operations.class.getSimpleName(), "onSuccess: " + params.getParams());
+		                    JSONObject jsonObject = new JSONObject();
+		                    jsonObject.put("testparam", "1111");
+		                    JSONArray jsonArray = new JSONArray();
+		                    jsonArray.put(999);
+		                    jsonArray.put("Strings");
+		                    jsonArray.put(jsonObject);
+		                    Log.d(Operations.class.getSimpleName(), "onSuccess: jsonArray = " + jsonArray);
+		                    params.setParam("boom.coop.snoose", jsonObject);
+//		                    Log.d(Operations.class.getSimpleName(), "onSuccess: " + params.getParams());
+	                    } catch (JSONException e) {
+		                    e.printStackTrace();
+	                    }
+	                    TestObject testObject = gson.fromJson(result, TestObject.class);
                         testObject.setTitle("new title");
                         try {
                             JSONObject checkObject = new JSONObject(gson.fromJson(result, JsonElement.class).toString());
-	                        Log.d(Operations.class.getSimpleName(), "onSuccess: checkObject = " + checkObject);
+//	                        Log.d(Operations.class.getSimpleName(), "onSuccess: checkObject = " + checkObject);
 	                        ArrayList<String> checkKeys = Utility.getJsonArrayKeys(checkObject);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        String paramVal = Utility.getJsonObjVal(result,"param1");
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("param1", paramVal);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        String json1 = gson.toJson(jsonObject);
-                        String json2 = gson.toJson(testObject);
-                        Log.d(Operations.class.getSimpleName(), "onSuccess: json1 = " + json1);
-                        Log.d(Operations.class.getSimpleName(), "onSuccess: json2 = " + json2);
                     }
 
                     @Override

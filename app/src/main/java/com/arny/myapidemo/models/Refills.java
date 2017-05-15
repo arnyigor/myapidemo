@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import pw.aristos.arnylib.database.DBObject;
-import pw.aristos.arnylib.database.DBProvider;
-import pw.aristos.arnylib.utils.Utility;
+import com.arny.arnylib.database.DBObject;
+import com.arny.arnylib.database.DBProvider;
+import com.arny.arnylib.utils.Utility;
 
 import static com.arny.myapidemo.database.DB.*;
 
