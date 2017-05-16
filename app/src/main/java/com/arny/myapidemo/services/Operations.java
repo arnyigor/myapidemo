@@ -35,7 +35,7 @@ public class Operations extends AbstractIntentService {
         Log.d(Operations.class.getSimpleName(), "operationId: " + operationId);
         switch (operationId) {
             case 2:
-                NetworkService.apiRequest(getApplicationContext(), "http://www.json-generator.com/api/json/get/cngBQrGyhu?indent=2", new JSONObject(), new OnStringRequestResult() {
+                NetworkService.apiRequest(getApplicationContext(), "http://beta.json-generator.com/api/json/get/EJj1IoaTM", new JSONObject(), new OnStringRequestResult() {
                     @Override
                     public void onSuccess(String result) {
                         Gson gson = new Gson();
@@ -49,8 +49,10 @@ public class Operations extends AbstractIntentService {
 		                    jsonArray.put("Strings");
 		                    jsonArray.put(jsonObject);
 		                    Log.d(Operations.class.getSimpleName(), "onSuccess: jsonArray = " + jsonArray);
-		                    params.setParam("boom.coop.snoose", jsonObject);
-//		                    Log.d(Operations.class.getSimpleName(), "onSuccess: " + params.getParams());
+		                    params.setParam("boom.coop.snoose.keep", jsonObject);
+		                    params.setParam("boom.coop.tell", jsonArray);
+		                    params.setParam("beep.deel", jsonObject);
+		                    Log.d(Operations.class.getSimpleName(), "onSuccess: " + params.getParams());
 	                    } catch (JSONException e) {
 		                    e.printStackTrace();
 	                    }
