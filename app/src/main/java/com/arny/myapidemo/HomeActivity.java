@@ -22,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     private final Class[] sActivities = new Class[]{
             TabsActivity.class,
 		    NavDrawerActivity.class,
+		    MapsActivity.class,
             XmlActivity.class,
             ScrollViewActivity.class,
             DialogActivity.class,

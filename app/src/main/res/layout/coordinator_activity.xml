@@ -18,33 +18,20 @@
     >
 
         <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/main.collapsing"
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:fitsSystemWindows="true"
+                android:layout_height="wrap_content"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginStart="48dp"
-                app:expandedTitleMarginEnd="64dp"
-        >
-
-            <ImageView
-                    android:id="@+id/main.backdrop"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:titleEnabled="false"
+                app:statusBarScrim="@null"
+                android:fitsSystemWindows="true">
+            <fragment
+                    android:id="@+id/gmap"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:fitsSystemWindows="true"
-                    android:src="@drawable/ab_background_textured_appbase"
-                    app:layout_collapseMode="parallax"
-            />
-
-            <android.support.v7.widget.Toolbar
-                    android:id="@+id/main.toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    app:layout_collapseMode="pin"
-            />
+                    android:layout_height="300dp"
+                    class="com.google.android.gms.maps.SupportMapFragment">
+            </fragment>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
