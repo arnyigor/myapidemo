@@ -2,6 +2,7 @@ package com.arny.myapidemo.services;
 
 import android.util.Log;
 
+import com.arny.arnylib.utils.EncryptUtils;
 import com.arny.myapidemo.models.TestObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -20,21 +21,52 @@ import com.arny.arnylib.service.AbstractIntentService;
 import com.arny.arnylib.service.OperationProvider;
 import com.arny.arnylib.utils.Params;
 import com.arny.arnylib.utils.Utility;
+import se.simbio.encryption.Encryption;
 
 public class Operations extends AbstractIntentService {
     public static final String API_BASE_URL = "https://pik.ru/luberecky/";
     public static final String API_URL_GEN_PLAN = "datapages?data=GenPlan";
     public static final String API_URL_SINGLE_PAGE = "singlepage?data=ChessPlan&format=json&domain=pik.ru&id=";
-    public Operations() {
+	private static final String ALGO_RANDOM_NUM_GENERATOR = "SHA1PRNG";
+	private static final String ALGO_SECRET_KEY_GENERATOR = "PBKDF2WithHmacSHA1";
+
+	public Operations() {
         super();
     }
 
-    @Override
+	private Encryption getPinEncription() {
+		return Encryption.getDefault(this.getPackageName(), this.getPackageName(), new byte[16]);
+	}
+
+	@Override
     protected void runOperation(OperationProvider provider, OnOperationResult operationResult) {
         int operationId = provider.getId();
         Log.d(Operations.class.getSimpleName(), "operationId: " + operationId);
         switch (operationId) {
-            case 2:
+	        case 1:
+		        try {
+		            String pass = "1111";
+		            String pass2 = "1111";
+			        byte[] passBytes = EncryptUtils.generateKey(pass);
+			        byte[] passBytes2 = EncryptUtils.generateKey(pass2);
+			        if (passBytes2 == passBytes) {
+				        Log.d(Operations.class.getSimpleName(), "runOperation: passes equals");
+			        }
+			        String file = "test.mp3";
+			        String folder = "/5mbtest/";
+			        String encryptedName = getPinEncription().encryptOrNull(file);
+			        Log.d(Operations.class.getSimpleName(), "runOperation: encryptedName = " + encryptedName);
+			        boolean success = EncryptUtils.encrypt(folder + file, folder + "encrypted/",encryptedName,passBytes);
+			        Log.d(Operations.class.getSimpleName(), "runOperation: success = " + success);
+			        String decryptedName = getPinEncription().decryptOrNull(encryptedName);
+			        Log.d(Operations.class.getSimpleName(), "runOperation: decryptedName = " + decryptedName);
+			        boolean dec = EncryptUtils.decrypt(folder +"encrypted/" + encryptedName,folder + "decrypted/",decryptedName,passBytes);
+			        Log.d(Operations.class.getSimpleName(), "runOperation: dec = " + dec);
+		        } catch (Exception e) {
+			        e.printStackTrace();
+		        }
+		        break;
+	        case 2:
                 NetworkService.apiRequest(getApplicationContext(), "http://beta.json-generator.com/api/json/get/EJj1IoaTM", new JSONObject(), new OnStringRequestResult() {
                     @Override
                     public void onSuccess(String result) {

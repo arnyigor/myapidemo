@@ -130,18 +130,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnOper1:
-                Log.i(MyServicefragment.class.getSimpleName(), "onClick:1 time = " + BaseUtils.getDateTime());
-                AbstractIntentService.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_SYNC,1,null);
-                break;
-            case R.id.btnOper2:
-                Log.i(MyServicefragment.class.getSimpleName(), "onClick:2 time = " + BaseUtils.getDateTime());
-                AbstractIntentService.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_SYNC,2,null);
-                break;
-            case R.id.btnOper3:
-                Log.i(MyServicefragment.class.getSimpleName(), "onClick:3 time = " + BaseUtils.getDateTime());
-                HashMap<String, Object> map3 = new HashMap<>();
-                map3.put("key05", 4);
-                AbstractIntentService.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_ASYNC,3,map3);
+                Operations.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_ASYNC,1,null);
                 break;
         }
     }
