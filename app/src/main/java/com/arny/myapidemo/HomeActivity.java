@@ -39,6 +39,7 @@ public class HomeActivity extends AppCompatActivity {
             LocationActivity.class,
             RecyclerTestActivity.class,
 		    PermissionsActivity.class,
+		    LoaderActivity.class,
     };
 
     @Override

@@ -1,4 +1,4 @@
-package com.arny.myapidemo.net;
+package com.arny.myapidemo.services;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

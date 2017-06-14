@@ -2,7 +2,7 @@ package com.arny.myapidemo.services;
 
 import android.util.Log;
 
-import com.arny.arnylib.utils.EncryptUtils;
+import com.arny.arnylib.security.CryptoFiles;
 import com.arny.myapidemo.models.TestObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -47,8 +47,8 @@ public class Operations extends AbstractIntentService {
 		        try {
 		            String pass = "1111";
 		            String pass2 = "1111";
-			        byte[] passBytes = EncryptUtils.generateKey(pass);
-			        byte[] passBytes2 = EncryptUtils.generateKey(pass2);
+			        byte[] passBytes = CryptoFiles.generateByteKey(pass);
+			        byte[] passBytes2 = CryptoFiles.generateByteKey(pass2);
 			        if (passBytes2 == passBytes) {
 				        Log.d(Operations.class.getSimpleName(), "runOperation: passes equals");
 			        }
@@ -56,12 +56,12 @@ public class Operations extends AbstractIntentService {
 			        String folder = "/5mbtest/";
 			        String encryptedName = getPinEncription().encryptOrNull(file);
 			        Log.d(Operations.class.getSimpleName(), "runOperation: encryptedName = " + encryptedName);
-			        boolean success = EncryptUtils.encrypt(folder + file, folder + "encrypted/",encryptedName,passBytes);
-			        Log.d(Operations.class.getSimpleName(), "runOperation: success = " + success);
+//			        boolean success = CryptoFiles.encrypt(folder + file, folder + "encrypted/",encryptedName,passBytes);
+//			        Log.d(Operations.class.getSimpleName(), "runOperation: success = " + success);
 			        String decryptedName = getPinEncription().decryptOrNull(encryptedName);
 			        Log.d(Operations.class.getSimpleName(), "runOperation: decryptedName = " + decryptedName);
-			        boolean dec = EncryptUtils.decrypt(folder +"encrypted/" + encryptedName,folder + "decrypted/",decryptedName,passBytes);
-			        Log.d(Operations.class.getSimpleName(), "runOperation: dec = " + dec);
+//			        boolean dec = CryptoFiles.decrypt(folder +"encrypted/" + encryptedName,folder + "decrypted/",decryptedName,passBytes);
+//			        Log.d(Operations.class.getSimpleName(), "runOperation: dec = " + dec);
 		        } catch (Exception e) {
 			        e.printStackTrace();
 		        }

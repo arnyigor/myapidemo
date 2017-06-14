@@ -85,6 +85,9 @@
         <activity
                 android:name=".activities.LocationActivity"
                 android:label="LocationActivity"/>
+        <activity
+                android:name=".activities.LoaderActivity"
+                android:label="SampleActivity"/>
 
         <receiver android:name=".services.BootBroadcastReceiver">
             <intent-filter>
@@ -142,8 +145,8 @@
 
         <activity
                 android:name=".activities.MapsActivity"
-                android:label="@string/title_activity_maps">
-        </activity>
+                android:label="@string/title_activity_maps"/>
+        <activity android:name=".activities.GoogleOAuthActivity"/>
     </application>
 
 </manifest>

@@ -1,6 +1,9 @@
 package com.arny.myapidemo.activities;
 
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.arny.arnylib.database.DBLoader;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.CarFuel;
@@ -20,7 +24,7 @@ import com.arny.myapidemo.models.TestObject;
 
 import java.util.ArrayList;
 
-public class DBHelperActivity extends AppCompatActivity {
+public class DBHelperActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor>  {
     ArrayList<String> data = new ArrayList<String>();
     TextView mTextView;
     ListView sqlList;
@@ -36,6 +40,7 @@ public class DBHelperActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sqllist);
         initToolbar();
+	    getLoaderManager().initLoader(R.id.db_loader, Bundle.EMPTY, this);
         sqlList = (ListView) findViewById(R.id.sqlList);
         getData();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
@@ -86,4 +91,27 @@ public class DBHelperActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		switch (id) {
+			case R.id.db_loader:
+				return new DBLoader(DBHelperActivity.this);
+			default:
+				return null;
+		}
+	}
+
+
+	@Override
+	public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+
+	}
+
+	@Override
+	public void onLoaderReset(android.content.Loader<Cursor> loader) {
+
+	}
+
+
 }
