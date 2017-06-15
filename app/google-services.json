@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "611805983196",
+    "project_id": "tenacious-plane-167808"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611805983196:android:8ddeca61afe18dd3",
+        "android_client_info": {
+          "package_name": "com.arny.myapidemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611805983196-qlkbci1l4anmt0j3jdh3a3au0praijqf.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "611805983196-sflf625st4395loqds6fcers3ql4lgve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arny.myapidemo",
+            "certificate_hash": "080f5fc6e916883394fc36f1abd959910ff05c88"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEL6xbPweWl87ZNB-1ly16_f9ZKJUQh6Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

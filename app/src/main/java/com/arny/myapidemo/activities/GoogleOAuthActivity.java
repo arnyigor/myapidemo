@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.android.volley.Request;
-import com.arny.myapidemo.R;
 import com.arny.myapidemo.utils.ToastMaker;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
