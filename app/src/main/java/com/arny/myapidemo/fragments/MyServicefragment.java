@@ -106,8 +106,9 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extras = intent.getExtras();
-            if (extras != null) {
-                OperationProvider provider = new OperationProvider(extras);
+	        Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras = " + extras);
+	        if (extras != null) {
+	            OperationProvider provider = (OperationProvider)extras.getSerializable(AbstractIntentService.EXTRA_KEY_OPERATION) ;
                 operationFinished = provider.isFinished();
                 success = provider.isSuccess();
                 operation = provider.getId();

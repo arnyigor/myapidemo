@@ -3,9 +3,14 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-<Button
-        android:id="@+id/btnLoad"
-        android:text="load"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <Button
+            android:id="@+id/btnLoad"
+            android:text="load"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <Button
+            android:id="@+id/btnCancel"
+            android:text="Cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 </LinearLayout>

@@ -1,8 +1,10 @@
 package com.arny.myapidemo.services;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.arny.arnylib.security.CryptoFiles;
+import com.arny.myapidemo.models.CarFuel;
 import com.arny.myapidemo.models.TestObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -14,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.arny.arnylib.network.NetworkService;
 import com.arny.arnylib.network.OnStringRequestResult;
@@ -60,10 +63,15 @@ public class Operations extends AbstractIntentService {
 //			        Log.d(Operations.class.getSimpleName(), "runOperation: success = " + success);
 			        String decryptedName = getPinEncription().decryptOrNull(encryptedName);
 			        Log.d(Operations.class.getSimpleName(), "runOperation: decryptedName = " + decryptedName);
-//			        boolean dec = CryptoFiles.decrypt(folder +"encrypted/" + encryptedName,folder + "decrypted/",decryptedName,passBytes);
-//			        Log.d(Operations.class.getSimpleName(), "runOperation: dec = " + dec);
+			        provider.setResult("true))))))");
+			        HashMap<String, Object> data = new HashMap<>();
+			        data.put("BIGdATA", getBigString());
+			        provider.setOperationData(data);
+			        operationResult.resultSuccess(provider);
 		        } catch (Exception e) {
 			        e.printStackTrace();
+			        provider.setResult("false!!!!!!!!!!!");
+			        operationResult.resultFail(provider);
 		        }
 		        break;
 	        case 2:
@@ -108,7 +116,18 @@ public class Operations extends AbstractIntentService {
         }
     }
 
-    private void parseResultGSON(String result) {
+	private ArrayList<CarFuel> getBigString() {
+		ArrayList<CarFuel> fuels = new ArrayList<>();
+		for (int i = 0; i < 1000; i++) {
+			CarFuel carFuel = new CarFuel();
+			carFuel.setDbID(i);
+			carFuel.setDate(System.currentTimeMillis());
+			fuels.add(new CarFuel());
+		}
+		return fuels;
+	}
+
+	private void parseResultGSON(String result) {
         long start = System.currentTimeMillis();
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson (result, JsonElement.class).getAsJsonObject();
