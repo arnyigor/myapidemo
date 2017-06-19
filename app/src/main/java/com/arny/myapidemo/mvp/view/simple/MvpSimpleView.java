@@ -1,4 +1,4 @@
-package com.arny.myapidemo.mvp;
+package com.arny.myapidemo.mvp.view.simple;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface MvpSimpleView extends MvpView {

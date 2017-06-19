@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.arny.myapidemo.activities.*;
 import com.arny.myapidemo.fragments.SettingsFragment;
-import com.arny.myapidemo.mvp.MvpSimpleActivity;
+import com.arny.myapidemo.mvp.view.simple.MvpSimpleActivity;
 import com.arny.myapidemo.utils.Config;
 
 public class HomeActivity extends AppCompatActivity {

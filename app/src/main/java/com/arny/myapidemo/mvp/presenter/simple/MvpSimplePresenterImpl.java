@@ -1,9 +1,11 @@
-package com.arny.myapidemo.mvp;
+package com.arny.myapidemo.mvp.presenter.simple;
 
 import android.content.Context;
 import android.util.Log;
 import com.arny.arnylib.network.NetworkService;
 import com.arny.arnylib.network.OnStringRequestResult;
+import com.arny.myapidemo.mvp.view.simple.MvpSimpleActivity;
+import com.arny.myapidemo.mvp.view.simple.MvpSimpleView;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import org.json.JSONObject;
 public class MvpSimplePresenterImpl extends MvpBasePresenter<MvpSimpleView> implements MvpSimplePresenter {

@@ -43,6 +43,7 @@ dependencies {
     compile 'com.scottyab:aescrypt:0.0.1'
     compile 'com.github.simbiose:Encryption:2.0.0'
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
+    compile 'com.hannesdorfmann.mosby:viewstate:2.0.1'
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 }
 // ADD THIS AT THE BOTTOM

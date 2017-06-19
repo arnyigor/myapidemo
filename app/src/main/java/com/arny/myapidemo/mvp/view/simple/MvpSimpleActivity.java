@@ -1,4 +1,4 @@
-package com.arny.myapidemo.mvp;
+package com.arny.myapidemo.mvp.view.simple;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.mvp.presenter.simple.MvpSimplePresenter;
+import com.arny.myapidemo.mvp.presenter.simple.MvpSimplePresenterImpl;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 public class MvpSimpleActivity extends MvpActivity<MvpSimpleView,MvpSimplePresenter>  implements MvpSimpleView {
