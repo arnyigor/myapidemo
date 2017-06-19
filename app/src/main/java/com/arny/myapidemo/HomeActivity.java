@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.arny.myapidemo.activities.*;
 import com.arny.myapidemo.fragments.SettingsFragment;
+import com.arny.myapidemo.mvp.MvpSimpleActivity;
 import com.arny.myapidemo.utils.Config;
 
 public class HomeActivity extends AppCompatActivity {
@@ -40,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
             RecyclerTestActivity.class,
 		    PermissionsActivity.class,
 		    LoaderActivity.class,
+		    MvpSimpleActivity.class,
     };
 
     @Override

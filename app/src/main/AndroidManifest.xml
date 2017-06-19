@@ -147,6 +147,11 @@
                 android:name=".activities.MapsActivity"
                 android:label="@string/title_activity_maps"/>
         <activity android:name=".activities.GoogleOAuthActivity"/>
+        <activity
+                android:name=".mvp.MvpSimpleActivity"
+                android:label="@string/title_activity_mvp"
+                android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
