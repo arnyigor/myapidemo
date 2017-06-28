@@ -97,5 +97,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_mvp">MvpActivity</string>
+    <string name="server_client_id">611805983196-qlkbci1l4anmt0j3jdh3a3au0praijqf.apps.googleusercontent.com</string>
+    <string name="client_secret">eCluiaVBiPX4fOmqYNNzCYH5</string>
 
 </resources>

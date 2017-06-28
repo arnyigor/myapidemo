@@ -8,12 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.arny.arnylib.network.NetworkService;
-import com.arny.arnylib.network.OnJSONArrayResult;
+import com.androidnetworking.common.Method;
+import com.arny.arnylib.network.AndroidNetworkService;
+import com.arny.arnylib.network.OnStringRequestResult;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.services.Operations;
 import org.json.JSONArray;
@@ -35,10 +32,15 @@ public class NetworkActivity extends AppCompatActivity  {
         stringLoaderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-	            NetworkService.apiGetRequest("http://beta.json-generator.com/api/json/get/4J2sIi6Tf", "json", new OnJSONArrayResult() {
+	            AndroidNetworkService.apiBuildRequest("http://beta.json-generator.com/api/json/get/4J2sIi6Tf", Method.GET, null, new OnStringRequestResult() {
 		            @Override
-		            public void onSuccess(JSONArray array) {
-			            Log.i(NetworkActivity.class.getSimpleName(), "onSuccess: array = " + array);
+		            public void onSuccess(String result) {
+			            try {
+				            JSONArray array = new JSONArray(result);
+				            Log.i(NetworkActivity.class.getSimpleName(), "onSuccess: array = " + array);
+			            } catch (Exception e) {
+				            e.printStackTrace();
+			            }
 		            }
 
 		            @Override

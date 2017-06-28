@@ -41,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
 		    PermissionsActivity.class,
 		    LoaderActivity.class,
 		    MvpSimpleActivity.class,
+		    GoogleOAuthActivity.class,
     };
 
     @Override
