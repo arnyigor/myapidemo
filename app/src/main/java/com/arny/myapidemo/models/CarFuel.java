@@ -1,19 +1,12 @@
 package com.arny.myapidemo.models;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-
 import com.arny.arnylib.database.DBObject;
-import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.utils.Utility;
 
-import static com.arny.myapidemo.database.DB.*;
-
-public class CarFuel implements Parcelable,DBObject,Comparable  {
+public class CarFuel extends DBObject implements Parcelable, Comparable  {
 
     private int dbID;
     private long date;
@@ -274,75 +267,6 @@ public class CarFuel implements Parcelable,DBObject,Comparable  {
         dest.writeInt(missed);
     }
 
-    @Override
-    public ContentValues getObjectValues() {
-        ContentValues contentValues = new ContentValues();
-        int strDate = Integer.parseInt(Utility.getDateTime(getDate(), "yyyyMMdd"));
-        contentValues.put(DB_KEY_DATE,strDate);
-        contentValues.put(DB_KEY_ID_VEHICLE,getId_vehicle());
-        contentValues.put(DB_KEY_NOTE,getNote());
-        contentValues.put(DB_KEY_MILEAGE,getMileage());
-        contentValues.put(DB_KEY_VOLUME,getVolume());
-        contentValues.put(DB_KEY_VOLUME_COST,getVolumecost());
-        contentValues.put(DB_KEY_COST,getCost());
-        contentValues.put(DB_KEY_TYPE,getType());
-        contentValues.put(DB_KEY_MARK,getMark());
-        contentValues.put(DB_KEY_MILEAGEADD,getMileageadd());
-        contentValues.put(DB_KEY_CURRENT_TANK,getCurrent_tank());
-        contentValues.put(DB_KEY_TANKVOLUME,getTankvolume());
-        contentValues.put(DB_KEY_VOLUMEMILEAGE,getVolumemileage());
-        contentValues.put(DB_KEY_COSTMILEAGE,getCostmileage());
-        contentValues.put(DB_KEY_VOLUMEMILEAGE_1,getVolumemileage_1());
-        contentValues.put(DB_KEY_COSTMILEAGE_1,getCostmileage_1());
-        contentValues.put(DB_KEY_MIL_COEF,getMil_coef());
-        contentValues.put(DB_KEY_CONSUMPTION_COMP_0,getConsumption_comp_0());
-        contentValues.put(DB_KEY_CONSUMPTION_COMP_1,getConsumption_comp_1());
-        contentValues.put(DB_KEY_MISSED,getMissed());
-        return contentValues;
-    }
-
-    @Override
-    public boolean dbRemoveObj(Context context) {
-        String condition = DB_KEY_ID + "=" + getDbID();
-        return DBProvider.deleteDB(DB_TABLE_CAR_FUEL, condition, context) > 0;
-    }
-
-    @Override
-    public boolean dbAddObj(Context context) {
-        return DBProvider.insertDB(DB_TABLE_CAR_FUEL, getObjectValues(), context)>0;
-    }
-
-    @Override
-    public boolean dbUpdateObg(Context context) {
-        String where = DB_KEY_ID + "=" + getDbID();
-        return DBProvider.updateDB(DB_TABLE_CAR_FUEL, getObjectValues(), where, context)>0;
-    }
-
-    @Override
-    public void setCursorValues(Cursor cursor) {
-        setDbID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(DB_KEY_ID))));
-        String ceDate = String.valueOf(cursor.getInt(cursor.getColumnIndex(DB_KEY_DATE)));
-        setDate(Utility.convertTimeStringToLong(ceDate, "yyyyMMdd"));
-        setId_vehicle(cursor.getLong(cursor.getColumnIndex(DB_KEY_ID_VEHICLE)));
-        setNote(cursor.getString(cursor.getColumnIndex(DB_KEY_NOTE)));
-        setMileage(cursor.getInt(cursor.getColumnIndex(DB_KEY_MILEAGE)));
-        setVolume(cursor.getDouble(cursor.getColumnIndex(DB_KEY_VOLUME)));
-        setVolumecost(cursor.getDouble(cursor.getColumnIndex(DB_KEY_VOLUME_COST)));
-        setCost(cursor.getDouble(cursor.getColumnIndex(DB_KEY_COST)));
-        setType(cursor.getString(cursor.getColumnIndex(DB_KEY_TYPE)));
-        setMark(cursor.getInt(cursor.getColumnIndex(DB_KEY_MARK)));
-        setMileageadd(cursor.getInt(cursor.getColumnIndex(DB_KEY_MILEAGEADD)));
-        setCurrent_tank(cursor.getInt(cursor.getColumnIndex(DB_KEY_CURRENT_TANK)));
-        setTankvolume(cursor.getDouble(cursor.getColumnIndex(DB_KEY_TANKVOLUME)));
-        setVolumemileage(cursor.getDouble(cursor.getColumnIndex(DB_KEY_VOLUMEMILEAGE)));
-        setCostmileage(cursor.getDouble(cursor.getColumnIndex(DB_KEY_COSTMILEAGE)));
-        setVolumemileage_1(cursor.getDouble(cursor.getColumnIndex(DB_KEY_VOLUMEMILEAGE_1)));
-        setCostmileage_1(cursor.getDouble(cursor.getColumnIndex(DB_KEY_COSTMILEAGE_1)));
-        setMil_coef(cursor.getDouble(cursor.getColumnIndex(DB_KEY_MIL_COEF)));
-        setConsumption_comp_0(cursor.getDouble(cursor.getColumnIndex(DB_KEY_CONSUMPTION_COMP_0)));
-        setConsumption_comp_1(cursor.getDouble(cursor.getColumnIndex(DB_KEY_CONSUMPTION_COMP_1)));
-        setMissed(cursor.getInt(cursor.getColumnIndex(DB_KEY_MISSED)));
-    }
 
     @Override
     public String toString() {

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import com.android.volley.Request;
 import com.androidnetworking.common.Method;
-import com.arny.arnylib.network.AndroidNetworkService;
+import com.arny.arnylib.network.ApiService;
 import com.arny.arnylib.network.OnJSONObjectResult;
 import com.arny.arnylib.network.OnStringRequestResult;
 import com.arny.myapidemo.R;
@@ -76,7 +76,7 @@ public class GoogleOAuthActivity extends AppCompatActivity implements GoogleApiC
 				signIn();
 				break;
 			case R.id.button4:
-				AndroidNetworkService.apiBuildRequest("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + mAccessToken, Method.GET, null, new OnStringRequestResult() {
+				ApiService.apiBuildRequest("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + mAccessToken, Method.GET, null, new OnStringRequestResult() {
 					@Override
 					public void onSuccess(String result) {
 						ToastMaker.toast(GoogleOAuthActivity.this,result);
@@ -120,7 +120,7 @@ public class GoogleOAuthActivity extends AppCompatActivity implements GoogleApiC
 		params.put("code",authCode);
 		JSONObject headers = new JSONObject();
 		headers.put("Content-Type", "application/x-www-form-urlencoded");
-		AndroidNetworkService.apiBuildRequest("https://www.googleapis.com/oauth2/v4/token", Request.Method.POST, params,headers, new OnJSONObjectResult() {
+		ApiService.apiBuildPostRequest("https://www.googleapis.com/oauth2/v4/token", Request.Method.POST, params,headers, new OnJSONObjectResult() {
 			@Override
 			public void onSuccess(JSONObject object) {
 				try {
@@ -147,7 +147,7 @@ public class GoogleOAuthActivity extends AppCompatActivity implements GoogleApiC
 		params.put("grant_type","refresh_token");
 		JSONObject headers = new JSONObject();
 		headers.put("Content-Type", "application/x-www-form-urlencoded");
-		AndroidNetworkService.apiBuildRequest("https://www.googleapis.com/oauth2/v4/token", Request.Method.POST, params, headers, new OnJSONObjectResult() {
+		ApiService.apiBuildPostRequest("https://www.googleapis.com/oauth2/v4/token", Request.Method.POST, params, headers, new OnJSONObjectResult() {
 			@Override
 			public void onSuccess(JSONObject object) {
 				try {

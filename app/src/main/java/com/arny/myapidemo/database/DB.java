@@ -3,14 +3,12 @@ package com.arny.myapidemo.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-
+import com.arny.arnylib.database.DBProvider;
 import com.arny.myapidemo.models.CarFuel;
 import com.arny.myapidemo.models.Refills;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import com.arny.arnylib.database.DBProvider;
 
 
 public class DB {
@@ -100,7 +98,7 @@ public class DB {
                 carFuel.setVolumemileage(volume100km);
             }
             odom = carFuel.getMileage();
-            DBProvider.insertDB(DB_TABLE_CAR_FUEL, carFuel.getObjectValues(), context);
+            DBProvider.insertDB(DB_TABLE_CAR_FUEL, null, context);
         }
 
     }

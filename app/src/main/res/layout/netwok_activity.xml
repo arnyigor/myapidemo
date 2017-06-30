@@ -13,28 +13,29 @@
                     android:layout_alignParentRight="true"
     >
         <Button
-                android:id="@+id/buttonLoadString"
+                android:id="@+id/btnGETRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:text="Request String"/>
+                android:text="GET"/>
 
         <Button
-                android:id="@+id/buttonJSONRequest"
+                android:id="@+id/btnPOSTRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/buttonLoadString"
-                android:layout_below="@+id/buttonLoadString"
-                android:text="Request JSON nodeObject"/>
-
-        <TextView
-                android:id="@+id/textView1"
+                android:text="POST"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnGETRequest"
+                android:layout_toEndOf="@+id/btnGETRequest"/>
+        <Button
+                android:id="@+id/btnPUTRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/buttonJSONRequest"
-                android:layout_below="@+id/buttonJSONRequest"
-                android:layout_marginTop="28dp"/>
+                android:text="PUT"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnPOSTRequest"
+                android:layout_toEndOf="@+id/btnPOSTRequest"/>
     </RelativeLayout>
 
 

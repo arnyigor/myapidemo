@@ -1,86 +1,98 @@
 package com.arny.myapidemo.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import com.androidnetworking.common.Method;
-import com.arny.arnylib.network.AndroidNetworkService;
+import com.arny.arnylib.network.NetworkService;
 import com.arny.arnylib.network.OnStringRequestResult;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.services.Operations;
-import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class NetworkActivity extends AppCompatActivity  {
-    Button stringLoaderBtn,jsonLoaderBtn;
-    TextView tv;
-    private Toolbar toolbar;
-    private Intent intent;
+public class NetworkActivity extends AppCompatActivity implements View.OnClickListener  {
 
-    @Override
+	private JSONObject params,headers;
+	private String tesla_url = "http://is.rtest.tesla.aristos.pw/";
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.netwok_activity);
-
-        intent = new Intent(NetworkActivity.this, Operations.class);
-        tv = (TextView) findViewById(R.id.textView1);
-        stringLoaderBtn = (Button) findViewById(R.id.buttonLoadString);
-        stringLoaderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-	            AndroidNetworkService.apiBuildRequest("http://beta.json-generator.com/api/json/get/4J2sIi6Tf", Method.GET, null, new OnStringRequestResult() {
-		            @Override
-		            public void onSuccess(String result) {
-			            try {
-				            JSONArray array = new JSONArray(result);
-				            Log.i(NetworkActivity.class.getSimpleName(), "onSuccess: array = " + array);
-			            } catch (Exception e) {
-				            e.printStackTrace();
-			            }
-		            }
-
-		            @Override
-		            public void onError(String error) {
-			            Log.i(NetworkActivity.class.getSimpleName(), "onError: error = " + error);
-		            }
-	            });
-            }
-        });
-        jsonLoaderBtn = (Button) findViewById(R.id.buttonJSONRequest);
-        jsonLoaderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+	    initUI();
     }
 
-
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        IntentFilter filter = new IntentFilter(Operations.ACTION);
-//        filter.addCategory(Intent.CATEGORY_DEFAULT);
-//        LocalBroadcastManager.getInstance(this).registerReceiver(updateReciever, filter);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(updateReciever);
-    }
+	private void initUI() {
+		initToolbar();
+		Button btnGET, btnPOST,btnPUT;
+		btnGET = (Button) findViewById(R.id.btnGETRequest);
+		btnGET.setOnClickListener(this);
+		btnPOST = (Button) findViewById(R.id.btnPOSTRequest);
+		btnPOST.setOnClickListener(this);
+		btnPUT = (Button) findViewById(R.id.btnPUTRequest);
+		btnPUT.setOnClickListener(this);
+		try {
+			params = new JSONObject();
+			headers = new JSONObject();
+			params.put("email","test@test.ru");
+			params.put("password","123456");
+			headers.put("Accept","application/json");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+	    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle(getString(R.string.title_tabs));
         }
     }
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.btnPOSTRequest:
+				NetworkService.apiRequest(NetworkActivity.this,Method.POST, tesla_url, params,headers, new OnStringRequestResult() {
+					@Override
+					public void onSuccess(String result) {
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i(NetworkActivity.class.getSimpleName(), "onError: error = " + error);
+					}
+				});
+				break;
+			case R.id.btnGETRequest:
+				NetworkService.apiRequest(NetworkActivity.this,Method.GET, tesla_url, params,headers, new OnStringRequestResult() {
+					@Override
+					public void onSuccess(String result) {
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i(NetworkActivity.class.getSimpleName(), "onError: error = " + error);
+					}
+				});
+				break;
+			case R.id.btnPUTRequest:
+				NetworkService.apiRequest(NetworkActivity.this,Method.PUT, tesla_url,  params,headers, new OnStringRequestResult() {
+					@Override
+					public void onSuccess(String result) {
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i(NetworkActivity.class.getSimpleName(), "onError: error = " + error);
+					}
+				});
+				break;
+		}
+	}
 }

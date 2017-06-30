@@ -2,7 +2,7 @@ package com.arny.myapidemo.services;
 
 import android.util.Log;
 import com.androidnetworking.common.Method;
-import com.arny.arnylib.network.AndroidNetworkService;
+import com.arny.arnylib.network.ApiService;
 import com.arny.arnylib.network.OnStringRequestResult;
 import com.arny.arnylib.security.CryptoFiles;
 import com.arny.arnylib.service.AbstractIntentService;
@@ -72,7 +72,7 @@ public class Operations extends AbstractIntentService {
 		        }
 		        break;
 	        case 2:
-		        AndroidNetworkService.apiBuildRequest("http://beta.json-generator.com/api/json/get/EJj1IoaTM", Method.GET, null, new OnStringRequestResult() {
+		        ApiService.apiBuildRequest("http://beta.json-generator.com/api/json/get/EJj1IoaTM", Method.GET, null, new OnStringRequestResult() {
                     @Override
                     public void onSuccess(String result) {
                         Gson gson = new Gson();
@@ -156,7 +156,7 @@ public class Operations extends AbstractIntentService {
     }
 
     private void getKorpuses() {
-	    AndroidNetworkService.apiBuildRequest(API_BASE_URL +API_URL_GEN_PLAN , Method.GET, null, new OnStringRequestResult() {
+	    ApiService.apiBuildRequest(API_BASE_URL +API_URL_GEN_PLAN , Method.GET, null, new OnStringRequestResult() {
            @Override
            public void onSuccess(String result) {
                JSONArray genPlanArray;
@@ -180,7 +180,7 @@ public class Operations extends AbstractIntentService {
     private void parseKorpuses(final JSONArray korpuses) throws JSONException {
         for (int i = 0; i < korpuses.length(); i++) {
             JSONObject korpusObject = new JSONObject(korpuses.get(i).toString());
-	        AndroidNetworkService.apiBuildRequest( API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"), Method.GET, null, new OnStringRequestResult() {
+	        ApiService.apiBuildRequest( API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"), Method.GET, null, new OnStringRequestResult() {
                 @Override
                 public void onSuccess(String result) {
                     Log.i(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());
