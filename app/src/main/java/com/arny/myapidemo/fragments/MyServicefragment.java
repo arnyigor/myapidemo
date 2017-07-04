@@ -1,11 +1,8 @@
 package com.arny.myapidemo.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -15,19 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+import com.arny.arnylib.service.AbstractIntentService;
+import com.arny.arnylib.service.OperationProvider;
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.activities.TabsActivity;
 import com.arny.myapidemo.services.Operations;
 import com.arny.myapidemo.utils.BaseUtils;
 import com.arny.myapidemo.utils.ToastMaker;
 
-import java.util.HashMap;
 
-import com.arny.arnylib.service.AbstractIntentService;
-import com.arny.arnylib.service.OperationProvider;
-
-
-public class MyServicefragment extends Fragment implements View.OnClickListener {
+public class MyServicefragment extends Fragment implements View.OnClickListener, FragmentCommunicator {
 
     private static final String DATA_SAVE_STATE = "data_save_update";
     private static final String TAG = MyServicefragment.class.getSimpleName();
@@ -39,6 +33,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
     private TextView tvInfo2;
     private TextView tvInfo3;
     private Intent intent;
+	private ActivityCommunicator activityCommunicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +43,14 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
         initUI(rootView);
         return rootView;
     }
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		context = getActivity();
+		activityCommunicator =(ActivityCommunicator)context;//send to activity
+		((TabsActivity)context).fragmentCommunicator = this;//recieve from activity
+	}
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -133,7 +136,14 @@ public class MyServicefragment extends Fragment implements View.OnClickListener 
             case R.id.btnOper1:
                 Operations.onStartOperation(intent,context,Operations.EXTRA_KEY_TYPE_ASYNC,1,null);
                 break;
+	        case R.id.btnOper2:
+		        activityCommunicator.passDataToActivity("hello from service fragment");
+                break;
         }
     }
 
+	@Override
+	public void passDataToFragment(String someValue) {
+		Log.i(MyServicefragment.class.getSimpleName(), "passDataToFragment: someValue = " + someValue);
+	}
 }

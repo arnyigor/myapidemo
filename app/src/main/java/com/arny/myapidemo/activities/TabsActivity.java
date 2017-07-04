@@ -3,17 +3,24 @@ package com.arny.myapidemo.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.TabPagerAdapter;
+import com.arny.myapidemo.fragments.ActivityCommunicator;
+import com.arny.myapidemo.fragments.FragmentCommunicator;
 
-public class TabsActivity extends AppCompatActivity {
+import java.util.List;
 
+public class TabsActivity extends AppCompatActivity implements ActivityCommunicator {
+
+	public FragmentCommunicator fragmentCommunicator;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
@@ -75,4 +82,10 @@ public class TabsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	@Override
+	public void passDataToActivity(String someValue) {
+		List<Fragment> fragments = getSupportFragmentManager().getFragments();
+		Log.i(TabsActivity.class.getSimpleName(), "passDataToActivity: fragments = " + fragments);
+		fragmentCommunicator.passDataToFragment(someValue);
+	}
 }
