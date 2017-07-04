@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.FragmentActivity"
+                android:name=".activities.FragmentsActivity"
                 android:label="fragment"/>
         <activity
                 android:name=".activities.XmlActivity"

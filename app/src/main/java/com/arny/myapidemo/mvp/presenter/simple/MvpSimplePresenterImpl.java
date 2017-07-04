@@ -3,7 +3,7 @@ package com.arny.myapidemo.mvp.presenter.simple;
 import android.content.Context;
 import android.util.Log;
 import com.androidnetworking.common.Method;
-import com.arny.arnylib.network.ApiService;
+import com.arny.arnylib.network.NetworkService;
 import com.arny.arnylib.network.OnStringRequestResult;
 import com.arny.myapidemo.mvp.view.simple.MvpSimpleActivity;
 import com.arny.myapidemo.mvp.view.simple.MvpSimpleView;
@@ -17,7 +17,7 @@ public class MvpSimplePresenterImpl extends MvpBasePresenter<MvpSimpleView> impl
 
 	@Override
 	public void buttonPressed() {
-		ApiService.apiBuildRequest("http://beta.json-generator.com/api/json/get/4J2sIi6Tf", Method.GET, null, new OnStringRequestResult() {
+		NetworkService.apiRequest(context, Method.GET,"http://beta.json-generator.com/api/json/get/4J2sIi6Tf", null, new OnStringRequestResult() {
 			@Override
 			public void onSuccess(String result) {
 				Log.i(MvpSimpleActivity.class.getSimpleName(), "onSuccess: result = " + result);

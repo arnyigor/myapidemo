@@ -1,14 +1,5 @@
 
 ### Android template
-# Built application files
-*.apk
-*.ap_
-
-# Files for the ART/Dalvik VM
-*.dex
-
-# Java class files
-*.class
 
 # Generated files
 bin/
@@ -36,17 +27,10 @@ captures/
 
 # Intellij
 *.iml
-.idea/*.xml
-.idea/libraries
-
+.idea/
 
 # Keystore files
 *.jks
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
-
-# Freeline
-freeline.py
-freeline/
-freeline_project_description.json
