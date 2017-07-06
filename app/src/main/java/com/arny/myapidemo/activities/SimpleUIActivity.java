@@ -5,17 +5,26 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.utils.BaseUtils;
+import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
+import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
+import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
+import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
+import com.codetroopers.betterpickers.timepicker.TimePickerBuilder;
+import com.codetroopers.betterpickers.timepicker.TimePickerDialogFragment;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class SimpleUIActivity extends AppCompatActivity implements View.OnClickListener {
+public class SimpleUIActivity extends AppCompatActivity implements View.OnClickListener, NumberPickerDialogFragment.NumberPickerDialogHandlerV2, DatePickerDialogFragment.DatePickerDialogHandler, TimePickerDialogFragment.TimePickerDialogHandler {
 	private ArrayList<String> arrayList;
 	private ArrayAdapter<String> simpleSpinnerAdapter,simpleListAdapter;
 	private ArrayAdapter<CharSequence> resourceAdapter;
@@ -34,6 +43,9 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
 	private boolean modeEditor;
 	private String editedParam;
 	private Button btnEditingOk;
+	private Button btnNumber;
+	private Button btnDate;
+	private Button btnTime;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -187,7 +199,13 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
 		tvTaskName = (TextView) findViewById(R.id.tvTaskName);
 		edtTaskName = (EditText) findViewById(R.id.edtTaskName);
 		btnEditingOk = (Button) findViewById(R.id.btnEditingOk);
+		btnNumber = (Button) findViewById(R.id.btnNumber);
+		btnDate = (Button) findViewById(R.id.btnDate);
+		btnTime = (Button) findViewById(R.id.btnTime);
 		btnEditingOk.setOnClickListener(this);
+		btnNumber.setOnClickListener(this);
+		btnTime.setOnClickListener(this);
+		btnDate.setOnClickListener(this);
 	}
 
 	@Override
@@ -249,6 +267,44 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
 				setModeEditor(false);
 				refreshEditingMode();
 			break;
+			case R.id.btnNumber:
+				NumberPickerBuilder npb = new NumberPickerBuilder()
+						.setFragmentManager(getSupportFragmentManager())
+						.setStyleResId(R.style.BetterPickersDialogFragment_Light);
+				npb.show();
+			break;
+			case R.id.btnDate:
+				DatePickerBuilder dpb = new DatePickerBuilder()
+						.setFragmentManager(getSupportFragmentManager())
+						.setStyleResId(R.style.BetterPickersDialogFragment_Light);
+				dpb.show();
+			break;
+			case R.id.btnTime:
+				TimePickerBuilder tpb = new TimePickerBuilder()
+						.setFragmentManager(getSupportFragmentManager())
+						.setStyleResId(R.style.BetterPickersDialogFragment_Light);
+				tpb.show();
+			break;
 		}
+	}
+
+	@Override
+	public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogNumberSet: decimal = " + decimal);
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogNumberSet: isNegative = " + isNegative);
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogNumberSet: fullNumber = " + fullNumber.toString());
+	}
+
+	@Override
+	public void onDialogDateSet(int reference, int year, int monthOfYear, int dayOfMonth) {
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogDateSet: year = " + year);
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogDateSet: monthOfYear = " + monthOfYear);
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogDateSet: dayOfMonth = " + dayOfMonth);
+	}
+
+	@Override
+	public void onDialogTimeSet(int reference, int hourOfDay, int minute) {
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogTimeSet: hourOfDay = " + hourOfDay);
+		Log.i(SimpleUIActivity.class.getSimpleName(), "onDialogTimeSet: minute = " + minute);
 	}
 }
