@@ -3,7 +3,7 @@ package com.arny.myapidemo.services;
 import android.util.Log;
 import com.androidnetworking.common.Method;
 import com.arny.arnylib.network.NetworkService;
-import com.arny.arnylib.network.OnStringRequestResult;
+import com.arny.arnylib.interfaces.OnStringRequestResult;
 import com.arny.arnylib.security.CryptoFiles;
 import com.arny.arnylib.service.AbstractIntentService;
 import com.arny.arnylib.service.OperationProvider;

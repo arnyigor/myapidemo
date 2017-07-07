@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import com.androidnetworking.common.Method;
 import com.arny.arnylib.network.NetworkService;
-import com.arny.arnylib.network.OnStringRequestResult;
+import com.arny.arnylib.interfaces.OnStringRequestResult;
 import com.arny.myapidemo.R;
 import org.json.JSONException;
 import org.json.JSONObject;

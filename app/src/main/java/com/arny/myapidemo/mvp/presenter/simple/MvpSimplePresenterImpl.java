@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import com.androidnetworking.common.Method;
 import com.arny.arnylib.network.NetworkService;
-import com.arny.arnylib.network.OnStringRequestResult;
+import com.arny.arnylib.interfaces.OnStringRequestResult;
 import com.arny.myapidemo.mvp.view.simple.MvpSimpleActivity;
 import com.arny.myapidemo.mvp.view.simple.MvpSimpleView;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
