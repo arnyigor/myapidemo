@@ -1,7 +1,7 @@
 package com.arny.myapidemo.activities;
 
 import android.app.LoaderManager;
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -11,43 +11,55 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
 import com.arny.arnylib.database.DBLoader;
+import com.arny.arnylib.database.DBProvider;
+import com.arny.arnylib.utils.MathUtils;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.database.DB;
-import com.arny.myapidemo.models.CarFuel;
-import com.arny.myapidemo.models.Refills;
 import com.arny.myapidemo.models.TestObject;
+import org.chalup.microorm.MicroOrm;
 
 import java.util.ArrayList;
 
 public class DBHelperActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor>  {
     ArrayList<String> data = new ArrayList<String>();
-    TextView mTextView;
     ListView sqlList;
     ArrayList<TestObject> objects;
-    private Context context = this;
-    private TestObject testObject;
     private Toolbar toolbar;
-    private ArrayList<Refills> refillses;
-    private ArrayList<CarFuel> carfuels;
+	private MicroOrm uOrm;
 
-    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sqllist);
         initToolbar();
 	    getLoaderManager().initLoader(R.id.db_loader, Bundle.EMPTY, this);
         sqlList = (ListView) findViewById(R.id.sqlList);
-        getData();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
-        sqlList.setAdapter(adapter);
+		Button btnAddObject = (Button) findViewById(R.id.btnAddObject);
+		btnAddObject.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				uOrm = new MicroOrm();
+				TestObject o = new TestObject(String.valueOf(MathUtils.randInt(0,10)),"Test");
+				ContentValues values = uOrm.toContentValues(o);
+				DBProvider.insertDB("test", values, getApplicationContext());
+				initList();
+			}
+		});
+		initList();
     }
 
-    private void initToolbar() {
+	protected void initList() {
+		getData();
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
+		sqlList.setAdapter(adapter);
+	}
+
+	private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -57,9 +69,19 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
     }
 
     private void getData() {
-        testObject = new TestObject();
-        testObject.setTitle("tit1");
-         data.add("tit1");
+	    Cursor cursor =  DBProvider.selectDB("test", null, null, null, this);
+	    data.clear();
+	    objects = new ArrayList<>();
+	    if (cursor != null && cursor.moveToFirst()) {
+		    do {
+			    uOrm = new MicroOrm();
+			    TestObject testObject =  uOrm.fromCursor(cursor, TestObject.class);
+			    objects.add(testObject);
+		    } while (cursor.moveToNext());
+		}
+	    for (TestObject object : objects) {
+		    data.add(object.getName());
+	    }
     }
 
     @Override

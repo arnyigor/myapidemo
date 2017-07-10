@@ -1,66 +1,53 @@
 package com.arny.myapidemo.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import com.arny.arnylib.database.DBObject;
+import android.database.Cursor;
+import org.chalup.microorm.MicroOrm;
+import org.chalup.microorm.annotations.Column;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class TestObject extends DBObject implements Parcelable {
-    private int ID;
-    private String title;
+public class TestObject implements Serializable {
+	@Column("id")
+	private String id;
+    private long dbID;
+	@Column("title")
+    private String name;
     private ArrayList<GoodItem> goodItems;
-    public TestObject() {
+
+	public TestObject() {
+	}
+
+	public TestObject(String id,String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public long getDbID() {
+        return dbID;
     }
 
-    private TestObject(Parcel in) {
-        ID = in.readInt();
-        title = in.readString();
+    public void setDbID(long dbID) {
+        this.dbID = dbID;
     }
 
-    public static final Creator<TestObject> CREATOR = new Creator<TestObject>() {
-        @Override
-        public TestObject createFromParcel(Parcel in) {
-            return new TestObject(in);
-        }
-
-        @Override
-        public TestObject[] newArray(int size) {
-            return new TestObject[size];
-        }
-    };
-
-    public int getID() {
-        return ID;
+    public String getName() {
+        return name;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(ID);
-        parcel.writeString(title);
+    public TestObject getFromCursor(Cursor c){
+	    MicroOrm uOrm = new MicroOrm();
+	    return uOrm.fromCursor(c, this.getClass());
     }
 
     @Override
     public String toString() {
-        return "\nid:" + this.getID() + ";title:" + this.getTitle() + ";goodItems:" + getGoodItems();
+        return "\nid:" + this.getDbID() + ";name:" + this.getName() + ";goodItems:" + getGoodItems();
     }
 
     public ArrayList<GoodItem> getGoodItems() {
@@ -70,4 +57,12 @@ public class TestObject extends DBObject implements Parcelable {
     public void setGoodItems(ArrayList<GoodItem> goodItems) {
         this.goodItems = goodItems;
     }
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }

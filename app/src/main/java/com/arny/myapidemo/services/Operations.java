@@ -94,7 +94,7 @@ public class Operations extends AbstractIntentService {
 		                    e.printStackTrace();
 	                    }
 	                    TestObject testObject = gson.fromJson(result, TestObject.class);
-                        testObject.setTitle("new title");
+                        testObject.setName("new title");
                         try {
                             JSONObject checkObject = new JSONObject(gson.fromJson(result, JsonElement.class).toString());
 //	                        Log.d(Operations.class.getSimpleName(), "onSuccess: checkObject = " + checkObject);

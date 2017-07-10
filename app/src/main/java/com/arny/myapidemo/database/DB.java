@@ -113,7 +113,6 @@ public class DB {
         if (cursor.moveToFirst()) {
             do {
                 refills = new Refills();
-                refills.setCursorValues(cursor);
                 itemList.add(refills);
             } while (cursor.moveToNext());
         }
@@ -126,7 +125,6 @@ public class DB {
         if (cursor.moveToFirst()) {
             do {
                 carFuel = new CarFuel();
-                carFuel.setCursorValues(cursor);
                 itemList.add(carFuel);
             } while (cursor.moveToNext());
         }
@@ -137,7 +135,6 @@ public class DB {
     public static CarFuel getCursorObject(Cursor cursor, CarFuel carFuel) {
         carFuel = new CarFuel();
         if (cursor.moveToFirst()) {
-            carFuel.setCursorValues(cursor);
         }
         return carFuel;
     }
@@ -145,7 +142,6 @@ public class DB {
     public static Refills getCursorObject(Cursor cursor, Refills refills) {
         refills = new Refills();
         if (cursor.moveToFirst()) {
-            refills.setCursorValues(cursor);
         }
         return refills;
     }

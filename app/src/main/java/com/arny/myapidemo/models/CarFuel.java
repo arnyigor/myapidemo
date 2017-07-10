@@ -3,10 +3,9 @@ package com.arny.myapidemo.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import com.arny.arnylib.database.DBObject;
 import com.arny.arnylib.utils.Utility;
 
-public class CarFuel extends DBObject implements Parcelable, Comparable  {
+public class CarFuel implements Parcelable, Comparable  {
 
     private int dbID;
     private long date;

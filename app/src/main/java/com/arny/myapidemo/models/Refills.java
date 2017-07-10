@@ -2,9 +2,8 @@ package com.arny.myapidemo.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.arny.arnylib.database.DBObject;
 
-public class Refills extends DBObject implements Parcelable {
+public class Refills implements Parcelable {
 
     private int dbID;
     private int car;
