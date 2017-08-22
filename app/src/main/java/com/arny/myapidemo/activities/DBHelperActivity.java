@@ -21,7 +21,7 @@ import com.arny.arnylib.utils.MathUtils;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.TestObject;
-import org.chalup.microorm.MicroOrm;
+//import org.chalup.microorm.MicroOrm;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
     ListView sqlList;
     ArrayList<TestObject> objects;
     private Toolbar toolbar;
-	private MicroOrm uOrm;
+//	private MicroOrm uOrm;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,11 +43,11 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
 		btnAddObject.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				uOrm = new MicroOrm();
-				TestObject o = new TestObject(String.valueOf(MathUtils.randInt(0,10)),"Test");
-				ContentValues values = uOrm.toContentValues(o);
-				DBProvider.insertDB("test", values, getApplicationContext());
-				initList();
+//				uOrm = new MicroOrm();
+//				TestObject o = new TestObject(String.valueOf(MathUtils.randInt(0,10)),"Test");
+//				ContentValues values = uOrm.toContentValues(o);
+//				DBProvider.insertDB("test", values, getApplicationContext());
+//				initList();
 			}
 		});
 		initList();
@@ -74,9 +74,9 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
 	    objects = new ArrayList<>();
 	    if (cursor != null && cursor.moveToFirst()) {
 		    do {
-			    uOrm = new MicroOrm();
-			    TestObject testObject =  uOrm.fromCursor(cursor, TestObject.class);
-			    objects.add(testObject);
+//			    uOrm = new MicroOrm();
+//			    TestObject testObject =  uOrm.fromCursor(cursor, TestObject.class);
+//			    objects.add(testObject);
 		    } while (cursor.moveToNext());
 		}
 	    for (TestObject object : objects) {

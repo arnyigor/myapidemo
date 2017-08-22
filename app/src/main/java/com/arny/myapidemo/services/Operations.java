@@ -18,7 +18,6 @@ import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import se.simbio.encryption.Encryption;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,9 +33,6 @@ public class Operations extends AbstractIntentService {
         super();
     }
 
-	private Encryption getPinEncription() {
-		return Encryption.getDefault(this.getPackageName(), this.getPackageName(), new byte[16]);
-	}
 
 	@Override
     protected void runOperation(OperationProvider provider, OnOperationResult operationResult) {
@@ -54,12 +50,8 @@ public class Operations extends AbstractIntentService {
 			        }
 			        String file = "test.mp3";
 			        String folder = "/5mbtest/";
-			        String encryptedName = getPinEncription().encryptOrNull(file);
-			        Log.d(Operations.class.getSimpleName(), "runOperation: encryptedName = " + encryptedName);
 //			        boolean success = CryptoFiles.encrypt(folder + file, folder + "encrypted/",encryptedName,passBytes);
 //			        Log.d(Operations.class.getSimpleName(), "runOperation: success = " + success);
-			        String decryptedName = getPinEncription().decryptOrNull(encryptedName);
-			        Log.d(Operations.class.getSimpleName(), "runOperation: decryptedName = " + decryptedName);
 			        provider.setResult("true))))))");
 			        HashMap<String, Object> data = new HashMap<>();
 			        data.put("BIGdATA", getBigString());

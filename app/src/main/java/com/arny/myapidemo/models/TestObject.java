@@ -1,18 +1,16 @@
 package com.arny.myapidemo.models;
 
 import android.database.Cursor;
-import org.chalup.microorm.MicroOrm;
-import org.chalup.microorm.annotations.Column;
+//import org.chalup.microorm.MicroOrm;
+//import org.chalup.microorm.annotations.Column;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 
 public class TestObject implements Serializable {
-	@Column("id")
 	private String id;
     private long dbID;
-	@Column("title")
     private String name;
     private ArrayList<GoodItem> goodItems;
 
@@ -40,10 +38,10 @@ public class TestObject implements Serializable {
         this.name = name;
     }
 
-    public TestObject getFromCursor(Cursor c){
-	    MicroOrm uOrm = new MicroOrm();
-	    return uOrm.fromCursor(c, this.getClass());
-    }
+//    public TestObject getFromCursor(Cursor c){
+////	    MicroOrm uOrm = new MicroOrm();
+////	    return uOrm.fromCursor(c, this.getClass());
+//    }
 
     @Override
     public String toString() {

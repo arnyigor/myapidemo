@@ -142,7 +142,7 @@
                 android:id="@+id/autoComplit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:completionThreshold="2" />
+                android:completionThreshold="1" />
         </LinearLayout>
 
         <LinearLayout

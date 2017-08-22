@@ -1,5 +1,6 @@
 package com.arny.myapidemo.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.arny.arnylib.adapters.OGArrayAdapter;
+import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.utils.BaseUtils;
 import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
@@ -174,13 +177,64 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
 		arrayList = new ArrayList<>();
 		arrayList.add("Android");
 		arrayList.add("IOS");
+        arrayList.add("pairs");
+        arrayList.add("id");
+        arrayList.add("CPKJG2NNA6PBPQMYF3");
+        arrayList.add("name");
+        arrayList.add("BITCNY");
+        arrayList.add("origin_name");
+        arrayList.add("BITCNY_BTC");
+        arrayList.add("exchanges");
+        arrayList.add("id");
+        arrayList.add("CPEM8G39T9HAEJP1SDL");
+        arrayList.add("exchanger");
+        arrayList.add("Bittrex");
+        arrayList.add("price");
+        arrayList.add("id");
+        arrayList.add("CPJ7F6PZZCNHEVERPK");
+        arrayList.add("name");
+        arrayList.add("BTC");
+        arrayList.add("origin_name");
+        arrayList.add("BTC_1ST");
+        arrayList.add("exchanges");
+        arrayList.add("id");
+        arrayList.add("CPEHCVP4QSRVMM73AVW");
+        arrayList.add("exchanger");
+        arrayList.add("Bittrex");
+        arrayList.add("price");
 		simpleSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerarray);
-		simpleListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,arrayList);
 		resourceAdapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_dropdown_item);
-		simpleSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(simpleSpinnerAdapter);
-		autoComplit.setAdapter(simpleListAdapter);
+        simpleSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(simpleSpinnerAdapter);
+        ArrAdapter simpleListAdapter =new ArrAdapter(this,android.R.layout.simple_list_item_1);
+        simpleListAdapter.addAll(arrayList);
+        autoComplit.setAdapter(simpleListAdapter);
+        autoComplit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(SimpleUIActivity.class.getSimpleName(), "onItemClick: position:" + position + "; id:" + id + "; item:" + arrayList.get((int) id));
+            }
+        });
 	}
+
+
+    private class ArrAdapter extends OGArrayAdapter<String> {
+        public ArrAdapter(Context context, int textViewResourceId) {
+            super(context, textViewResourceId);
+        }
+
+        @Override
+        protected String getObjectName(String obj) {
+            return obj;
+        }
+
+        @Override
+        protected boolean filterObject(String myObject, String constraint) {
+            // If true, the object will be in the list, if false, it will be filtered.
+            // Do your own filtering with myObject as you desire
+            return Utility.matcher("(?i).*" + constraint + ".*", myObject);
+        }
+    }
 
 	private void initUI() {
 		progessBar = (ProgressBar) findViewById(R.id.progressBar1);
