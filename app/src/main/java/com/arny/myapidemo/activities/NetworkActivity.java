@@ -14,9 +14,6 @@ import com.arny.arnylib.interfaces.OnStringRequestResult;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.models.Test;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.internal.LinkedTreeMap;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,15 +78,15 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
 				});
 				break;
 			case R.id.btnGETRequest:
-                String url = "http://beta.json-generator.com/api/json/get/41IFZNHuX";
-                ApiRequests.getApiResponse(this, url, new Response.Listener<Object>() {
+                String url = "http://beta.json-generator.com/api/json/get/VyCG5xB_7";
+                ApiRequest.apiResponse(this, url, null, new Response.Listener<Object>() {
                     @Override
                     public void onResponse(Object response) {
-                        JsonArray posts = ApiUtils.getResponse(response, JsonArray.class);
-                        ArrayList<Test> tests = ApiUtils.convert(posts);//// TODO: 22.08.2017  
-                        for (Test post : tests) {
+                        Test post  = ApiUtils.getResponse(response, Test.class);
+//                        ArrayList<Test> tests = ApiUtils.convertArray(posts, Test.class);
+//                        for (Test post : tests) {
                             Log.i(NetworkActivity.class.getSimpleName(), "onResponse:"+post.getClass().getSimpleName()+" post = " + post );
-                        }
+//                        }
                     }
                 }, new com.android.volley.Response.ErrorListener() {
                     @Override

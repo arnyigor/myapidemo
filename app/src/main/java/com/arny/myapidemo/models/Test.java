@@ -1,24 +1,39 @@
 
 package com.arny.myapidemo.models;
 
+import com.arny.arnylib.database.DBProvider;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Test {
 
-    @SerializedName("_id")
+    @SerializedName("isActive")
     @Expose
-    private String id;
+    private Boolean isActive;
+    @SerializedName("guid")
+    @Expose
+    private String guid;
     @SerializedName("index")
     @Expose
     private Integer index;
+    @SerializedName("_id")
+    @Expose
+    private String id;
 
-    public String getId() {
-        return id;
+    public Boolean getIsActive() {
+        return isActive;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     public Integer getIndex() {
@@ -29,8 +44,16 @@ public class Test {
         this.index = index;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "id:" + id + " index: "  + index;
+        return DBProvider.getColumns(this);
     }
 }
