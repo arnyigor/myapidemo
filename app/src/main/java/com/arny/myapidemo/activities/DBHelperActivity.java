@@ -1,7 +1,6 @@
 package com.arny.myapidemo.activities;
 
 import android.app.LoaderManager;
-import android.content.ContentValues;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -21,7 +20,6 @@ import com.arny.arnylib.utils.MathUtils;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.TestObject;
-import org.chalup.microorm.MicroOrm;
 //import org.chalup.microorm.MicroOrm;
 
 import java.util.ArrayList;
@@ -43,9 +41,8 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
 		btnAddObject.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				TestObject o = new TestObject(String.valueOf(MathUtils.randInt(0,10)),"Test");
-				ContentValues values = new MicroOrm().toContentValues(o);
-				DBProvider.insertDB("test", values, getApplicationContext());
+				TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
+				DBProvider.saveObject(DBHelperActivity.this, "test", test);
 				initList();
 			}
 		});
