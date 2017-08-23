@@ -21,6 +21,7 @@ import com.arny.myapidemo.utils.Config;
 public class HomeActivity extends AppCompatActivity {
     private final Class[] sActivities = new Class[]{
             TabsActivity.class,
+            DBHelperActivity.class,
 		    NavDrawerActivity.class,
 		    MapsActivity.class,
             XmlActivity.class,

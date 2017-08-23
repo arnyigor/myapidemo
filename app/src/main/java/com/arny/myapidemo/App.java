@@ -8,6 +8,6 @@ public class App extends Application {
 	public void onCreate() {
 		super.onCreate();
 		AndroidNetworking.initialize(getApplicationContext());
-		DBProvider.initDB(getApplicationContext(),"apidemo");
+		DBProvider.initDB(getApplicationContext(),"apidemo",1);
 	}
 }

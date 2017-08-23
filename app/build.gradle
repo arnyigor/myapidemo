@@ -4,7 +4,7 @@ android {
         app {
         }
     }
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 25
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.arny.myapidemo"

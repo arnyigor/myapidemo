@@ -82,11 +82,11 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
                 ApiRequest.apiResponse(this, url, null, new Response.Listener<Object>() {
                     @Override
                     public void onResponse(Object response) {
-                        Test post  = ApiUtils.getResponse(response, Test.class);
-//                        ArrayList<Test> tests = ApiUtils.convertArray(posts, Test.class);
-//                        for (Test post : tests) {
-                            Log.i(NetworkActivity.class.getSimpleName(), "onResponse:"+post.getClass().getSimpleName()+" post = " + post );
-//                        }
+                        JsonArray posts  = ApiUtils.getResponse(response, JsonArray.class);
+                        ArrayList<Test> tests = ApiUtils.convertArray(posts, Test.class);
+                        for (Test test : tests) {
+                            Log.i(NetworkActivity.class.getSimpleName(), "onResponse:"+test.getClass().getSimpleName()+" post = " + test );
+                        }
                     }
                 }, new com.android.volley.Response.ErrorListener() {
                     @Override

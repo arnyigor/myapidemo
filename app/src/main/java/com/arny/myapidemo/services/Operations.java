@@ -85,7 +85,7 @@ public class Operations extends AbstractIntentService {
 	                    } catch (JSONException e) {
 		                    e.printStackTrace();
 	                    }
-	                    TestObject testObject = gson.fromJson(result, TestObject.class);
+	                    TestObject testObject = new Gson().fromJson(result, TestObject.class);
                         testObject.setName("new title");
                         try {
                             JSONObject checkObject = new JSONObject(gson.fromJson(result, JsonElement.class).toString());
