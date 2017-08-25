@@ -9,6 +9,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.models.Test;
+import com.arny.myapidemo.models.TestObject;
+
+import java.util.ArrayList;
 
 public class LinearViewHolder extends RecyclerView.ViewHolder {
 
@@ -21,13 +25,20 @@ public class LinearViewHolder extends RecyclerView.ViewHolder {
 	public LinearViewHolder(View itemView) {
 		super(itemView);
 		ButterKnife.bind(this, itemView);
+
 	}
 
 
-	public void bindView(Integer item, int position, ActionListener listener) {
+	public void bindView(TestObject object, int position, ActionListener listener) {
 		actionListener = listener;
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionListener.OnItemClick(getAdapterPosition());
+            }
+        });
 		this.position = position;
-		text.setText(String.valueOf(item));
+		text.setText(String.valueOf(object));
 	}
 
 	@OnClick(R.id.linear_example_item_move_to_top)
@@ -66,5 +77,7 @@ public class LinearViewHolder extends RecyclerView.ViewHolder {
 		void OnUp(int position);
 
 		void OnDown(int position);
+
+		void OnItemClick(int position);
 	}
 }

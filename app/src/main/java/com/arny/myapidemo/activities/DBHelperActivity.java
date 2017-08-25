@@ -1,49 +1,97 @@
 package com.arny.myapidemo.activities;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import com.arny.arnylib.adapters.SimpleBindableAdapter;
 import com.arny.arnylib.database.DBLoader;
 import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.utils.MathUtils;
 import com.arny.myapidemo.R;
+import com.arny.myapidemo.adapters.SimpleRecyclerViewHolder;
+import com.arny.myapidemo.adapters.SimpleViewHolder;
 import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.TestObject;
-//import org.chalup.microorm.MicroOrm;
+import com.mikepenz.iconics.context.IconicsContextWrapper;
 
 import java.util.ArrayList;
 
-public class DBHelperActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor>  {
-    ArrayList<String> data = new ArrayList<String>();
-    ListView sqlList;
-    ArrayList<TestObject> objects;
-    private Toolbar toolbar;
+//import org.chalup.microorm.MicroOrm;
 
-	@Override
+public class DBHelperActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor>{
+    private ArrayList<String> data = new ArrayList<String>();
+    private RecyclerView sqlList;
+    private ArrayList<TestObject> objects;
+    private Toolbar toolbar;
+    private SimpleBindableAdapter<TestObject, SimpleRecyclerViewHolder> adapter;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sqllist);
         initToolbar();
 	    getLoaderManager().initLoader(R.id.db_loader, Bundle.EMPTY, this);
-        sqlList = (ListView) findViewById(R.id.sqlList);
+        sqlList = (RecyclerView) findViewById(R.id.sqlList);
+        sqlList.setLayoutManager( new LinearLayoutManager(this));
+        sqlList.setItemAnimator(new DefaultItemAnimator());
+        adapter = new SimpleBindableAdapter<>(R.layout.recycler_item, SimpleRecyclerViewHolder.class);
+        adapter.setActionListener(new SimpleViewHolder.SimpleActionListener() {
+            @Override
+            public void onMoveToTop(int position) {
+                adapter.moveChildTo(position, 0);
+            }
+
+            @Override
+            public void OnRemove(int position) {
+                adapter.removeChild(position);
+                DBProvider.deleteDB("test", "id = ?", new String[]{objects.get(position).getId()}, DBHelperActivity.this);
+            }
+
+            @Override
+            public void OnUp(int position) {
+                int toPosition = position - 1;
+                adapter.moveChildTo(position, toPosition);
+            }
+
+            @Override
+            public void OnDown(int position) {
+                int toPosition = position + 1;
+                adapter.moveChildTo(position, toPosition);
+            }
+
+            @Override
+            public void OnItemClickListener(int position, Object Item) {
+                Log.i(DBHelperActivity.class.getSimpleName(), "OnItemClickListener: position = " + position);
+            }
+        });
+        sqlList.setAdapter(adapter);
 		Button btnAddObject = (Button) findViewById(R.id.btnAddObject);
 		btnAddObject.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
 				DBProvider.saveObject(DBHelperActivity.this, "test", test);
-				initList();
+				adapter.add(test);
 			}
 		});
 		initList();
@@ -51,8 +99,9 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
 
 	protected void initList() {
 		getData();
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
-		sqlList.setAdapter(adapter);
+        adapter.clear();
+        adapter.addAll(objects);
+        sqlList.setAdapter(adapter);
 	}
 
 	private void initToolbar() {
@@ -66,12 +115,7 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
 
     private void getData() {
 	    Cursor cursor =  DBProvider.selectDB("test", null, null, null, this);
-	    data.clear();
-	    objects = new ArrayList<>();
         objects = DBProvider.getCursorObjectList(cursor, TestObject.class);
-        for (TestObject object : objects) {
-		    data.add(object.getName());
-	    }
     }
 
     @Override
@@ -81,6 +125,7 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
         return true;
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
@@ -124,6 +169,4 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
 	public void onLoaderReset(android.content.Loader<Cursor> loader) {
 
 	}
-
-
 }

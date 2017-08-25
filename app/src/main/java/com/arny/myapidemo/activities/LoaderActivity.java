@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.arny.arnylib.loaders.*;
+import com.arny.arnylib.utils.ToastMaker;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.utils.ToastMaker;
 
 public class LoaderActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 	private static final String TAG = "LoaderActivity";

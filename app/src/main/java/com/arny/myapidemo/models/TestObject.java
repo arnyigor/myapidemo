@@ -1,6 +1,8 @@
 package com.arny.myapidemo.models;
 
 import android.database.Cursor;
+import com.arny.arnylib.database.DBProvider;
+import com.arny.arnylib.utils.Utility;
 import org.chalup.microorm.MicroOrm;
 import org.chalup.microorm.annotations.Column;
 
@@ -47,7 +49,7 @@ public class TestObject implements Serializable {
 
     @Override
     public String toString() {
-        return "\nid:" + this.getDbID() + ";name:" + this.getName() + ";goodItems:" + getGoodItems();
+        return DBProvider.getColumns(this);
     }
 
     public ArrayList<GoodItem> getGoodItems() {

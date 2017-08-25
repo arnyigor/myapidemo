@@ -3,18 +3,17 @@ package com.arny.myapidemo.activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
+import com.arny.arnylib.utils.Generator;
+import com.arny.arnylib.utils.MathUtils;
+import com.arny.arnylib.utils.ToastMaker;
+import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.RecyclerAdapter;
 import com.arny.myapidemo.models.GoodItem;
-import com.arny.myapidemo.utils.BaseUtils;
-import com.arny.myapidemo.utils.Generator;
-import com.arny.myapidemo.utils.ToastMaker;
 
 import java.util.ArrayList;
 
@@ -64,7 +63,7 @@ public class RecyclerTestActivity extends AppCompatActivity  implements Recycler
             goodItem.setId(String.valueOf(goodItems.size()));
             goodItem.setName(Generator.getString(10));
             goodItem.setImgUrl(Generator.getImageUrl(1600, 1200,Generator.GENERATOR_TYPE_IMG_PLACEIMG));
-            goodItem.setPrice(BaseUtils.randDouble(15.05,55.5));
+            goodItem.setPrice(MathUtils.randDouble(15.05,55.5));
         return goodItem;
     }
 
@@ -75,7 +74,7 @@ public class RecyclerTestActivity extends AppCompatActivity  implements Recycler
             goodItem.setId(String.valueOf(i));
             goodItem.setName(Generator.getString(10));
             goodItem.setImgUrl(Generator.getImageUrl(1600, 1200,Generator.GENERATOR_TYPE_IMG_PLACEIMG));
-            goodItem.setPrice(BaseUtils.randDouble(15.05,55.5));
+            goodItem.setPrice(MathUtils.randDouble(15.05,55.5));
             goodItems.add(goodItem);
         }
         return goodItems;

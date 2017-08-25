@@ -3,7 +3,8 @@ package com.arny.myapidemo.adapters;
 import android.view.View;
 import com.arny.arnylib.adapters.RecyclerBindableAdapter;
 import com.arny.myapidemo.R;
-public class LinearExampleAdapter extends RecyclerBindableAdapter<Integer, LinearViewHolder> {
+import com.arny.myapidemo.models.TestObject;
+public class LinearExampleAdapter extends RecyclerBindableAdapter<TestObject, LinearViewHolder> {
 	private LinearViewHolder.ActionListener actionListener;
 
 	//задаем layout id для нашего элемента

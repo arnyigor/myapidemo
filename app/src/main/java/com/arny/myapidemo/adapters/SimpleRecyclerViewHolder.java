@@ -8,7 +8,7 @@ import butterknife.OnClick;
 import com.arny.arnylib.adapters.BindableViewHolder;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.models.TestObject;
-public class SimpleViewHolder extends BindableViewHolder<TestObject> {
+public class SimpleRecyclerViewHolder extends BindableViewHolder<TestObject> {
 
 
     @BindView(R.id.simple_example_item_tittle)
@@ -17,7 +17,7 @@ public class SimpleViewHolder extends BindableViewHolder<TestObject> {
     private int position;
     private SimpleActionListener simpleActionListener;
 
-    public SimpleViewHolder(View itemView) {
+    public SimpleRecyclerViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

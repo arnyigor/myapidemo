@@ -14,7 +14,6 @@ import android.widget.*;
 import com.arny.arnylib.adapters.OGArrayAdapter;
 import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.utils.BaseUtils;
 import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
 import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
@@ -206,7 +205,7 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
 		resourceAdapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_dropdown_item);
         simpleSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(simpleSpinnerAdapter);
-        ArrAdapter simpleListAdapter =new ArrAdapter(this,android.R.layout.simple_list_item_1);
+        SpinnerAdapter simpleListAdapter =new SpinnerAdapter(this,android.R.layout.simple_list_item_1);
         simpleListAdapter.addAll(arrayList);
         autoComplit.setAdapter(simpleListAdapter);
         autoComplit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -218,8 +217,8 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
 	}
 
 
-    private class ArrAdapter extends OGArrayAdapter<String> {
-        public ArrAdapter(Context context, int textViewResourceId) {
+    private class SpinnerAdapter extends OGArrayAdapter<String> {
+        public SpinnerAdapter(Context context, int textViewResourceId) {
             super(context, textViewResourceId);
         }
 
@@ -286,14 +285,14 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
 
 	private void refreshEditingMode() {
 		if (isModeEditor()){
-			if (!BaseUtils.empty(editedParam)){
+			if (!Utility.empty(editedParam)){
 				edtTaskName.setText(editedParam);
 			}
 			edtTaskName.setVisibility(View.VISIBLE);
 			tvTaskName.setVisibility(View.GONE);
 			btnEditingOk.setVisibility(View.VISIBLE);
 		}else{
-			if (!BaseUtils.empty(edtTaskName.getText().toString())){
+			if (!Utility.empty(edtTaskName.getText().toString())){
 				editedParam = edtTaskName.getText().toString().trim();
 			}else{
 				editedParam = "no text";

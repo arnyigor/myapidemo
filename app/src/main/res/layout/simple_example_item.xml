@@ -1,55 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    xmlns:tools="http://schemas.android.com/tools"
-                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:id="@+id/card_view"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    tools:context=".activities.DBHelperActivity"
-                                    card_view:cardCornerRadius="5dp"
-                                    card_view:cardElevation="5dp"
-                                    card_view:cardUseCompatPadding="true">
-
-<RelativeLayout
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="5dp">
-
-        <ImageView
-            android:id="@+id/imgGoodPhoto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_action_stop"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
-        <TextView
-                android:id="@+id/tvGoodName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="test"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:gravity="center_horizontal"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@+id/imgGoodPhoto"/>
-        <TextView
-            android:id="@+id/tvGoodPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="1231231231"
-            android:gravity="center_horizontal"
-            android:layout_below="@+id/tvGoodName"
-            android:layout_alignLeft="@+id/tvGoodName"
-            android:layout_marginTop="5dp"
-            android:layout_alignParentRight="true" />
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true"
+        tools:context=".activities.DBHelperActivity">
 
     <RelativeLayout
             android:focusable="true"
@@ -109,7 +67,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"/>
     </RelativeLayout>
-    </RelativeLayout>
+
 
 
 </android.support.v7.widget.CardView>

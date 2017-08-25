@@ -14,11 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.arny.arnylib.service.AbstractIntentService;
 import com.arny.arnylib.service.OperationProvider;
+import com.arny.arnylib.utils.ToastMaker;
+import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.activities.TabsActivity;
 import com.arny.myapidemo.services.Operations;
-import com.arny.myapidemo.utils.BaseUtils;
-import com.arny.myapidemo.utils.ToastMaker;
 
 
 public class MyServicefragment extends Fragment implements View.OnClickListener, FragmentCommunicator {
@@ -121,7 +121,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener,
                 Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras success= " + success);
 //                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras getOperationData= " + provider.getOperationData());
                 Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras operationResult= " + operationResult);
-                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: time = " + BaseUtils.getDateTime());
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: time = " + Utility.getDateTime());
             }
             if (operationFinished) {
                 ToastMaker.toastSuccess(context,"Результат операции " + operation + ":"+ operationResult);

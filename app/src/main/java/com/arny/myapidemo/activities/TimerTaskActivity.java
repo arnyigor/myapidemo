@@ -13,9 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.services.MyTimerService;
-import com.arny.myapidemo.utils.BaseUtils;
 
 
 public class TimerTaskActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -61,7 +61,7 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void onBtnStartService() {
-        if (!BaseUtils.isMyServiceRunning(MyTimerService.class,this)){
+        if (!Utility.isMyServiceRunning(MyTimerService.class,this)){
             intent.putExtra(MyTimerService.EXTRA_KEY_TIME, 15);
             intent.putExtra(MyTimerService.EXTRA_KEY_STELS, stels);
         }
@@ -93,7 +93,7 @@ public class TimerTaskActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TimerTaskActivity.class.getSimpleName(), "onResume: isMyServiceRunning " + BaseUtils.isMyServiceRunning(MyTimerService.class,this));
+        Log.i(TimerTaskActivity.class.getSimpleName(), "onResume: isMyServiceRunning " + Utility.isMyServiceRunning(MyTimerService.class,this));
         onRegisterReciever();
     }
 

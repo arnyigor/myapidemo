@@ -15,9 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.arny.arnylib.utils.ToastMaker;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.fragments.MyServicefragment;
-import com.arny.myapidemo.utils.ToastMaker;
 
 public class NavDrawerActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener {
