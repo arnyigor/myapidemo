@@ -11,24 +11,24 @@
                                     card_view:cardElevation="5dp"
                                     card_view:cardUseCompatPadding="true">
 
-<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="5dp">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp">
 
         <ImageView
-            android:id="@+id/imgGoodPhoto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_action_stop"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+                android:id="@+id/imgGoodPhoto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_action_stop"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
         <TextView
                 android:id="@+id/tvGoodName"
                 android:layout_width="match_parent"
@@ -41,74 +41,74 @@
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@+id/imgGoodPhoto"/>
         <TextView
-            android:id="@+id/tvGoodPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="1231231231"
-            android:gravity="center_horizontal"
-            android:layout_below="@+id/tvGoodName"
-            android:layout_alignLeft="@+id/tvGoodName"
-            android:layout_marginTop="5dp"
-            android:layout_alignParentRight="true" />
-
-    <RelativeLayout
-            android:focusable="true"
-            android:clickable="true"
-            android:padding="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/simple_example_item_move_to_top"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                app:iiv_color="@color/colorTextGrayLight"
-                android:adjustViewBounds="true"
-                android:layout_toRightOf="@+id/simple_example_item_tittle"
-                app:iiv_icon="gmd-arrow-upward" />
-
-        <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/simple_example_item_remove"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                app:iiv_color="@color/colorTextGrayLight"
-                android:adjustViewBounds="true"
-                android:layout_toRightOf="@+id/simple_example_item_move_to_top"
-                app:iiv_icon="gmd-delete"/>
-
-        <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/simple_example_item_up"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                app:iiv_color="@color/colorTextGrayLight"
-                android:adjustViewBounds="true"
-                android:layout_toRightOf="@+id/simple_example_item_remove"
-                app:iiv_icon="gmd-keyboard-arrow-up" />
-
-        <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/simple_example_item_down"
-                android:layout_width="30dp"
-                android:layout_margin="5dp"
-                android:layout_toRightOf="@+id/simple_example_item_up"
-                android:layout_height="30dp"
-                android:adjustViewBounds="true"
-                app:iiv_color="@color/colorTextGrayLight"
-                app:iiv_icon="gmd-keyboard-arrow-down" />
-
-        <TextView
-                android:id="@+id/simple_example_item_tittle"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvGoodPrice"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-    </RelativeLayout>
+                tools:text="1231231231"
+                android:gravity="center_horizontal"
+                android:layout_below="@+id/tvGoodName"
+                android:layout_alignLeft="@+id/tvGoodName"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"/>
+
+        <RelativeLayout
+                android:focusable="true"
+                android:clickable="true"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/simple_example_item_move_to_top"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    app:iiv_color="@color/colorTextGrayLight"
+                    android:adjustViewBounds="true"
+                    android:layout_toRightOf="@+id/simple_example_item_tittle"
+                    app:iiv_icon="gmd-arrow-upward"/>
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/simple_example_item_remove"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    app:iiv_color="@color/colorTextGrayLight"
+                    android:adjustViewBounds="true"
+                    android:layout_toRightOf="@+id/simple_example_item_move_to_top"
+                    app:iiv_icon="gmd-delete"/>
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/simple_example_item_up"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    app:iiv_color="@color/colorTextGrayLight"
+                    android:adjustViewBounds="true"
+                    android:layout_toRightOf="@+id/simple_example_item_remove"
+                    app:iiv_icon="gmd-keyboard-arrow-up"/>
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/simple_example_item_down"
+                    android:layout_width="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/simple_example_item_up"
+                    android:layout_height="30dp"
+                    android:adjustViewBounds="true"
+                    app:iiv_color="@color/colorTextGrayLight"
+                    app:iiv_icon="gmd-keyboard-arrow-down"/>
+
+            <TextView
+                    android:id="@+id/simple_example_item_tittle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+        </RelativeLayout>
     </RelativeLayout>
 
 

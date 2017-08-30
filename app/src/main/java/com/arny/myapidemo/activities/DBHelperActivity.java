@@ -1,9 +1,7 @@
 package com.arny.myapidemo.activities;
 
 import android.annotation.SuppressLint;
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,11 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import com.arny.arnylib.adapters.SimpleBindableAdapter;
-import com.arny.arnylib.database.DBLoader;
 import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.utils.MathUtils;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.adapters.SimpleRecyclerViewHolder;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
 import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.TestObject;
@@ -31,14 +27,12 @@ import com.mikepenz.iconics.context.IconicsContextWrapper;
 
 import java.util.ArrayList;
 
-//import org.chalup.microorm.MicroOrm;
-
-public class DBHelperActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor>{
+public class DBHelperActivity extends AppCompatActivity {
     private ArrayList<String> data = new ArrayList<String>();
     private RecyclerView sqlList;
     private ArrayList<TestObject> objects;
     private Toolbar toolbar;
-    private SimpleBindableAdapter<TestObject, SimpleRecyclerViewHolder> adapter;
+    private SimpleBindableAdapter<TestObject, SimpleViewHolder> adapter;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -50,11 +44,10 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sqllist);
         initToolbar();
-	    getLoaderManager().initLoader(R.id.db_loader, Bundle.EMPTY, this);
         sqlList = (RecyclerView) findViewById(R.id.sqlList);
         sqlList.setLayoutManager( new LinearLayoutManager(this));
         sqlList.setItemAnimator(new DefaultItemAnimator());
-        adapter = new SimpleBindableAdapter<>(R.layout.recycler_item, SimpleRecyclerViewHolder.class);
+        adapter = new SimpleBindableAdapter<>(R.layout.simple_example_item, SimpleViewHolder.class);
         adapter.setActionListener(new SimpleViewHolder.SimpleActionListener() {
             @Override
             public void onMoveToTop(int position) {
@@ -63,8 +56,9 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
 
             @Override
             public void OnRemove(int position) {
-                adapter.removeChild(position);
                 DBProvider.deleteDB("test", "id = ?", new String[]{objects.get(position).getId()}, DBHelperActivity.this);
+                adapter.removeChild(position);
+                objects.remove(position);
             }
 
             @Override
@@ -149,24 +143,4 @@ public class DBHelperActivity extends AppCompatActivity  implements LoaderManage
         }
     }
 
-	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		switch (id) {
-			case R.id.db_loader:
-				return new DBLoader(DBHelperActivity.this);
-			default:
-				return null;
-		}
-	}
-
-
-	@Override
-	public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-
-	}
-
-	@Override
-	public void onLoaderReset(android.content.Loader<Cursor> loader) {
-
-	}
 }
