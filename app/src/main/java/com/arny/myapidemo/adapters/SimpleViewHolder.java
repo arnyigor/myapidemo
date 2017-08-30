@@ -1,64 +1,62 @@
 package com.arny.myapidemo.adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.arny.arnylib.adapters.BindableViewHolder;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.models.TestObject;
-public class SimpleViewHolder extends BindableViewHolder<TestObject> {
+public class SimpleViewHolder extends BindableViewHolder<TestObject> implements View.OnClickListener {
 
-
-    @BindView(R.id.simple_example_item_tittle)
-    TextView tittle;
-
-    private int position;
+	private int position;
     private SimpleActionListener simpleActionListener;
 
     public SimpleViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
-    public void bindView(int position, TestObject item, ActionListener actionListener) {
-        super.bindView(position, item, actionListener);
+    public void bindView(Context context, int position, TestObject item, ActionListener actionListener) {
+        super.bindView(context,position, item, actionListener);
         this.position = position;
         simpleActionListener = (SimpleActionListener) actionListener;
-        tittle.setText(String.format("ID:%s Name:%s", item.getId(), item.getName()));
+	    itemView.findViewById(R.id.simple_example_item_move_to_top).setOnClickListener(this);
+	    itemView.findViewById(R.id.simple_example_item_remove).setOnClickListener(this);
+	    itemView.findViewById(R.id.simple_example_item_up).setOnClickListener(this);
+	    itemView.findViewById(R.id.simple_example_item_down).setOnClickListener(this);
+	    TextView simpleExampleItemTittle = (TextView) itemView.findViewById(R.id.simple_example_item_tittle);
+	    simpleExampleItemTittle.setText(String.format("ID:%s Pos:%d Name:%s", item.getId(),position, item.getName()));
     }
 
-    @OnClick(R.id.simple_example_item_move_to_top)
-    protected void OnMoveToTopClick() {
-        if (simpleActionListener != null) {
-            simpleActionListener.onMoveToTop(position);
-        }
-    }
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.simple_example_item_move_to_top:
+				if (simpleActionListener != null) {
+					simpleActionListener.onMoveToTop(position);
+				}
+				break;
+			case R.id.simple_example_item_remove:
+				if (simpleActionListener != null) {
+					simpleActionListener.OnRemove(position);
+				}
+				break;
+			case R.id.simple_example_item_up:
+				if (simpleActionListener != null) {
+					simpleActionListener.OnUp(position);
+				}
+				break;
+			case R.id.simple_example_item_down:
+				if (simpleActionListener != null) {
+					simpleActionListener.OnDown(position);
+				}
+				break;
+		}
+	}
 
-    @OnClick(R.id.simple_example_item_remove)
-    protected void OnRemoveClick() {
-        if (simpleActionListener != null) {
-            simpleActionListener.OnRemove(position);
-        }
-    }
-
-    @OnClick(R.id.simple_example_item_up)
-    protected void OnUpClick() {
-        if (simpleActionListener != null) {
-            simpleActionListener.OnUp(position);
-        }
-    }
-
-    @OnClick(R.id.simple_example_item_down)
-    protected void OnDownClick() {
-        if (simpleActionListener != null) {
-            simpleActionListener.OnDown(position);
-        }
-    }
-
-    public interface SimpleActionListener extends ActionListener {
+	public interface SimpleActionListener extends ActionListener {
         void onMoveToTop(int position);
 
         void OnRemove(int position);
