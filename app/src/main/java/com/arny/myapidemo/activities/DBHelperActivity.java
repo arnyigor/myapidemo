@@ -38,8 +38,9 @@ public class DBHelperActivity extends AppCompatActivity {
 	private ProgressDialog pDialog;
 	private int count;
 	private Context context = DBHelperActivity.this;
+    private boolean isDbLocked;
 
-	@Override
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
     }
@@ -64,7 +65,7 @@ public class DBHelperActivity extends AppCompatActivity {
 		    public void onClick(View v) {
 			    String str = editText.getText().toString();
 			    if (!Utility.empty(str)) {
-				    recyclerView.smoothScrollToPosition(Integer.parseInt(str));
+				    recyclerView.scrollToPosition(Integer.parseInt(str));
 			    }
 		    }
 	    });
@@ -74,6 +75,7 @@ public class DBHelperActivity extends AppCompatActivity {
 			public void onClick(View v) {
 				String cntStr = editText.getText().toString();
 				if (!Utility.empty(cntStr)) {
+                    if (isDbLocked) return;
 					count = Integer.parseInt(cntStr);
 					new AsyncTask<Void, Integer, ArrayList<TestObject>>() {
 						@Override
@@ -84,7 +86,8 @@ public class DBHelperActivity extends AppCompatActivity {
 
 						@Override
 						protected ArrayList<TestObject> doInBackground(Void... voids) {
-							ArrayList<TestObject> objects1 = new ArrayList<>();
+                            isDbLocked = true;
+                            ArrayList<TestObject> objects1 = new ArrayList<>();
 							for (int i = 0; i < count; i++) {
 								TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
 								DBProvider.saveObject(context, "test", test);
@@ -102,17 +105,18 @@ public class DBHelperActivity extends AppCompatActivity {
 						@Override
 						protected void onPostExecute(ArrayList<TestObject> testObjects) {
 							super.onPostExecute(testObjects);
-							adapter.addAll(testObjects);
-							setTitle(getString(R.string.title_dbhelper) +" "+ objects.size()+ " записей");
-							ToastMaker.toastSuccess(context,"Добавлено "+testObjects.size()+" записей...");
-						}
+                            adapter.addAll(testObjects);
+                            setTitle( objects.size()+ " записей");
+                            ToastMaker.toastSuccess(context,"Добавлено "+testObjects.size()+" записей...");
+                            isDbLocked = false;
+                        }
 					}.execute();
 				}else{
 					TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
 					DBProvider.saveObject(DBHelperActivity.this, "test", test);
 					adapter.add(test);
 					objects.add(test);
-					setTitle(getString(R.string.title_dbhelper) +" "+ objects.size()+ " записей");
+					setTitle(objects.size()+ " записей");
 				}
 
 			}
@@ -125,25 +129,29 @@ public class DBHelperActivity extends AppCompatActivity {
 		adapter.setActionListener(new SimpleViewHolder.SimpleActionListener() {
 		    @Override
 		    public void onMoveToTop(int position) {
+                if (isDbLocked) return;
 		        adapter.moveChildTo(position, 0);
 		    }
 
 		    @Override
 		    public void OnRemove(int position) {
+		        if (isDbLocked) return;
 		        DBProvider.deleteDB("test", "id = ?", new String[]{objects.get(position).getId()}, DBHelperActivity.this);
 		        adapter.removeChild(position);
 		        objects.remove(position);
-			    setTitle(getString(R.string.title_dbhelper) +" "+ objects.size()+ " записей");
+			    setTitle( objects.size()+ " записей");
 		    }
 
 		    @Override
 		    public void OnUp(int position) {
+                if (isDbLocked) return;
 		        int toPosition = position - 1;
 		        adapter.moveChildTo(position, toPosition);
 		    }
 
 		    @Override
 		    public void OnDown(int position) {
+                if (isDbLocked) return;
 		        int toPosition = position + 1;
 		        adapter.moveChildTo(position, toPosition);
 		    }
@@ -157,6 +165,7 @@ public class DBHelperActivity extends AppCompatActivity {
 
 	@SuppressLint("StaticFieldLeak")
 	protected void initList() {
+        if (isDbLocked) return;
 		new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected void onPreExecute() {
@@ -166,7 +175,8 @@ public class DBHelperActivity extends AppCompatActivity {
 
 			@Override
 			protected Void doInBackground(Void... voids) {
-				getData();
+                isDbLocked = true;
+                getData();
 				return null;
 			}
 
@@ -175,9 +185,10 @@ public class DBHelperActivity extends AppCompatActivity {
 				super.onPostExecute(aVoid);
 				adapter.clear();
 				adapter.addAll(objects);
-				setTitle(getString(R.string.title_dbhelper) +" "+ objects.size()+ " записей");
+				setTitle(objects.size()+ " записей");
 				recyclerView.setAdapter(adapter);
-				DroidUtils.hideProgress(pDialog);
+                isDbLocked = false;
+                DroidUtils.hideProgress(pDialog);
 			}
 		}.execute();
 
