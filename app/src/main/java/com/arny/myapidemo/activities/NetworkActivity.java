@@ -16,6 +16,10 @@ import com.arny.myapidemo.models.Test;
 import com.google.gson.JsonArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 import java.util.ArrayList;
 
@@ -60,52 +64,44 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
-
-	@Override
+    @Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnPOSTRequest:
-				NetworkService.apiRequest(NetworkActivity.this,Method.POST, tesla_url, params,headers, new OnStringRequestResult() {
-					@Override
-					public void onSuccess(String result) {
-					}
-
-					@Override
-					public void onError(String error) {
-						Log.i(NetworkActivity.class.getSimpleName(), "onError: error = " + error);
-					}
-				});
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://beta.json-generator.com/api/json/get/4JzCgxruX")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 				break;
 			case R.id.btnGETRequest:
-                String url = "http://beta.json-generator.com/api/json/get/VyCG5xB_7";
-                ApiRequest.apiResponse(this, url, null, new Response.Listener<Object>() {
-                    @Override
-                    public void onResponse(Object response) {
-                        JsonArray posts  = ApiUtils.getResponse(response, JsonArray.class);
-                        ArrayList<Test> tests = ApiUtils.convertArray(posts, Test.class);
-                        for (Test test : tests) {
-                            Log.i(NetworkActivity.class.getSimpleName(), "onResponse:"+test.getClass().getSimpleName()+" post = " + test );
-                        }
-                    }
-                }, new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(NetworkActivity.class.getSimpleName(), "onErrorResponse: " + ApiUtils.getVolleyError(error));
-                    }
-                });
+//                String url = "http://beta.json-generator.com/api/json/get/VyCG5xB_7";
+//                ApiRequest.apiResponse(this, url, null, new Response.Listener<Object>() {
+//                    @Override
+//                    public void onResponse(Object response) {
+//                        JsonArray posts  = ApiUtils.getResponse(response, JsonArray.class);
+//                        ArrayList<Test> tests = ApiUtils.convertArray(posts, Test.class);
+//                        for (Test test : tests) {
+//                            Log.i(NetworkActivity.class.getSimpleName(), "onResponse:"+test.getClass().getSimpleName()+" post = " + test );
+//                        }
+//                    }
+//                }, new com.android.volley.Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e(NetworkActivity.class.getSimpleName(), "onErrorResponse: " + ApiUtils.getVolleyError(error));
+//                    }
+//                });
                 break;
 			case R.id.btnPUTRequest:
-				NetworkService.apiRequest(NetworkActivity.this,Method.PUT, tesla_url,  params,headers, new OnStringRequestResult() {
-					@Override
-					public void onSuccess(String result) {
-					}
-
-					@Override
-					public void onError(String error) {
-						Log.i(NetworkActivity.class.getSimpleName(), "onError: error = " + error);
-					}
-				});
+//				NetworkService.apiRequest(NetworkActivity.this,Method.PUT, tesla_url,  params,headers, new OnStringRequestResult() {
+//					@Override
+//					public void onSuccess(String result) {
+//					}
+//
+//					@Override
+//					public void onError(String error) {
+//						Log.i(NetworkActivity.class.getSimpleName(), "onError: error = " + error);
+//					}
+//				});
 				break;
 		}
 	}
