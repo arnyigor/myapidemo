@@ -60,7 +60,6 @@ public class JsonPlaceholderApiActivity extends AppCompatActivity {
                 JsonPlaceholderApiActivity.this.posts = posts;
                 adapter.clear();
                 adapter.addAll(JsonPlaceholderApiActivity.this.posts);
-                recyclerViewPosts.setAdapter(adapter);
             }
 
             @Override
@@ -90,6 +89,7 @@ public class JsonPlaceholderApiActivity extends AppCompatActivity {
                 Log.i(DBHelperActivity.class.getSimpleName(), "OnItemClickListener: position = " + position);
             }
         });
+        recyclerViewPosts.setAdapter(adapter);
     }
 
     private void initToolbar() {

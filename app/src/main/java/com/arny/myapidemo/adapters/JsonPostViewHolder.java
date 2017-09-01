@@ -23,7 +23,9 @@ public class JsonPostViewHolder extends BindableViewHolder<Post> implements View
         this.position = position;
         simpleActionListener = (SimpleActionListener) actionListener;
 	    TextView postTitle = (TextView) itemView.findViewById(R.id.tv_post_title);
+	    TextView postBody = (TextView) itemView.findViewById(R.id.tv_body);
 	    postTitle.setText(item.getTitle());
+        postBody.setText(item.getBody());
     }
 
 
