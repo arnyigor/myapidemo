@@ -1,11 +1,20 @@
 package com.arny.myapidemo.models;
 
-
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 public class GoodItem {
-    private String id;
-    private String name;
-    private String imgUrl;
-    private double price;
+	@SerializedName("price")
+	@Expose
+	private double price;
+	@SerializedName("imgUrl")
+	@Expose
+	private String imgUrl;
+	@SerializedName("name")
+	@Expose
+	private String name;
+	@SerializedName("_id")
+	@Expose
+	private String id;
 
     public String getId() {
         return id;
