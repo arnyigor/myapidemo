@@ -117,6 +117,9 @@
                 android:name=".services.WackeUpService"
                 android:exported="false"/>
 
+        <service android:name=".services.NetworkStateService"
+                 android:label="NetworkService"/>
+
         <activity
                 android:name=".activities.NetworkActivity"
                 android:label="VolleyTestActivity"/>

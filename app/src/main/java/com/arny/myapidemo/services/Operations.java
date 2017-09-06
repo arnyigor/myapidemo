@@ -1,7 +1,7 @@
 package com.arny.myapidemo.services;
 
 import android.util.Log;
-import com.androidnetworking.common.Method;
+import com.android.volley.Request;
 import com.arny.arnylib.network.NetworkService;
 import com.arny.arnylib.interfaces.OnStringRequestResult;
 import com.arny.arnylib.security.CryptoFiles;
@@ -64,7 +64,7 @@ public class Operations extends AbstractIntentService {
 		        }
 		        break;
 	        case 2:
-		        NetworkService.apiRequest(getApplicationContext(), Method.GET,"http://beta.json-generator.com/api/json/get/EJj1IoaTM", null, new OnStringRequestResult() {
+		        NetworkService.apiRequest(getApplicationContext(), Request.Method.GET,"http://beta.json-generator.com/api/json/get/EJj1IoaTM", null, new OnStringRequestResult() {
                     @Override
                     public void onSuccess(String result) {
                         Gson gson = new Gson();
@@ -148,7 +148,7 @@ public class Operations extends AbstractIntentService {
     }
 
     private void getKorpuses() {
-	    NetworkService.apiRequest(getApplicationContext(), Method.GET,API_BASE_URL +API_URL_GEN_PLAN , null, new OnStringRequestResult() {
+	    NetworkService.apiRequest(getApplicationContext(), Request.Method.GET,API_BASE_URL +API_URL_GEN_PLAN , null, new OnStringRequestResult() {
            @Override
            public void onSuccess(String result) {
                JSONArray genPlanArray;
@@ -172,7 +172,7 @@ public class Operations extends AbstractIntentService {
     private void parseKorpuses(final JSONArray korpuses) throws JSONException {
         for (int i = 0; i < korpuses.length(); i++) {
             JSONObject korpusObject = new JSONObject(korpuses.get(i).toString());
-	        NetworkService.apiRequest(getApplicationContext(), Method.GET,API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"),  null, new OnStringRequestResult() {
+	        NetworkService.apiRequest(getApplicationContext(), Request.Method.GET,API_BASE_URL + API_URL_SINGLE_PAGE + korpusObject.getString("id"),  null, new OnStringRequestResult() {
                 @Override
                 public void onSuccess(String result) {
                     Log.i(Operations.class.getSimpleName(), "onSuccess: result = " + result.length());

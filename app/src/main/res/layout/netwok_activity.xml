@@ -21,6 +21,28 @@
                 android:text="GET"/>
 
         <Button
+                android:id="@+id/btn_start_network_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Запустить сервис"
+                android:layout_below="@+id/btnGETRequest"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+        <Button
+                android:id="@+id/btn_stop_network_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Остановить сервис"
+                android:layout_below="@+id/btnPUTRequest"
+                android:layout_toRightOf="@+id/btnPOSTRequest"
+                android:layout_toEndOf="@+id/btnPOSTRequest"/>
+        <TextView
+                android:id="@+id/tv_network_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_start_network_service" android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+        <Button
                 android:id="@+id/btnPOSTRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
