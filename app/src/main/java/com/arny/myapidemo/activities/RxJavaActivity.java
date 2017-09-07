@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.net.ApiFactory;
@@ -19,17 +20,24 @@ import java.util.ArrayList;
 public class RxJavaActivity extends AppCompatActivity implements View.OnClickListener {
 
 	private ArrayList<GoodItem> goodItems = new ArrayList<>();
+    private ProgressBar progressBar2;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_rx_java);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_rx_java);
+        progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
 		findViewById(R.id.btn_change).setOnClickListener(this);
 	}
 
-	private EditText getEdtChange(){
-		return (EditText) findViewById(R.id.edt_change);
-	}
+	private void showProgress(){
+        progressBar2.setVisibility(View.VISIBLE);
+    }
+
+    private void  hideProgress(){
+	    progressBar2.setVisibility(View.GONE);
+    }
+
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
