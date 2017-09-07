@@ -6,8 +6,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.arny.arnylib.network.ApiRequest;
 import com.arny.arnylib.network.ApiUtils;
-import com.arny.myapidemo.activities.NetworkActivity;
-import com.arny.myapidemo.models.Test;
+import com.arny.myapidemo.ui.activities.NetworkActivity;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;

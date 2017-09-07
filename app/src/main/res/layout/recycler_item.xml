@@ -6,7 +6,7 @@
                                     android:id="@+id/card_view"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    tools:context=".activities.DBHelperActivity"
+                                    tools:context=".ui.activities.DBHelperActivity"
                                     card_view:cardCornerRadius="5dp"
                                     card_view:cardElevation="5dp"
                                     card_view:cardUseCompatPadding="true">

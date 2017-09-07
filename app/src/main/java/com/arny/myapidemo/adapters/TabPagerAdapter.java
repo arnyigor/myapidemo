@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.arny.myapidemo.fragments.FragmentAlarms;
-import com.arny.myapidemo.fragments.FragmentClearFolders;
-import com.arny.myapidemo.fragments.MyServicefragment;
-import com.arny.myapidemo.fragments.SplashFragment;
+import com.arny.myapidemo.ui.fragments.FragmentAlarms;
+import com.arny.myapidemo.ui.fragments.FragmentClearFolders;
+import com.arny.myapidemo.ui.fragments.MyServicefragment;
+import com.arny.myapidemo.ui.fragments.SplashFragment;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;

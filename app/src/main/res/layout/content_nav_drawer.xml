@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_nav_drawer"
-        tools:context="com.arny.myapidemo.activities.NavDrawerActivity">
+        tools:context=".ui.activities.NavDrawerActivity">
     <FrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"

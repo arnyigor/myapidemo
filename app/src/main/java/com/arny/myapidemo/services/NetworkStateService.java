@@ -13,7 +13,7 @@ import android.util.Log;
 import com.arny.arnylib.utils.DateTimeUtils;
 import com.arny.arnylib.utils.DroidUtils;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.activities.NetworkActivity;
+import com.arny.myapidemo.ui.activities.NetworkActivity;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -30,20 +30,23 @@ public class NetworkStateService extends Service {
     public static final String EXTRA_KEY_TIME = "NetworkStateService.extra.time";
     public static final String EXTRA_KEY_NETINFO = "NetworkStateService.extra.networkinfo";
     public static final String ACTION = "NetworkStateService.action";
-    private final IBinder mBinder = new MyBinder();
     private Messenger outMessenger;
     private Timer timer = new Timer();
     private int startId;
     private long pauseSec;
     private boolean connected;
+	private NotificationManager notifyManager;
+	private Notification.Builder notifyBuilder;
 
-    public class MyBinder extends Binder {
-        public NetworkStateService getService() {
-            return NetworkStateService.this;
-        }
-    }
+	private Notification.Builder getNotifyBuilder() {
+		if (notifyBuilder == null) {
+			createNotification(getApplicationContext());
+		}
+		return notifyBuilder;
+	}
 
-    @Override
+
+	@Override
     public void onCreate() {
         setServiceNotification();
         updateNotification();
@@ -87,8 +90,7 @@ public class NetworkStateService extends Service {
     }
 
     private void setServiceNotification() {
-        Notification notification = getServiceNotification();
-        startForeground(NOTIFICATION_ID, notification);
+        startForeground(NOTIFICATION_ID, createNotification(getApplicationContext()));
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -110,24 +112,23 @@ public class NetworkStateService extends Service {
         }.execute();
     }
 
-    private Notification getServiceNotification() {
-        Intent mainIntent = new Intent(getApplicationContext(), NetworkActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, mainIntent, 0);
-        isHostAvailable("www.google.com", 80, 500);
-        String content = DateTimeUtils.getDateTime("HH:mm:ss") + " Net:" + DroidUtils.getNetworkInfo(getApplicationContext());
-        Notification.Builder notifbuild = new Notification.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)// маленькая иконка
-                .setWhen(System.currentTimeMillis())
-                .setContentTitle("NET:Time:" + content)// Заголовок уведомления
-                .setContentText("Host:" + (connected ? "Online" : "Offline")); // Текст уведомления
-        notifbuild.setContentIntent(pendingIntent);
-        return notifbuild.build();
-    }
+	private Notification createNotification(Context context) {
+		notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		isHostAvailable("www.google.com", 80, 1000);
+		String content = DateTimeUtils.getDateTime("HH:mm:ss") + " Net:" + DroidUtils.getNetworkInfo(getApplicationContext());
+		notifyBuilder = new Notification.Builder(this)
+				.setSmallIcon(R.drawable.ic_launcher)// маленькая иконка
+				.setContentTitle("Host:" + (connected ? "Online" : "Offline"))// Заголовок уведомления
+				.setContentText("NET:Time:" + content); // Текст уведомления
+		return notifyBuilder.build();
+	}
 
     private void updateNotification() {
-        Notification notification = getServiceNotification();
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(NOTIFICATION_ID, notification);
+	    String content = DateTimeUtils.getDateTime("HH:mm:ss") + " Net:" + DroidUtils.getNetworkInfo(getApplicationContext());
+	    getNotifyBuilder()
+			    .setContentTitle("Host:" + (connected ? "Online" : "Offline"))
+			    .setContentText("NET:Time:" + content);
+	    notifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
     }
 
     private void stopTimerService() {

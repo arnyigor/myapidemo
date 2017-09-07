@@ -6,13 +6,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.activities.TimerTaskActivity;
+import com.arny.myapidemo.ui.activities.TimerTaskActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;

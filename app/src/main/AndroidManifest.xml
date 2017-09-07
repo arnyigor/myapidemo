@@ -26,7 +26,7 @@
 			android:theme="@style/AppTheme"
 			tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 		<activity
-				android:name=".activities.SplashActivity"
+				android:name=".ui.activities.SplashActivity"
 				android:label="@string/app_name"
 				android:theme="@style/SplashTheme">
 			<intent-filter>
@@ -36,58 +36,58 @@
 			</intent-filter>
 		</activity>
 		<activity
-				android:name=".activities.FragmentsActivity"
+				android:name=".ui.activities.FragmentsActivity"
 				android:label="fragment"/>
 		<activity
-				android:name=".activities.XmlActivity"
+				android:name=".ui.activities.XmlActivity"
 				android:label="@string/XML"/>
 		<activity
-				android:name=".activities.ScrollViewActivity"
+				android:name=".ui.activities.ScrollViewActivity"
 				android:label="@string/Scroll"/>
 		<activity
-				android:name=".activities.DialogActivity"
+				android:name=".ui.activities.DialogActivity"
 				android:label="@string/Dialog"/>
 		<activity
-				android:name=".activities.TabsActivity"
+				android:name=".ui.activities.TabsActivity"
 				android:label="@string/title_tabs"/>
 		<activity
-				android:name=".activities.ToDoListActivity"
+				android:name=".ui.activities.ToDoListActivity"
 				android:label="@string/ToDoList"/>
 		<activity
-				android:name=".activities.SqlLiteActivity"
+				android:name=".ui.activities.SqlLiteActivity"
 				android:label="@string/SqlLite"/>
 		<activity
-				android:name=".activities.DBHelperActivity"
+				android:name=".ui.activities.DBHelperActivity"
 				android:label="@string/SqlList"/>
 		<activity
-				android:name=".activities.SqlViewActivity"
+				android:name=".ui.activities.SqlViewActivity"
 				android:label="@string/SqlView"/>
 		<activity
-				android:name=".activities.AnimActivity"
+				android:name=".ui.activities.AnimActivity"
 				android:label="AnimActivity"/>
 		<activity
-				android:name=".activities.AlertCustomActivity"
+				android:name=".ui.activities.AlertCustomActivity"
 				android:label="AlertCustomActivity"/>
 		<activity
-				android:name=".activities.SimpleUIActivity"
+				android:name=".ui.activities.SimpleUIActivity"
 				android:label="SimpleUIActivity"/>
 		<activity
 				android:name=".HomeActivity"
 				android:label="@string/app_name"/>
 		<activity
-				android:name=".activities.CoordinatorActivity"
+				android:name=".ui.activities.CoordinatorActivity"
 				android:label="CoordinatorActivity"/>
 		<activity
-				android:name=".activities.TimerTaskActivity"
+				android:name=".ui.activities.TimerTaskActivity"
 				android:label="TimerTaskActivity"/>
 		<activity
-				android:name=".activities.StartAlarmActivity"
+				android:name=".ui.activities.StartAlarmActivity"
 				android:label="StartAlarmActivity"/>
 		<activity
-				android:name=".activities.LocationActivity"
+				android:name=".ui.activities.LocationActivity"
 				android:label="LocationActivity"/>
 		<activity
-				android:name=".activities.LoaderActivity"
+				android:name=".ui.activities.LoaderActivity"
 				android:label="SampleActivity"/>
 
 		<receiver android:name=".services.BootBroadcastReceiver">
@@ -121,17 +121,17 @@
 				android:label="NetworkService"/>
 
 		<activity
-				android:name=".activities.NetworkActivity"
+				android:name=".ui.activities.NetworkActivity"
 				android:label="VolleyTestActivity"/>
 		<activity
-				android:name=".activities.IntentServiceActivity"
+				android:name=".ui.activities.IntentServiceActivity"
 				android:label="IntentServiceActivity"/>
-		<activity android:name=".activities.RecyclerTestActivity"/>
-		<activity android:name=".activities.SettingsActivity"/>
-		<activity android:name=".activities.PermissionsActivity">
+		<activity android:name=".ui.activities.RecyclerTestActivity"/>
+		<activity android:name=".ui.activities.SettingsActivity"/>
+		<activity android:name=".ui.activities.PermissionsActivity">
 		</activity>
 		<activity
-				android:name=".activities.NavDrawerActivity"
+				android:name=".ui.activities.NavDrawerActivity"
 				android:label="@string/title_activity_nav_drawer"
 				android:theme="@style/AppTheme">
 		</activity>
@@ -148,9 +148,9 @@
 				android:value="@string/google_maps_key"/>
 
 		<activity
-				android:name=".activities.MapsActivity"
+				android:name=".ui.activities.MapsActivity"
 				android:label="@string/title_activity_maps"/>
-		<activity android:name=".activities.GoogleOAuthActivity"/>
+		<activity android:name=".ui.activities.GoogleOAuthActivity"/>
 		<activity
 				android:name=".mvp.view.simple.MvpSimpleActivity"
 				android:label="@string/title_activity_mvp"
@@ -158,9 +158,9 @@
 		</activity>
 		<activity android:name=".mvp.view.hello.HelloWorldActivity">
 		</activity>
-		<activity android:name=".activities.JsonPlaceholderApiActivity">
+		<activity android:name=".ui.activities.JsonPlaceholderApiActivity">
 		</activity>
-		<activity android:name=".activities.RxJavaActivity">
+		<activity android:name=".ui.activities.RxJavaActivity">
 		</activity>
 	</application>
 

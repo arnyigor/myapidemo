@@ -14,8 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.arny.arnylib.utils.Config;
-import com.arny.myapidemo.activities.*;
-import com.arny.myapidemo.fragments.SettingsFragment;
+import com.arny.myapidemo.ui.activities.*;
+import com.arny.myapidemo.ui.fragments.SettingsFragment;
 
 public class HomeActivity extends AppCompatActivity {
     private final Class[] sActivities = new Class[]{
