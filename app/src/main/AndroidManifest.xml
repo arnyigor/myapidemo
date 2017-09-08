@@ -3,139 +3,142 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.arny.myapidemo">
 
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-	<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-	<uses-permission android:name="android.permission.READ_CONTACTS"/>
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-	<uses-feature android:name="android.hardware.location.gps"/>
+    <uses-feature android:name="android.hardware.location.gps"/>
 
-	<application
-			android:name=".App"
-			android:allowBackup="true"
-			android:icon="@drawable/ic_launcher"
-			android:label="@string/app_name"
-			android:theme="@style/AppTheme"
-			tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-		<activity
-				android:name=".ui.activities.SplashActivity"
-				android:label="@string/app_name"
-				android:theme="@style/SplashTheme">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
+    <application
+            android:name=".App"
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity
+                android:name=".ui.activities.SplashActivity"
+                android:label="@string/app_name"
+                android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
-		</activity>
-		<activity
-				android:name=".ui.activities.FragmentsActivity"
-				android:label="fragment"/>
-		<activity
-				android:name=".ui.activities.XmlActivity"
-				android:label="@string/XML"/>
-		<activity
-				android:name=".ui.activities.ScrollViewActivity"
-				android:label="@string/Scroll"/>
-		<activity
-				android:name=".ui.activities.DialogActivity"
-				android:label="@string/Dialog"/>
-		<activity
-				android:name=".ui.activities.TabsActivity"
-				android:label="@string/title_tabs"/>
-		<activity
-				android:name=".ui.activities.ToDoListActivity"
-				android:label="@string/ToDoList"/>
-		<activity
-				android:name=".ui.activities.SqlLiteActivity"
-				android:label="@string/SqlLite"/>
-		<activity
-				android:name=".ui.activities.DBHelperActivity"
-				android:label="@string/SqlList"/>
-		<activity
-				android:name=".ui.activities.SqlViewActivity"
-				android:label="@string/SqlView"/>
-		<activity
-				android:name=".ui.activities.AnimActivity"
-				android:label="AnimActivity"/>
-		<activity
-				android:name=".ui.activities.AlertCustomActivity"
-				android:label="AlertCustomActivity"/>
-		<activity
-				android:name=".ui.activities.SimpleUIActivity"
-				android:label="SimpleUIActivity"/>
-		<activity
-				android:name=".HomeActivity"
-				android:label="@string/app_name"/>
-		<activity
-				android:name=".ui.activities.CoordinatorActivity"
-				android:label="CoordinatorActivity"/>
-		<activity
-				android:name=".ui.activities.TimerTaskActivity"
-				android:label="TimerTaskActivity"/>
-		<activity
-				android:name=".ui.activities.StartAlarmActivity"
-				android:label="StartAlarmActivity"/>
-		<activity
-				android:name=".ui.activities.LocationActivity"
-				android:label="LocationActivity"/>
-		<activity
-				android:name=".ui.activities.LoaderActivity"
-				android:label="SampleActivity"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".ui.activities.FragmentsActivity"
+                android:label="fragment"/>
+        <activity
+                android:name=".ui.activities.XmlActivity"
+                android:label="@string/XML"/>
+        <activity
+                android:name=".ui.activities.ScrollViewActivity"
+                android:label="@string/Scroll"/>
+        <activity
+                android:name=".ui.activities.DialogActivity"
+                android:label="@string/Dialog"/>
+        <activity
+                android:name=".ui.activities.TabsActivity"
+                android:label="@string/title_tabs"/>
+        <activity
+                android:name=".ui.activities.ToDoListActivity"
+                android:label="@string/ToDoList"/>
+        <activity
+                android:name=".ui.activities.SqlLiteActivity"
+                android:label="@string/SqlLite"/>
+        <activity
+                android:name=".ui.activities.DBHelperActivity"
+                android:label="@string/SqlList"/>
+        <activity
+                android:name=".ui.activities.SqlViewActivity"
+                android:label="@string/SqlView"/>
+        <activity
+                android:name=".ui.activities.AnimActivity"
+                android:label="AnimActivity"/>
+        <activity
+                android:name=".ui.activities.AlertCustomActivity"
+                android:label="AlertCustomActivity"/>
+        <activity
+                android:name=".ui.activities.SimpleUIActivity"
+                android:label="SimpleUIActivity"/>
+        <activity
+                android:name=".HomeActivity"
+                android:label="@string/app_name"/>
+        <activity
+                android:name=".ui.activities.CoordinatorActivity"
+                android:label="CoordinatorActivity"/>
+        <activity
+                android:name=".ui.activities.TimerTaskActivity"
+                android:label="TimerTaskActivity"/>
+        <activity
+                android:name=".ui.activities.StartAlarmActivity"
+                android:label="StartAlarmActivity"/>
+        <activity
+                android:name=".ui.activities.LocationActivity"
+                android:label="LocationActivity"/>
+        <activity
+                android:name=".ui.activities.LoaderActivity"
+                android:label="SampleActivity"/>
+        <activity
+                android:name=".ui.activities.GitHubActivity"
+                android:label="GitHubActivity"/>
 
-		<receiver android:name=".services.BootBroadcastReceiver">
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED"/>
-			</intent-filter>
-		</receiver>
+        <receiver android:name=".services.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
 
-		<service
-				android:name=".services.MyTimerService"
-				android:label="MyAlarmService"/>
-		<service
-				android:name=".services.HideNotificationService"
-				android:label="HideNotificationService"/>
-		<service
-				android:name=".services.MyIntentService"
-				android:label="MyIntentService"/>
-		<service
-				android:name=".services.Operations"
-				android:label="BackgroundOperations"/>
+        <service
+                android:name=".services.MyTimerService"
+                android:label="MyAlarmService"/>
+        <service
+                android:name=".services.HideNotificationService"
+                android:label="HideNotificationService"/>
+        <service
+                android:name=".services.MyIntentService"
+                android:label="MyIntentService"/>
+        <service
+                android:name=".services.Operations"
+                android:label="BackgroundOperations"/>
 
-		<receiver
-				android:name=".services.MyAlarmReceiver"
-				android:process=":remote"/>
+        <receiver
+                android:name=".services.MyAlarmReceiver"
+                android:process=":remote"/>
 
-		<service
-				android:name=".services.WackeUpService"
-				android:exported="false"/>
-		<service
-				android:name=".services.NetworkStateService"
-				android:label="NetworkService"/>
+        <service
+                android:name=".services.WackeUpService"
+                android:exported="false"/>
+        <service
+                android:name=".services.NetworkStateService"
+                android:label="NetworkService"/>
 
-		<activity
-				android:name=".ui.activities.NetworkActivity"
-				android:label="VolleyTestActivity"/>
-		<activity
-				android:name=".ui.activities.IntentServiceActivity"
-				android:label="IntentServiceActivity"/>
-		<activity android:name=".ui.activities.RecyclerTestActivity"/>
-		<activity android:name=".ui.activities.SettingsActivity"/>
-		<activity android:name=".ui.activities.PermissionsActivity">
-		</activity>
-		<activity
-				android:name=".ui.activities.NavDrawerActivity"
-				android:label="@string/title_activity_nav_drawer"
-				android:theme="@style/AppTheme">
-		</activity>
-		<!--
+        <activity
+                android:name=".ui.activities.NetworkActivity"
+                android:label="VolleyTestActivity"/>
+        <activity
+                android:name=".ui.activities.IntentServiceActivity"
+                android:label="IntentServiceActivity"/>
+        <activity android:name=".ui.activities.RecyclerTestActivity"/>
+        <activity android:name=".ui.activities.SettingsActivity"/>
+        <activity android:name=".ui.activities.PermissionsActivity">
+        </activity>
+        <activity
+                android:name=".ui.activities.NavDrawerActivity"
+                android:label="@string/title_activity_nav_drawer"
+                android:theme="@style/AppTheme">
+        </activity>
+        <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
@@ -143,25 +146,20 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-		<meta-data
-				android:name="com.google.android.geo.API_KEY"
-				android:value="@string/google_maps_key"/>
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
 
-		<activity
-				android:name=".ui.activities.MapsActivity"
-				android:label="@string/title_activity_maps"/>
-		<activity android:name=".ui.activities.GoogleOAuthActivity"/>
-		<activity
-				android:name=".mvp.view.simple.MvpSimpleActivity"
-				android:label="@string/title_activity_mvp"
-				android:theme="@style/AppTheme">
-		</activity>
-		<activity android:name=".mvp.view.hello.HelloWorldActivity">
-		</activity>
-		<activity android:name=".ui.activities.JsonPlaceholderApiActivity">
-		</activity>
-		<activity android:name=".ui.activities.RxJavaActivity">
-		</activity>
-	</application>
+        <activity
+                android:name=".ui.activities.MapsActivity"
+                android:label="@string/title_activity_maps"/>
+        <activity android:name=".ui.activities.GoogleOAuthActivity"/>
+        <activity android:name=".ui.activities.JsonPlaceholderApiActivity">
+        </activity>
+        <activity android:name=".ui.activities.RxJavaActivity">
+        </activity>
+        <activity android:name=".ui.activities.LoginActivity">
+        </activity>
+    </application>
 
 </manifest>

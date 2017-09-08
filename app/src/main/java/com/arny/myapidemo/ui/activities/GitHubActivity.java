@@ -44,13 +44,10 @@ public class GitHubActivity extends AppCompatActivity {
 		progress.setCancelable(false);
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-		buttonGet.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.i(Consts.TAG, "onClick url = " + url);
-				VolleyGet(UrlInit(1));
-			}
-		});
+		buttonGet.setOnClickListener(v -> {
+            Log.i(Consts.TAG, "onClick url = " + url);
+            VolleyGet(UrlInit(1));
+        });
 
 		volleyLv.setOnScrollListener(new AbsListView.OnScrollListener() {
 			private int mtotalItemCount;

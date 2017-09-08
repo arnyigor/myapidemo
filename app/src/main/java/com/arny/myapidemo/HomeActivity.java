@@ -20,11 +20,12 @@ import com.arny.myapidemo.ui.fragments.SettingsFragment;
 public class HomeActivity extends AppCompatActivity {
     private final Class[] sActivities = new Class[]{
             JsonPlaceholderApiActivity.class,
-		    RxJavaActivity.class,
+            LoginActivity.class,
+            RxJavaActivity.class,
             TabsActivity.class,
             DBHelperActivity.class,
-		    NavDrawerActivity.class,
-		    MapsActivity.class,
+            NavDrawerActivity.class,
+            MapsActivity.class,
             XmlActivity.class,
             ScrollViewActivity.class,
             DialogActivity.class,
@@ -39,9 +40,9 @@ public class HomeActivity extends AppCompatActivity {
             IntentServiceActivity.class,
             LocationActivity.class,
             RecyclerTestActivity.class,
-		    PermissionsActivity.class,
-		    LoaderActivity.class,
-		    GoogleOAuthActivity.class,
+            PermissionsActivity.class,
+            LoaderActivity.class,
+            GoogleOAuthActivity.class,
     };
 
     @Override
@@ -77,12 +78,8 @@ public class HomeActivity extends AppCompatActivity {
         return names;
     }
 
-    AdapterView.OnItemClickListener onListItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    AdapterView.OnItemClickListener onListItemClick = (parent, view, position, id) ->
             startActivity(new Intent(getBaseContext(), sActivities[position]));
-        }
-    };
 
     @Override
     public void onBackPressed() {
@@ -111,12 +108,7 @@ public class HomeActivity extends AppCompatActivity {
         quitDialog.setTitle(getString(R.string.exit_question));
         quitDialog.setNegativeButton(getString(R.string.no_answer), null);
         quitDialog.setPositiveButton(getString(R.string.yes_answer),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                });
+                (dialog, id) -> finish());
         AlertDialog alert = quitDialog.create();
         alert.show();
     }
