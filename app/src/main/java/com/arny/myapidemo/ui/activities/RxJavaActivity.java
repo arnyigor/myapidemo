@@ -9,7 +9,7 @@ import com.arny.myapidemo.R;
 import com.arny.myapidemo.api.API;
 import com.arny.myapidemo.api.JsonPlaceholderService;
 import com.arny.myapidemo.models.GoodItem;
-import com.arny.myapidemo.api.ApiFactory;
+import com.arny.arnylib.network.ApiFactory;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
