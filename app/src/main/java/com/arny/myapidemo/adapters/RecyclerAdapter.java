@@ -149,8 +149,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.itemPrice.setText(priceText);
         Glide.with(context)
                 .load(goodItems.get(position).getImgUrl())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .placeholder(R.drawable.ic_splash)
                 .into(holder.itemImage);
     }
 
