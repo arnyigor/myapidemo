@@ -29,10 +29,10 @@
 	>
 
 		<Button
-				android:id="@+id/btn_get_umorili"
+				android:id="@+id/btn_test"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="Уморили"
+				android:text="тест"
 		/>
 	</LinearLayout>
 	<LinearLayout android:layout_width="match_parent"

@@ -4,32 +4,46 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import com.android.volley.Request;
 import com.arny.arnylib.adapters.SimpleBindableAdapter;
 import com.arny.arnylib.adapters.SnappingLinearLayoutManager;
+import com.arny.arnylib.files.FileUtils;
+import com.arny.arnylib.interfaces.OnStringRequestResult;
+import com.arny.arnylib.network.NetworkService;
 import com.arny.arnylib.utils.DroidUtils;
 import com.arny.arnylib.utils.ToastMaker;
+import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.NetworkListViewHolder;
 import com.arny.myapidemo.api.API;
 import com.arny.arnylib.network.ApiFactory;
+import com.arny.myapidemo.api.FileUploadService;
+import com.arny.myapidemo.api.TestData;
 import com.arny.myapidemo.api.retrofit.PlaceholderApi;
 import com.arny.myapidemo.api.umorili.PostModel;
 import com.arny.myapidemo.api.umorili.UmoriliApi;
 import com.arny.myapidemo.services.NetworkStateService;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +105,7 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
 		initAdapter();
 		findViewById(R.id.btn_start_network_service).setOnClickListener(this);
 		findViewById(R.id.btn_stop_network_service).setOnClickListener(this);
-		findViewById(R.id.btn_get_umorili).setOnClickListener(this);
+		findViewById(R.id.btn_test).setOnClickListener(this);
 		try {
 			params = new JSONObject();
 			headers = new JSONObject();
@@ -129,11 +143,67 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
 				stopService(intent);
 				viewNetInfo();
 				break;
-			case R.id.btn_get_umorili:
-				getUmoriliList();
+			case R.id.btn_test:
+                JSONObject params = new JSONObject();
+                Utility.setJsonParam(params,"cmd", "XlhBXkZPMTcsMTZeR0IzNzksMzcxLDheRlNeRlQ2NSwyNTVeQTBOLDEzNSwxMzReRkRURVNUXkZTXlha");
+                Utility.setJsonParam(params,"key","mWfRmbxywpN7GPs2pfCuBHcPDkKpWHpX");
+
+                NetworkService.apiRequest(this, Request.Method.POST, "http://192.168.1.10/print.php", params, new OnStringRequestResult() {
+                    @Override
+                    public void onSuccess(String result) {
+                        ToastMaker.toastSuccess(NetworkActivity.this,result);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        ToastMaker.toastError(NetworkActivity.this,error);
+                    }
+                });
 				break;
 		}
 	}
+
+    private void uploadFile(Uri fileUri) {
+        // create upload service client
+        FileUploadService service =
+                ApiFactory.getInstance().createService(FileUploadService.class,"http://192.168.1.10/");
+
+        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
+        // use the FileUtils to get the actual file by uri
+        File file = new File(FileUtils.getUriFilePath( fileUri,this));
+
+        // create RequestBody instance from file
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse(getContentResolver().getType(fileUri)),
+                        file
+                );
+
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+        // add another part within the multipart request
+        String descriptionString = "hello, this is description speaking";
+        RequestBody description =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, descriptionString);
+
+        // finally, execute the request
+        Call<ResponseBody> call = service.upload(description, body);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call,
+                                   Response<ResponseBody> response) {
+                Log.v("Upload", "success");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Upload error:", t.getMessage());
+            }
+        });
+    }
 
 	private void getUmoriliList() {
 		umoriliApi.getPosts(10).enqueue(new Callback<List<PostModel>>() {

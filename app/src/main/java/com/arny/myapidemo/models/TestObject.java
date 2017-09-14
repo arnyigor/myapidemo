@@ -41,4 +41,12 @@ public class TestObject implements Serializable {
     public void setDbId(long dbId) {
         this.dbId = dbId;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
