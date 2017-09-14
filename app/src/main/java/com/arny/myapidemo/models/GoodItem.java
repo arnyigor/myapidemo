@@ -16,7 +16,16 @@ public class GoodItem {
 	@Expose
 	private String id;
 
-    public String getId() {
+	public GoodItem(double price, String name, String id) {
+		this.price = price;
+		this.name = name;
+		this.id = id;
+	}
+
+	public GoodItem() {
+	}
+
+	public String getId() {
         return id;
     }
 

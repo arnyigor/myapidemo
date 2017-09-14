@@ -12,6 +12,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     sourceSets {
         main.resources.srcDirs += '../../modules/arnylib/src/main/assets'
@@ -36,10 +37,14 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services-maps:11.2.2'
     compile 'com.google.android.gms:play-services-auth:11.2.2'
     compile 'com.code-troopers.betterpickers:library:3.1.0'
-
+    compile 'com.arello-mobile:moxy:1.5.3'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
+    compile 'com.arello-mobile:moxy-android:1.5.3'
+    compile 'com.arello-mobile:moxy-app-compat:1.5.3'
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

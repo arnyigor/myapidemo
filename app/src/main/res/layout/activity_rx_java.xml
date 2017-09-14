@@ -6,13 +6,20 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		tools:context=".ui.activities.RxJavaActivity">
-    <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content"
-                 android:visibility="gone"
-                 android:id="@+id/progressBar2"/>
-    <Button
-            android:text="Change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_change" android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/progressBar2" android:layout_toEndOf="@+id/progressBar2"/>
+	<Button
+			android:text="Change"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/btn_change"
+			android:layout_marginLeft="108dp"
+			android:layout_marginStart="108dp" android:layout_below="@+id/editText"
+			android:layout_toRightOf="@+id/progressBar2" android:layout_toEndOf="@+id/progressBar2"/>
+	<EditText
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:inputType="textPersonName"
+			android:text="Name"
+			android:ems="10"
+			android:id="@+id/editText" android:layout_alignParentTop="true" android:layout_alignRight="@+id/btn_change"
+			android:layout_alignEnd="@+id/btn_change"/>
 </RelativeLayout>
