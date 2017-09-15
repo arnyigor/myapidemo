@@ -145,10 +145,9 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
 				break;
 			case R.id.btn_test:
                 JSONObject params = new JSONObject();
-                Utility.setJsonParam(params,"cmd", "XlhBXkZPMTcsMTZeR0IzNzksMzcxLDheRlNeRlQ2NSwyNTVeQTBOLDEzNSwxMzReRkRURVNUXkZTXlha");
+                Utility.setJsonParam(params,"cmd", TestData.getData());
                 Utility.setJsonParam(params,"key","mWfRmbxywpN7GPs2pfCuBHcPDkKpWHpX");
-
-                NetworkService.apiRequest(this, Request.Method.POST, "http://192.168.1.10/print.php", params, new OnStringRequestResult() {
+                NetworkService.apiRequest(this, Request.Method.POST, "http://192.168.1.10/printLabel.php", params, new OnStringRequestResult() {
                     @Override
                     public void onSuccess(String result) {
                         ToastMaker.toastSuccess(NetworkActivity.this,result);

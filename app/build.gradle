@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     compile 'com.google.android.gms:play-services-maps:11.2.2'
     compile 'com.google.android.gms:play-services-auth:11.2.2'
     compile 'com.code-troopers.betterpickers:library:3.1.0'

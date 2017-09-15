@@ -10,19 +10,20 @@ public class API {
 	public static final String JSON_PLASEHOLDER_BASE_URL = "https://jsonplaceholder.typicode.com/";
 	public static final String JSON_GENERATOR_BASE_URL = "http://beta.json-generator.com/api/json/";
 	public static final String BASE_URL_UMORILI = "http://umorili.herokuapp.com/";
+	public static final String BASE_URL_ARISTOS = "https://hub.tesla.aristos.pw/";
 
 	public static String getOpenWeatherTown(String town) {
         return OPENWEATHER_BASE_URL + town + "&units=metric&APPID=" + OPEN_WEATHER_APIID;
     }
 
 
-	public static JsonPlaceholderService createService(){
+	public static AristorService createService(){
 		return new Retrofit.Builder()
-				.baseUrl(API.JSON_PLASEHOLDER_BASE_URL)
+				.baseUrl(API.BASE_URL_ARISTOS)
 				.addConverterFactory(GsonConverterFactory.create())
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 				.build()
-				.create(JsonPlaceholderService.class);
+				.create(AristorService.class);
 	}
 
 	public static PlaceholderApi getPlaceholderApi(){
