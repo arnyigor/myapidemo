@@ -1,5 +1,6 @@
 package com.arny.myapidemo.ui.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,7 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 	private Observable<ArrayList<GoodItem>> obs;
     private Button btn;
     private AristorService aristos;
+    private ProgressDialog pDialog;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,9 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
         btn = (Button) findViewById(R.id.btn_change);
         btn.setOnClickListener(this);
 		edt = (EditText) findViewById(R.id.editText);
-        aristos = ApiFactory.getInstance().createService(AristorService.class, API.BASE_URL_ARISTOS);
+	    pDialog = new ProgressDialog(this);
+	    pDialog.setCancelable(false);
+	    aristos = ApiFactory.getInstance().createService(AristorService.class, API.BASE_URL_ARISTOS);
         getRxEdit()
                 .map(s -> s.length() >= 3)
                 .subscribe(res -> btn.setEnabled(res));
@@ -85,48 +89,62 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.btn_change:
-                JSONObject ctx = new JSONObject();
-                JSONObject params = new JSONObject();
-                Utility.setJsonParam(ctx,"app","pw.aristos.packit.debug");
-                Utility.setJsonParam(ctx,"version","1.4.1");
-                Utility.setJsonParam(ctx,"code","141");
-                Utility.setJsonParam(params,"context",ctx);
-                Utility.setJsonParam(params,"login","test");
-                Utility.setJsonParam(params,"pass","123456");
-				HashMap<String, String> hashMap = new HashMap<>();
-				hashMap.put("login", "test");
-				hashMap.put("pass", edt.getText().toString());
-				hashMap.put("context", ctx.toString());
-				aristos.login(hashMap)
-						.map(auth -> {
-							System.out.println("auth:" + auth);
-							return auth;
-						})
-						.doOnError(throwable -> runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,throwable.getMessage())))
-						.flatMap(auth -> {
-							if (auth.getSession() != null) {
-								return aristos.check(getAuthSession(auth));
+				aristos.login(getPostHashMap())
+						.doOnSubscribe(disposable -> runOnUiThread(() -> DroidUtils.showProgress(pDialog,"Вход...")))
+						.doFinally(() -> runOnUiThread(() -> DroidUtils.hideProgress(pDialog)))
+						.doOnNext(auth -> {
+							if (!auth.getSuccess()) {
+								runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,auth.getError()));
 							}
-							return observer -> {
-							};
 						})
-						.map(o -> {
-							System.out.println("o:" + o);
-							return o;
+						.doOnError(throwable -> {
+							runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,throwable.getMessage()));
 						})
-						.doOnError(throwable -> runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,throwable.getMessage())))
+						.doOnNext(auth -> {
+							if (auth.getSession() != null) {
+								aristos.check(getAuthSession(auth))
+										.doOnError(throwable -> {
+											runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,throwable.getMessage()));
+										})
+										.doOnSubscribe(disposable -> runOnUiThread(() -> DroidUtils.showProgress(pDialog,"Проверка...")))
+										.doFinally(() -> runOnUiThread(() -> DroidUtils.hideProgress(pDialog)))
+										.doOnNext(auth1 -> {
+											if (!auth.getSuccess()) {
+												runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,auth.getError()));
+											}else{
+												Config.setString("session",auth1.getSession(),RxJavaActivity.this);
+											}
+										})
+										.subscribeOn(Schedulers.io())
+										.observeOn(AndroidSchedulers.mainThread())
+										.subscribe();
+							}
+						})
 						.subscribeOn(Schedulers.io())
 						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe(System.out::println);
+						.subscribe();
 				break;
 		}
+	}
+
+	@NonNull
+	private HashMap<String, String> getPostHashMap() {
+		HashMap<String, String> hashMap = new HashMap<>();
+		JSONObject ctx = new JSONObject();
+		Utility.setJsonParam(ctx,"app","pw.aristos.packit.debug");
+		Utility.setJsonParam(ctx,"version","1.4.1");
+		Utility.setJsonParam(ctx,"code","141");
+		hashMap.put("login", "test");
+		hashMap.put("pass", edt.getText().toString());
+		hashMap.put("context", ctx.toString());
+		return hashMap;
 	}
 
 	@NonNull
 	private HashMap<String, String> getAuthSession(Auth auth) {
 		String session = auth.getSession();
 		HashMap<String, String> map = new HashMap<>();
-		map.put("session", session);
+		map.put("session1", session);
 		return map;
 	}
 

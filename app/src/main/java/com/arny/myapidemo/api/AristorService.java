@@ -12,7 +12,7 @@ public interface AristorService {
     Observable<Auth> login(@FieldMap Map<String, String> names);
 	@FormUrlEncoded
 	@POST("api/check")
-	Observable<Object> check(@FieldMap Map<String, String> names);
+	Observable<Auth> check(@FieldMap Map<String, String> names);
 
 }
 
