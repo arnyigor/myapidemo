@@ -1,6 +1,7 @@
 package com.arny.myapidemo.ui.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,22 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.network.ApiFactory;
-import com.arny.arnylib.utils.Generator;
-import com.arny.arnylib.utils.MathUtils;
-import com.arny.arnylib.utils.Stopwatch;
-import com.arny.arnylib.utils.Utility;
+import com.arny.arnylib.network.ApiUtils;
+import com.arny.arnylib.utils.*;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.api.API;
 import com.arny.myapidemo.api.AristorService;
+import com.arny.myapidemo.api.Auth;
 import com.arny.myapidemo.api.umorili.UmoriliApi;
 import com.arny.myapidemo.models.GoodItem;
 import com.jakewharton.rxbinding2.InitialValueObservable;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
+import io.reactivex.*;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -35,8 +32,12 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import org.json.JSONObject;
 import org.jsoup.helper.StringUtil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class RxJavaActivity extends AppCompatActivity implements View.OnClickListener {
@@ -85,19 +86,48 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 		switch (view.getId()) {
 			case R.id.btn_change:
                 JSONObject ctx = new JSONObject();
+                JSONObject params = new JSONObject();
                 Utility.setJsonParam(ctx,"app","pw.aristos.packit.debug");
-                Utility.setJsonParam(ctx,"1.4.1","pw.aristos.packit.debug");
+                Utility.setJsonParam(ctx,"version","1.4.1");
                 Utility.setJsonParam(ctx,"code","141");
-                aristos.login("test", "123456", ctx.toString())
-                        .map(o -> {
-                            Log.i(RxJavaActivity.class.getSimpleName(), "apply: " + o);
-                            return o;
-                        })
-                        .subscribeOn(Schedulers.io())//где обрабатывать(бг поток)
-                        .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();//куда возвращать(главный);
-                break;
+                Utility.setJsonParam(params,"context",ctx);
+                Utility.setJsonParam(params,"login","test");
+                Utility.setJsonParam(params,"pass","123456");
+				HashMap<String, String> hashMap = new HashMap<>();
+				hashMap.put("login", "test");
+				hashMap.put("pass", edt.getText().toString());
+				hashMap.put("context", ctx.toString());
+				aristos.login(hashMap)
+						.map(auth -> {
+							System.out.println("auth:" + auth);
+							return auth;
+						})
+						.doOnError(throwable -> runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,throwable.getMessage())))
+						.flatMap(auth -> {
+							if (auth.getSession() != null) {
+								return aristos.check(getAuthSession(auth));
+							}
+							return observer -> {
+							};
+						})
+						.map(o -> {
+							System.out.println("o:" + o);
+							return o;
+						})
+						.doOnError(throwable -> runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this,throwable.getMessage())))
+						.subscribeOn(Schedulers.io())
+						.observeOn(AndroidSchedulers.mainThread())
+						.subscribe(System.out::println);
+				break;
 		}
+	}
+
+	@NonNull
+	private HashMap<String, String> getAuthSession(Auth auth) {
+		String session = auth.getSession();
+		HashMap<String, String> map = new HashMap<>();
+		map.put("session", session);
+		return map;
 	}
 
 	private ArrayList<GoodItem> generateItems(int min, int max1) throws Exception {

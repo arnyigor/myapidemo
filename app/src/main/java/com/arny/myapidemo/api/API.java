@@ -15,22 +15,4 @@ public class API {
 	public static String getOpenWeatherTown(String town) {
         return OPENWEATHER_BASE_URL + town + "&units=metric&APPID=" + OPEN_WEATHER_APIID;
     }
-
-
-	public static AristorService createService(){
-		return new Retrofit.Builder()
-				.baseUrl(API.BASE_URL_ARISTOS)
-				.addConverterFactory(GsonConverterFactory.create())
-				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-				.build()
-				.create(AristorService.class);
-	}
-
-	public static PlaceholderApi getPlaceholderApi(){
-		return new Retrofit.Builder()
-				.baseUrl(API.JSON_PLASEHOLDER_BASE_URL)
-				.addConverterFactory(GsonConverterFactory.create())
-				.build()
-				.create(PlaceholderApi.class);
-	}
 }
