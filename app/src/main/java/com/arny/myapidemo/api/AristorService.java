@@ -9,7 +9,10 @@ import java.util.Map;
 public interface AristorService {
 	@FormUrlEncoded
     @POST("api/login")
-    Observable<Auth> login(@FieldMap Map<String, String> names);
+    Observable<Auth> login(@FieldMap Map<String, Object> names);
+	@FormUrlEncoded
+	@POST("/packit/get-transfer-orders")
+	Observable<AristosTransferResponse> getTransfer(@FieldMap Map<String, Object> postMap);
 	@FormUrlEncoded
 	@POST("api/check")
 	Observable<Auth> check(@FieldMap Map<String, String> names);

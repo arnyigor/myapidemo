@@ -1,6 +1,6 @@
 package com.arny.myapidemo.models;
 
-import com.arny.arnylib.database.DBProvider;
+import com.arny.arnylib.utils.Utility;
 import org.chalup.microorm.annotations.Column;
 
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public class TestObject implements Serializable {
 
     @Override
     public String toString() {
-        return DBProvider.getColumns(this);
+        return Utility.getFields(this);
     }
 
     public String getId() {

@@ -18,6 +18,7 @@ import com.arny.myapidemo.models.GoodItem;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import io.reactivex.*;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.json.JSONObject;
 
@@ -37,11 +38,12 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rx_java);
-        btn = (Button) findViewById(R.id.btn_change);
+        btn = (Button) findViewById(R.id.btn_login);
         btn.setOnClickListener(this);
         edt = (EditText) findViewById(R.id.editText);
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+	    findViewById(R.id.btnGetTransfers).setOnClickListener(this);
         aristos = ApiFactory.getInstance().createService(AristorService.class, API.BASE_URL_ARISTOS);
         getRxEdit()
                 .map(s -> s.length() >= 3)
@@ -71,59 +73,48 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_change:
+	        case R.id.btnGetTransfers:
+		        API.getTransfer()
+				        .subscribeOn(Schedulers.io())
+				        .observeOn(AndroidSchedulers.mainThread())
+		                .subscribe(object -> {
+			                Log.i(RxJavaActivity.class.getSimpleName(), "onClick: object.getSuccess() = " + object.getSuccess());
+			                System.out.println(object);
+		                }, Throwable::printStackTrace);
+		        break;
+	        case R.id.btn_login:
                 aristos.login(getPostHashMap())
                         .doOnSubscribe(disposable -> runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Вход...")))
                         .doFinally(() -> runOnUiThread(() -> DroidUtils.hideProgress(pDialog)))
-                        .doOnNext(auth -> {
-                            if (!auth.getSuccess()) {
-                                runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this, auth.getError()));
-                            }
-                        })
-                        .doOnError(throwable -> {
-                            runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this, throwable.getMessage()));
-                        })
-                        .doOnNext(auth -> {
-                            if (auth.getSession() != null) {
-                                aristos.check(getAuthSession(auth))
-                                        .doOnError(throwable -> {
-                                            runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this, throwable.getMessage()));
-                                        })
-                                        .doOnSubscribe(disposable -> runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Проверка...")))
-                                        .doFinally(() -> runOnUiThread(() -> DroidUtils.hideProgress(pDialog)))
-                                        .doOnNext(auth1 -> {
-                                            if (!auth.getSuccess()) {
-                                                runOnUiThread(() -> ToastMaker.toastError(RxJavaActivity.this, auth.getError()));
-                                            } else {
-                                                Config.setString("session", auth1.getSession(), RxJavaActivity.this);
-                                            }
-                                        })
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe();
-                            }
-                        })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+                        .subscribe(auth -> {
+	                        System.out.println(auth);
+	                        if (auth.getSuccess()) {
+		                        if (auth.getSession() != null) {
+			                        API.setSession(auth.getSession());
+		                        }
+	                        }else{
+		                        ToastMaker.toastError(RxJavaActivity.this,auth.getError());
+	                        }
+                        },throwable -> {
+	                        ToastMaker.toastError(RxJavaActivity.this, throwable.getMessage());
+                        });
                 break;
         }
     }
 
     @NonNull
-    private HashMap<String, String> getPostHashMap() {
-        HashMap<String, String> hashMap = new HashMap<>();
-        JSONObject ctx = new JSONObject();
-        Utility.setJsonParam(ctx, "app", "pw.aristos.packit.debug");
-        Utility.setJsonParam(ctx, "version", "1.4.1");
-        Utility.setJsonParam(ctx, "code", "141");
+    private HashMap<String, Object> getPostHashMap() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+	    JSONObject ctx = API.getAristosPostCtx();
         hashMap.put("login", "test");
         hashMap.put("pass", edt.getText().toString());
-        hashMap.put("context", ctx.toString());
+        hashMap.put("context", ctx);
         return hashMap;
     }
 
-    @NonNull
+	@NonNull
     private HashMap<String, String> getAuthSession(Auth auth) {
         String session = auth.getSession();
         HashMap<String, String> map = new HashMap<>();

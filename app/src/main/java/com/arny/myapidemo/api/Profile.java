@@ -1,7 +1,7 @@
 
 package com.arny.myapidemo.api;
 
-import com.arny.arnylib.database.DBProvider;
+import com.arny.arnylib.utils.Utility;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -65,7 +65,7 @@ public class Profile {
 
 	@Override
 	public String toString() {
-		return DBProvider.getColumns(this);
+		return Utility.getFields(this);
 	}
 
 }
