@@ -3,10 +3,10 @@ package com.arny.myapidemo.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.arny.arnylib.adapters.SimpleBindableAdapter;
+import android.widget.Filter;
 import com.arny.arnylib.adapters.SnappingLinearLayoutManager;
 import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.utils.DroidUtils;
@@ -31,12 +30,14 @@ import com.arny.myapidemo.adapters.SimpleViewHolder;
 import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.TestObject;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.schedulers.Schedulers;
-import android.widget.Filter;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DBHelperActivity extends AppCompatActivity  implements Filter.FilterListener{
     private RecyclerView recyclerView;
@@ -49,11 +50,6 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
     private int count;
     private FilterExampleAdapter adapter;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
-    }
-
     @SuppressLint("StaticFieldLeak")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +58,14 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
         initToolbar();
         stopwatch = new Stopwatch();
         stopwatch.start();
+
+        new MaterialFilePicker()
+                .withActivity(this)
+                .withRequestCode(1)
+                .withFilterDirectories(true) // Set directories filterable (false by default)
+                .withHiddenFiles(true) // Show hidden files and folders
+                .start();
+
         System.out.println("onCreate:" + stopwatch.getElapsedTimeMili() + "ms");
         pDialog = new ProgressDialog(DBHelperActivity.this);
         pDialog.setCancelable(false);
@@ -80,112 +84,76 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
         });
 
         btnAddObject.setOnClickListener(v -> {
-            String cntStr = editText.getText().toString();
-            if (!Utility.empty(cntStr)) {
-                if (isDbLocked) return;
-                count = Integer.parseInt(cntStr);
-                stopwatch.restart();
-                rxSave();
-            } else {
-                TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
-                DBProvider.saveObject(DBHelperActivity.this, "test", test);
-                adapter.add(test);
-                objects.add(test);
-                setTitle(objects.size() + " записей");
-            }
-
         });
         initList();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            System.out.println(filePath);
+        }
+    }
+
+    public void saveItems() {
+        String cntStr = editText.getText().toString();
+        if (!Utility.empty(cntStr)) {
+            if (isDbLocked) return;
+            count = Integer.parseInt(cntStr);
+            stopwatch.restart();
+            rxSave();
+        } else {
+            TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
+            DBProvider.saveObject(DBHelperActivity.this, "test", test);
+            adapter.add(test);
+            objects.add(test);
+            setTitle(objects.size() + " записей");
+        }
     }
 
     @Override
     public void onFilterComplete(int count) {
     }
 
-    private class SaveList extends AsyncTask<Void, Integer, ArrayList<TestObject>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            System.out.println("SaveList onPreExecute " + stopwatch.getElapsedTimeMili() + "ms");
-            DroidUtils.showProgress(pDialog, "Генерируем данные...");
-        }
-
-        @Override
-        protected ArrayList<TestObject> doInBackground(Void... voids) {
-            ArrayList<TestObject> list = new ArrayList<>();
-            System.out.println("SaveList doInBackground " + stopwatch.getElapsedTimeMili() + "ms");
-            for (int i = 0; i < count; i++) {
-                TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
-                DBProvider.saveObject(context, "test", test);
-                list.add(test);
-                onProgressUpdate(i);
-            }
-            System.out.println("SaveList doInBackground end" + stopwatch.getElapsedTimeMili() + "ms");
-            return list;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            DroidUtils.showProgress(pDialog, "Генерируем данные..." + Arrays.toString(values));
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<TestObject> testObjects) {
-            super.onPostExecute(testObjects);
-            System.out.println("SaveList onPostExecute" + stopwatch.getElapsedTimeMili() + "ms");
-            DroidUtils.hideProgress(pDialog);
-            updateAdapter(testObjects);
-        }
-    }
 
     public void rxSave() {
-        Observable.create(e -> {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        Observable.create(e -> new Thread(() -> {
             for (int i = 0; i < count; i++) {
                 e.onNext(new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test"));
             }
             e.onComplete();
-        }).map(o -> (TestObject) o)
-                .doOnNext(testObject -> {
-                    DBProvider.saveObject(context, "test", testObject);
+        }).start())
+                .map(o -> (TestObject) o)
+                .collect(ArrayList::new, (BiConsumer<ArrayList<TestObject>, TestObject>) ArrayList::add)
+                .doOnSubscribe(disposable -> isDbLocked = true)
+                .map(testObjects -> {
+                    for (TestObject testObject : testObjects) {
+                        stopwatch.restart();
+                        long row = DBProvider.saveObject(context, "test", testObject);
+                        String x = "Сохранение " + row + ":" + stopwatch.getElapsedTimeMili() + " ms";
+                        runOnUiThread(() -> setTitle(x));
+                    }
+                    return testObjects;
                 })
                 .subscribeOn(Schedulers.io())
-                .doOnNext(testObjects -> runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Генерируем данные...")))
-                .doOnSubscribe(disposable -> {
-                    isDbLocked = true;
-                    runOnUiThread(() -> {
-                        DroidUtils.showProgress(pDialog, "Генерируем данные...");
-                    });
-                    System.out.println("doOnSubscribe setOnClickListener:" + stopwatch.getElapsedTimeMili() + "ms");
-                })
-                .doFinally(() -> {
-                    System.out.println("doFinally setOnClickListener:" + stopwatch.getElapsedTimeMili() + "ms");
-                    isDbLocked = false;
-                    runOnUiThread(() -> {
-                        adapter.notifyDataSetChanged();
-                        DroidUtils.hideProgress(pDialog);
-                    });
-                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(testObjects  -> {
+                    isDbLocked = false;
+                    updateAdapter(testObjects);
+                    stopwatch.stop();
+                }, Throwable::printStackTrace);
         System.out.println("btnAddObject setOnClickListener:" + stopwatch.getElapsedTimeMili() + "ms");
     }
 
     public void updateAdapter(ArrayList<TestObject> testObjects) {
+        adapter.clear();
+        objects = testObjects;
         adapter.addAll(testObjects);
-        objects.addAll(testObjects);
         setTitle(objects.size() + " записей");
-    }
-
-    @NonNull
-    public static ArrayList<TestObject> getTestObjects(int cn, Context context) {
-        ArrayList<TestObject> list = new ArrayList<>();
-        for (int i = 0; i < cn; i++) {
-            TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
-            DBProvider.saveObject(context, "test", test);
-            list.add(test);
-        }
-        return list;
     }
 
     private void initAdapter() {

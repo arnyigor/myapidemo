@@ -1,0 +1,1 @@
+CREATE TABLE `cleanfile` (`_id`	INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `path` TEXT);
