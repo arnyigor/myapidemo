@@ -1,107 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Main-->
-    <string name="app_name">MyApiDemo</string>
+	<!--Main-->
+	<string name="app_name">MyApiDemo</string>
 
-    <!--lorem-->
-    <string name="str_lorem">Lorem ipsum dolor sit amet,
-        consectetur adipisicing elit. Ab consectetur distinctio
-        dolores eos eveniet impedit ipsa iste natus nemo nisi possimus qui quo,
-        ratione repellendus vel, veniam voluptate voluptatem voluptatibus.
-    </string>
-    <!--ArrayActivities-->
+	<!--lorem-->
+	<string name="str_lorem">Lorem ipsum dolor sit amet,
+		consectetur adipisicing elit. Ab consectetur distinctio
+		dolores eos eveniet impedit ipsa iste natus nemo nisi possimus qui quo,
+		ratione repellendus vel, veniam voluptate voluptatem voluptatibus.
+	</string>
+	<!--ArrayActivities-->
 
-    <!--Volley-->
-    <string name="str_eror_response">Ошибка соединения!</string>
-    <string name="str_progress_wait">Загрузка…</string>
+	<!--Volley-->
+	<string name="str_eror_response">Ошибка соединения!</string>
+	<string name="str_progress_wait">Загрузка…</string>
 
-    <!--fragment-->
+	<!--fragment-->
 
-    <!--drawer-->
+	<!--drawer-->
 
 
-    <string-array name="spinner">
-        <item>Spinner 1</item>
-        <item>Spinner 2</item>
-        <item>Spinner 3</item>
-        <item>Spinner 4</item>
-    </string-array>
-    <string-array name="listviewarray">
-        <item>list item 1</item>
-        <item>list item 2</item>
-        <item>list item 3</item>
-        <item>list item 4</item>
-    </string-array>
+	<string-array name="spinner">
+		<item>Spinner 1</item>
+		<item>Spinner 2</item>
+		<item>Spinner 3</item>
+		<item>Spinner 4</item>
+	</string-array>
+	<string-array name="listviewarray">
+		<item>list item 1</item>
+		<item>list item 2</item>
+		<item>list item 3</item>
+		<item>list item 4</item>
+	</string-array>
 
-    <string name="str_new">New</string>
-    <string name="title_tabs">Табы</string>
-    <string name="title_dbhelper">Базы данных</string>
-    <string name="title_alarm_manager">Alarm manager</string>
-    <string name="Dialog">Dialog</string>
-    <string name="Scroll">Scroll</string>
-    <string name="XML">XML</string>
-    <string name="ToDoList">ToDoList</string>
-    <string name="SqlLite">SqlLite</string>
-    <string name="SqlList">SqlList</string>
-    <string name="SqlView">SqlView</string>
-    <string name="action_settings">Настройки</string>
-    <string name="SimpleAdapter">SimpleAdapter</string>
-    <string name="exit_question">Выйти?</string>
-    <string name="no_answer">Нет</string>
-    <string name="yes_answer">Да</string>
-    <string name="res_main_title">Main</string>
-    <string name="title_timer_service">Сервис таймер</string>
-    <string name="settings">Настройки</string>
-    <string name="delete_record">Удалить запись</string>
-    <string name="clearall">Clear all</string>
-    <string name="frag2_text">Fragment 2</string>
-    <string name="log">Log</string>
-    <string name="find">Find</string>
-    <string name="dialog_1">Dialog 1</string>
-    <string name="dialog_2">Dialog 2</string>
-    <string name="message_text">Text of your message</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="maybe">Maybe</string>
-    <string name="add">Добавить</string>
-    <string name="remove">Удалить</string>
-    <string name="title_location">Навигация</string>
-    <string name="title_fragments">Фрагменты</string>
+	<string name="str_new">New</string>
+	<string name="title_tabs">Табы</string>
+	<string name="title_dbhelper">Базы данных</string>
+	<string name="title_alarm_manager">Alarm manager</string>
+	<string name="Dialog">Dialog</string>
+	<string name="Scroll">Scroll</string>
+	<string name="XML">XML</string>
+	<string name="ToDoList">ToDoList</string>
+	<string name="SqlLite">SqlLite</string>
+	<string name="SqlList">SqlList</string>
+	<string name="SqlView">SqlView</string>
+	<string name="action_settings">Настройки</string>
+	<string name="SimpleAdapter">SimpleAdapter</string>
+	<string name="exit_question">Выйти?</string>
+	<string name="no_answer">Нет</string>
+	<string name="yes_answer">Да</string>
+	<string name="res_main_title">Main</string>
+	<string name="title_timer_service">Сервис таймер</string>
+	<string name="settings">Настройки</string>
+	<string name="delete_record">Удалить запись</string>
+	<string name="clearall">Clear all</string>
+	<string name="frag2_text">Fragment 2</string>
+	<string name="log">Log</string>
+	<string name="find">Find</string>
+	<string name="dialog_1">Dialog 1</string>
+	<string name="dialog_2">Dialog 2</string>
+	<string name="message_text">Text of your message</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="maybe">Maybe</string>
+	<string name="add">Добавить</string>
+	<string name="remove">Удалить</string>
+	<string name="title_location">Навигация</string>
+	<string name="title_fragments">Фрагменты</string>
 
-    <!--loader-->
-    <string name="hello_world">Hello world!</string>
-    <string name="str_service_running">Сервис работает</string>
+	<!--loader-->
+	<string name="hello_world">Hello world!</string>
+	<string name="str_service_running">Сервис работает</string>
 
-    <!-- Preferences arrays -->
-    <string name="prefs_movies_categories_key">categoriesKey</string>
-    <string name="prefs_test_key">test_key</string>
-    <string name="prefs_test_2_key">test_2_key</string>
-    <string name="prefs_test_3_key">test_3_key</string>
-    <string name="prefs_multi_list_preference">multi_select_list_preference</string>
-    <string name="title_multi_list_preference">title_multi_list_preference</string>
-    <string name="summary_multi_list_preference">summary_multi_list_preference</string>
-    <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
+	<!-- Preferences arrays -->
+	<string name="prefs_movies_categories_key">categoriesKey</string>
+	<string name="prefs_test_key">test_key</string>
+	<string name="prefs_test_2_key">test_2_key</string>
+	<string name="prefs_test_3_key">test_3_key</string>
+	<string name="prefs_multi_list_preference">multi_select_list_preference</string>
+	<string name="title_multi_list_preference">title_multi_list_preference</string>
+	<string name="summary_multi_list_preference">summary_multi_list_preference</string>
+	<string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
 
-    <string-array name="categories">
-        <item>Popular Movies</item>
-        <item>Top Rated Movies</item>
-    </string-array>
-    <string-array name="categories_value">
-        <item>popular</item>
-        <item>top_rated</item>
-    </string-array>
-    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+	<string-array name="categories">
+		<item>Popular Movies</item>
+		<item>Top Rated Movies</item>
+	</string-array>
+	<string-array name="categories_value">
+		<item>popular</item>
+		<item>top_rated</item>
+	</string-array>
+	<string name="title_activity_nav_drawer">NavDrawerActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_mvp">MvpActivity</string>
-    <string name="server_client_id">611805983196-qlkbci1l4anmt0j3jdh3a3au0praijqf.apps.googleusercontent.com</string>
-    <string name="client_secret">eCluiaVBiPX4fOmqYNNzCYH5</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+	<string name="title_activity_maps">Map</string>
+	<string name="title_activity_mvp">MvpActivity</string>
+	<string name="server_client_id">611805983196-qlkbci1l4anmt0j3jdh3a3au0praijqf.apps.googleusercontent.com</string>
+	<string name="client_secret">eCluiaVBiPX4fOmqYNNzCYH5</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="network">Работа с сетью</string>
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="network">Работа с сетью</string>
 
 </resources>

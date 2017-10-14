@@ -8,6 +8,6 @@ public class App extends Application {
 	public void onCreate() {
 		super.onCreate();
 		MultiDex.install(this);
-		DBProvider.initDB(getApplicationContext(),"apidemo",1);
+		DBProvider.initDB(getApplicationContext(),"apidemo",3);
 	}
 }

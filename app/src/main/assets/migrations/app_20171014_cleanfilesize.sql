@@ -1,0 +1,1 @@
+ALTER TABLE `cleanfile` ADD COLUMN `size` REAL;

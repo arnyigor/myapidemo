@@ -3,7 +3,6 @@ package com.arny.myapidemo.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
 import com.arny.arnylib.adapters.SnappingLinearLayoutManager;
 import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.utils.DroidUtils;
@@ -29,17 +27,15 @@ import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
 import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.TestObject;
-import com.mikepenz.iconics.context.IconicsContextWrapper;
-import com.nbsp.materialfilepicker.MaterialFilePicker;
-import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
 
-public class DBHelperActivity extends AppCompatActivity  implements Filter.FilterListener{
+public class DBHelperActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<TestObject> objects = new ArrayList<>();
     private EditText editText;
@@ -58,14 +54,6 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
         initToolbar();
         stopwatch = new Stopwatch();
         stopwatch.start();
-
-        new MaterialFilePicker()
-                .withActivity(this)
-                .withRequestCode(1)
-                .withFilterDirectories(true) // Set directories filterable (false by default)
-                .withHiddenFiles(true) // Show hidden files and folders
-                .start();
-
         System.out.println("onCreate:" + stopwatch.getElapsedTimeMili() + "ms");
         pDialog = new ProgressDialog(DBHelperActivity.this);
         pDialog.setCancelable(false);
@@ -74,7 +62,6 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
         recyclerView.setLayoutManager(new SnappingLinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         initAdapter();
-//        recyclerView.setAdapter(adapter);
         Button btnAddObject = (Button) findViewById(R.id.btnAddObject);
         findViewById(R.id.btnScroll).setOnClickListener(v -> {
             String str = editText.getText().toString();
@@ -82,41 +69,9 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
                 recyclerView.scrollToPosition(Integer.parseInt(str));
             }
         });
-
-        btnAddObject.setOnClickListener(v -> {
-        });
+        btnAddObject.setOnClickListener(v -> rxSave());
         initList();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            System.out.println(filePath);
-        }
-    }
-
-    public void saveItems() {
-        String cntStr = editText.getText().toString();
-        if (!Utility.empty(cntStr)) {
-            if (isDbLocked) return;
-            count = Integer.parseInt(cntStr);
-            stopwatch.restart();
-            rxSave();
-        } else {
-            TestObject test = new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test");
-            DBProvider.saveObject(DBHelperActivity.this, "test", test);
-            adapter.add(test);
-            objects.add(test);
-            setTitle(objects.size() + " записей");
-        }
-    }
-
-    @Override
-    public void onFilterComplete(int count) {
-    }
-
 
     public void rxSave() {
         Stopwatch stopwatch = new Stopwatch();
@@ -146,7 +101,6 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
                     updateAdapter(testObjects);
                     stopwatch.stop();
                 }, Throwable::printStackTrace);
-        System.out.println("btnAddObject setOnClickListener:" + stopwatch.getElapsedTimeMili() + "ms");
     }
 
     public void updateAdapter(ArrayList<TestObject> testObjects) {
@@ -200,58 +154,27 @@ public class DBHelperActivity extends AppCompatActivity  implements Filter.Filte
     protected void initList() {
         if (isDbLocked) return;
         stopwatch.restart();
-        new LoadList().execute();
-    }
-
-    private class LoadList extends AsyncTask<Void, Void, ArrayList<TestObject>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            DroidUtils.showProgress(pDialog, "Загрузка записей...");
-        }
-
-        @Override
-        protected ArrayList<TestObject> doInBackground(Void... voids) {
-            return getData();
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<TestObject> testObjects) {
-            super.onPostExecute(testObjects);
-            DroidUtils.hideProgress(pDialog);
-            setAdapterList(testObjects);
-        }
-    }
-
-    private void rxIniList() {
-        Observable.create(e -> {
-            e.onNext(getData());
-            e.onComplete();
-        }).map(o -> (ArrayList<TestObject>) o)
-                .doOnSubscribe(disposable -> runOnUiThread(() -> {
-                    isDbLocked = true;
-                    runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Загрузка записей..."));
-                    System.out.println("doOnSubscribe:" + stopwatch.getElapsedTimeMili() + "ms");
-                }))
-                .doFinally(() -> {
-                    System.out.println("doFinally:" + stopwatch.getElapsedTimeMili() + "ms");
-                    isDbLocked = false;
-                    DroidUtils.hideProgress(pDialog);
-                })
-                .subscribeOn(Schedulers.io())//где обрабатывать(бг поток)
-                .observeOn(AndroidSchedulers.mainThread())//куда возвращать(главный)
-                .subscribe(this::setAdapterList);
-        System.out.println("initList:" + stopwatch.getElapsedTimeMili() + "ms");
+	    Observable<ArrayList<TestObject>> observable = Observable.create(e -> {
+		    e.onNext(getData());
+		    e.onComplete();
+	    });
+	     observable.subscribeOn(Schedulers.io())
+			    .observeOn(AndroidSchedulers.mainThread())
+			    .doOnSubscribe(disposable -> {
+				    isDbLocked = true;
+				    runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Загрузка записей..."));
+			    })
+			    .subscribe(testObjects -> {
+				    isDbLocked = false;
+				    DroidUtils.hideProgress(pDialog);
+				    setAdapterList(testObjects);
+			    });
     }
 
     private void setAdapterList(ArrayList<TestObject> testObjects) {
-        System.out.println("subscribe:" + stopwatch.getElapsedTimeMili() + "ms");
-        adapter.clear();
         objects = new ArrayList<>(testObjects);
         adapter.addAll(testObjects);
         setTitle(objects.size() + " записей");
-        recyclerView.setAdapter(adapter);
-        System.out.println("subscribe end:" + stopwatch.getElapsedTimeMili() + "ms");
     }
 
     private void initToolbar() {

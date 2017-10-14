@@ -24,7 +24,7 @@
                 android:layout_margin="5dp"
                 app:iiv_color="@color/colorTextGrayLight"
                 android:adjustViewBounds="true"
-                android:layout_toRightOf="@+id/simple_example_item_tittle"
+                android:layout_toRightOf="@+id/simple_example_item_title"
                 app:iiv_icon="gmd-arrow-upward" />
 
         <com.mikepenz.iconics.view.IconicsImageView
@@ -58,7 +58,7 @@
                 app:iiv_icon="gmd-keyboard-arrow-down" />
 
         <TextView
-                android:id="@+id/simple_example_item_tittle"
+                android:id="@+id/simple_example_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"

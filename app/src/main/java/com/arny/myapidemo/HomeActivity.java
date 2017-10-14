@@ -20,6 +20,7 @@ import com.arny.myapidemo.ui.fragments.SettingsFragment;
 public class HomeActivity extends AppCompatActivity {
     private final Class[] sActivities = new Class[]{
             JsonPlaceholderApiActivity.class,
+		    FoldersCleanerActivity.class,
             LoginActivity.class,
             RxJavaActivity.class,
             TabsActivity.class,

@@ -26,7 +26,7 @@ public class SimpleViewHolder extends BindableViewHolder<TestObject> implements 
 	    itemView.findViewById(R.id.simple_example_item_remove).setOnClickListener(this);
 	    itemView.findViewById(R.id.simple_example_item_up).setOnClickListener(this);
 	    itemView.findViewById(R.id.simple_example_item_down).setOnClickListener(this);
-	    TextView simpleExampleItemTittle = (TextView) itemView.findViewById(R.id.simple_example_item_tittle);
+	    TextView simpleExampleItemTittle = (TextView) itemView.findViewById(R.id.simple_example_item_title);
 	    simpleExampleItemTittle.setText(String.format("ID:%s Pos:%d Name:%s", item.getId(),position, item.getName()));
     }
 

@@ -22,19 +22,9 @@ public class StartAlarmActivity extends AppCompatActivity {
         setContentView(R.layout.start_alarm_activity);
         Button buttonStart = (Button) findViewById(R.id.btnStartAlarm);
         Button buttonStop = (Button) findViewById(R.id.btnStopAlarm);
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scheduleAlarm();
-            }
-        });
+        buttonStart.setOnClickListener(v -> scheduleAlarm());
 
-        buttonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelAlarm();
-            }
-        });
+        buttonStop.setOnClickListener(v -> cancelAlarm());
     }
 
 
