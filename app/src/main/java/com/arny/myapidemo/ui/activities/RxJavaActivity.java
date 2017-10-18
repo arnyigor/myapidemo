@@ -16,9 +16,8 @@ import com.arny.myapidemo.api.AristorService;
 import com.arny.myapidemo.api.Auth;
 import com.arny.myapidemo.models.GoodItem;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import io.reactivex.*;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.json.JSONObject;
 
@@ -41,6 +40,7 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
         btn = (Button) findViewById(R.id.btn_login);
         btn.setOnClickListener(this);
         edt = (EditText) findViewById(R.id.editText);
+        findViewById(R.id.btnTest).setOnClickListener(this);
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 	    findViewById(R.id.btnGetTransfers).setOnClickListener(this);
@@ -70,14 +70,47 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
                 .observeOn(AndroidSchedulers.mainThread());//куда возвращать(главный)
     }
 
+    private boolean generateTest() {
+        Stopwatch stopwatch = new Stopwatch();
+        int rand = MathUtils.randInt(50, 200);
+        System.out.println("rand:" + rand);
+        for (int i = 0; i < 100; i++) {
+            stopwatch.restart();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                return false;
+            }
+            System.out.println(Thread.currentThread().getName() + " thread " + " iteration:" + i + " " + stopwatch.getElapsedTimeMili() + " ms");
+            if (rand == i) {
+                try {
+                    throw new Exception("rand is found:" + i);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-	        case R.id.btnGetTransfers:
-		        API.getTransfer()
-				        .subscribeOn(Schedulers.io())
-				        .observeOn(AndroidSchedulers.mainThread())
-		                .subscribe(object -> {
+            case R.id.btnTest:
+                Utility.mainThreadObservable(
+                        Observable.create(e -> {
+                            e.onNext(generateTest());
+                            e.onComplete();
+                        })
+                ).subscribe(aBoolean -> System.out.println("res:" + aBoolean), Throwable::printStackTrace);
+                break;
+            case R.id.btnGetTransfers:
+                API.getTransfer()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object -> {
 			                Log.i(RxJavaActivity.class.getSimpleName(), "onClick: object.getSuccess() = " + object.getSuccess());
 			                System.out.println(object);
 		                }, Throwable::printStackTrace);

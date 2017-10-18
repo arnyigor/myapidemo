@@ -132,17 +132,21 @@ public class FoldersCleanerActivity extends AppCompatActivity implements View.On
 				Stopwatch stopwatch = new Stopwatch();
 				stopwatch.start();
 				Utility.mainThreadObservable(
-						Utility.makeObservable(adapter.getItems()).map(folderFiles -> {
-							for (FolderFile folderFile : folderFiles) {
-								boolean rem = FileUtils.deleteFile(new File(folderFile.getFilePath()));
-								if (!rem) {
-									return false;
-								}
-							}
-							stopwatch.stop();
-							return true;
-						})
-								.map(aBoolean -> {
+                        Observable.create(e -> {
+                            e.onNext(adapter.getItems());
+                            e.onComplete();
+                        }).map(o -> (ArrayList<FolderFile>) o)
+                                .map(folderFiles -> {
+                                    for (FolderFile folderFile : folderFiles) {
+                                        boolean rem = FileUtils.deleteFile(new File(folderFile.getFilePath()));
+                                        if (!rem) {
+                                            return false;
+                                        }
+                                    }
+                                    stopwatch.stop();
+                                    return true;
+                                })
+                                .map(aBoolean -> {
 									if (aBoolean) {
 										List<FolderFile> items = adapter.getItems();
 										int pos = 0;
