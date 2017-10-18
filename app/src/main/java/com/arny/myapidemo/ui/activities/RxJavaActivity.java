@@ -17,12 +17,17 @@ import com.arny.myapidemo.api.Auth;
 import com.arny.myapidemo.models.GoodItem;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class RxJavaActivity extends AppCompatActivity implements View.OnClickListener {
@@ -70,27 +75,39 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
                 .observeOn(AndroidSchedulers.mainThread());//куда возвращать(главный)
     }
 
-    private boolean generateTest() {
-        Stopwatch stopwatch = new Stopwatch();
+    private List<Integer> generateList() {
+        List<Integer> integers = new ArrayList<>();
         int rand = MathUtils.randInt(50, 200);
-        System.out.println("rand:" + rand);
+        System.out.println("Generating integers\nrand:" + rand);
         for (int i = 0; i < 100; i++) {
-            stopwatch.restart();
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                return false;
+                return integers;
             }
-            System.out.println(Thread.currentThread().getName() + " thread " + " iteration:" + i + " " + stopwatch.getElapsedTimeMili() + " ms");
+            System.out.println(Thread.currentThread().getName() + " thread " + " iteration:" + i + " " + stopwatch.getElapsedTimeSecs(3) + " sec");
             if (rand == i) {
                 try {
                     throw new Exception("rand is found:" + i);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return false;
+                    return integers;
                 }
             }
+            integers.add(i);
+        }
+        return integers;
+    }
+
+    private boolean savetest(List<Integer> integers){
+        for (Integer integer : integers) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + "thread save integer:" + integer + " time:" + stopwatch.getElapsedTimeSecs(3) + " sec");
         }
         return true;
     }
@@ -99,12 +116,22 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnTest:
+                stopwatch = new Stopwatch();
+                stopwatch.start();
                 Utility.mainThreadObservable(
                         Observable.create(e -> {
-                            e.onNext(generateTest());
+                            e.onNext(generateList());
                             e.onComplete();
-                        })
-                ).subscribe(aBoolean -> System.out.println("res:" + aBoolean), Throwable::printStackTrace);
+                        }).map(o -> (ArrayList<Integer>)o)
+                ).subscribe(integers -> {
+                    Utility.mainThreadObservable(
+                            Observable.create(e -> {
+                                e.onNext(savetest(integers));
+                                e.onComplete();
+                            }).map(o ->(Boolean) o)
+                    ).subscribe(System.out::println, Throwable::printStackTrace);
+                    System.out.println("res "+integers+" time:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+                }, Throwable::printStackTrace);
                 break;
             case R.id.btnGetTransfers:
                 API.getTransfer()
