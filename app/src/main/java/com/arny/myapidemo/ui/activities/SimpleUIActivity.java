@@ -208,12 +208,7 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
         SpinnerAdapter simpleListAdapter =new SpinnerAdapter(this,android.R.layout.simple_list_item_1);
         simpleListAdapter.addAll(arrayList);
         autoComplit.setAdapter(simpleListAdapter);
-        autoComplit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(SimpleUIActivity.class.getSimpleName(), "onItemClick: position:" + position + "; id:" + id + "; item:" + arrayList.get((int) id));
-            }
-        });
+        autoComplit.setOnItemClickListener((parent, view, position, id) -> Log.i(SimpleUIActivity.class.getSimpleName(), "onItemClick: position:" + position + "; id:" + id + "; item:" + arrayList.get((int) id)));
 	}
 
 

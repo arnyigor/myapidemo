@@ -15,17 +15,20 @@ import com.arny.myapidemo.api.API;
 import com.arny.myapidemo.api.AristorService;
 import com.arny.myapidemo.api.Auth;
 import com.arny.myapidemo.models.GoodItem;
+import com.arny.myapidemo.models.TestObject;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -123,6 +126,26 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
                             e.onNext(generateList());
                             e.onComplete();
                         }).map(o -> (ArrayList<Integer>)o)
+                                .map(integers -> {
+                                    ArrayList<Long> objects = new ArrayList<>(integers.size());
+                                    for (Integer integer : integers) {
+                                        objects.add(Long.valueOf(integer));
+                                    }
+                                    return objects;
+                                })
+                                .map(unsortedList -> {//сортировка списка
+                                    List<Long> sortedList = new ArrayList<>(unsortedList.size());
+                                    Collections.copy(sortedList, unsortedList);
+                                    Collections.sort(sortedList, (o1, o2) -> Long.compare(o1, o2));
+                                    return sortedList;
+                                })
+                        .map(longs -> {
+                            ArrayList<Integer> objects = new ArrayList<>(longs.size());
+                            for (Long object : longs) {
+                                objects.add(Integer.parseInt(String.valueOf(object)));
+                            }
+                            return objects;
+                        })
                 ).subscribe(integers -> {
                     Utility.mainThreadObservable(
                             Observable.create(e -> {
