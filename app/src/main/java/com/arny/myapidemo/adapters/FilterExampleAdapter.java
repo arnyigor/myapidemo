@@ -28,9 +28,4 @@ public class FilterExampleAdapter extends FilterBindableAdapter<TestObject, Simp
     protected SimpleViewHolder viewHolder(View view, int type) {
         return new SimpleViewHolder(view);
     }
-
-    @Override
-    protected String itemToString(TestObject item) {
-        return item.getName();
-    }
 }
