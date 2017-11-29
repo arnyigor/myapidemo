@@ -3,7 +3,6 @@ package com.arny.myapidemo.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,13 +24,11 @@ import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
+import com.arny.myapidemo.database.AppDatabase;
 import com.arny.myapidemo.database.DB;
-import com.arny.myapidemo.db.TestDataBase;
 import com.arny.myapidemo.models.TestObject;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -46,9 +43,8 @@ public class DBHelperActivity extends AppCompatActivity {
     private boolean isDbLocked;
     private Stopwatch stopwatch;
     private FilterExampleAdapter adapter;
-    private TestDataBase mDb;
     private Button btnAddObject;
-    private int count;
+    private int count = 1;
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -61,12 +57,10 @@ public class DBHelperActivity extends AppCompatActivity {
         initAdapter();
         btnAddObject.setOnClickListener(v -> rxSave());
         initList();
-        mDb = TestDataBase.getInMemoryDatabase(getApplicationContext());
         System.out.println("onCreate:" + stopwatch.getElapsedTimeMili() + "ms");
     }
     @Override
     protected void onDestroy() {
-        TestDataBase.destroyInstance();
         super.onDestroy();
     }
 
@@ -88,7 +82,11 @@ public class DBHelperActivity extends AppCompatActivity {
     }
 
     public void rxSave() {
-        Stopwatch stopwatch = new Stopwatch();
+	    String s = editText.getText().toString();
+	    if (!Utility.empty(s)) {
+		    count = Integer.parseInt(s);
+	    }
+	    Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
         Observable.create(e -> new Thread(() -> {
             for (int i = 0; i < count; i++) {
@@ -102,7 +100,7 @@ public class DBHelperActivity extends AppCompatActivity {
                 .map(testObjects -> {
                     for (TestObject testObject : testObjects) {
                         stopwatch.restart();
-                        long row = DBProvider.saveObject(context, "test", testObject);
+	                    long row = AppDatabase.getDb(this).getTestDao().insert(testObject);
                         String x = "Сохранение " + row + ":" + stopwatch.getElapsedTimeMili() + " ms";
                         runOnUiThread(() -> setTitle(x));
                     }
@@ -135,10 +133,13 @@ public class DBHelperActivity extends AppCompatActivity {
             @Override
             public void OnRemove(int position) {
                 if (isDbLocked) return;
-                String id = objects.get(position).getId();
-                if (id != null) {
-                    mDb.getTestDao().delete(id);
-                }
+                String id = String.valueOf(objects.get(position).getDbId());
+                Utility.mainThreadObservable(Observable.create(e -> {
+                    e.onNext(AppDatabase.getDb(DBHelperActivity.this).getTestDao().delete(id));
+                    e.onComplete();
+                }).map(o -> (Integer)o)).subscribe(integer -> {
+                    Log.i(DBHelperActivity.class.getSimpleName(), "OnRemove: row = " + integer);
+                });
                 adapter.removeChild(position);
                 objects.remove(position);
                 setTitle(objects.size() + " записей");
@@ -167,11 +168,12 @@ public class DBHelperActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    @SuppressLint("StaticFieldLeak")
     protected void initList() {
         if (isDbLocked) return;
         stopwatch.restart();
-        mDb.getTestDao().getObjects().subscribeOn(Schedulers.io())
+	    AppDatabase.getDb(DBHelperActivity.this).getTestDao().getObjects()
+        .map(o -> (ArrayList<TestObject>)o)
+        .subscribeOn(Schedulers.io())
 			    .observeOn(AndroidSchedulers.mainThread())
 			    .doOnSubscribe(disposable -> {
 				    isDbLocked = true;
@@ -216,17 +218,10 @@ public class DBHelperActivity extends AppCompatActivity {
             case R.id.action_additem:
                 return true;
             case R.id.menu_action_get_object_fields:
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        DB.testDb(DBHelperActivity.this);
-                        return null;
-                    }
-                }.execute();
 
                 return true;
             case R.id.action_clearall:
-                DBProvider.deleteDB("test", null, this);
+	            AppDatabase.getDb(DBHelperActivity.this).getTestDao().deleteAll();
                 initList();
                 return true;
             default:

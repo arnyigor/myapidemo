@@ -19,7 +19,6 @@ allprojects {
         jcenter()
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
-        maven { url  "http://dl.bintray.com/lukaville/maven"}
         maven { url  "http://dl.bintray.com/piasy/maven" }
         google()
     }

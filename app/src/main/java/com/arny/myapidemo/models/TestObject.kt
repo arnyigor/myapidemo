@@ -12,10 +12,10 @@ import java.util.ArrayList
 
 @Entity(tableName = "test")
 data class TestObject(@ColumnInfo(name = "id") var id: String?, @ColumnInfo(name = "title") var name: String?) : Serializable {
+    constructor():this("","")
     @PrimaryKey
     @ColumnInfo(name = "_id")
     var dbId: Long = 0
-    private val goodItems: ArrayList<GoodItem>? = null
     override fun toString(): String {
         return Utility.getFields(this)
     }
