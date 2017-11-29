@@ -1,14 +1,14 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
+    ext.kotlin_version = '1.2.0'
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-rc2'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.google.gms:google-services:3.1.0'
         classpath "io.realm:realm-gradle-plugin:3.7.2"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -17,12 +17,10 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url "https://jitpack.io"
-        }
-        maven {
-            url  "http://dl.bintray.com/lukaville/maven"
-        }
+        maven { url 'https://maven.google.com' }
+        maven { url "https://jitpack.io" }
+        maven { url  "http://dl.bintray.com/lukaville/maven"}
+        maven { url  "http://dl.bintray.com/piasy/maven" }
         google()
     }
 }
@@ -34,8 +32,8 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 16
-    targetSdkVersion = 25
-    compileSdkVersion = 25
+    targetSdkVersion = 27
+    compileSdkVersion = 27
     buildToolsVersion = '26.0.2'
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '27.0.1'
 }

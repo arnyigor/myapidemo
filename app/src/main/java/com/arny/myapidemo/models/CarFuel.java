@@ -3,6 +3,7 @@ package com.arny.myapidemo.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import com.arny.arnylib.utils.DateTimeUtils;
 import com.arny.arnylib.utils.Utility;
 
 public class CarFuel implements Parcelable, Comparable  {
@@ -274,7 +275,7 @@ public class CarFuel implements Parcelable, Comparable  {
                 " odomentr added = " + getMileageadd() +
                 " volume 100 km = " + getVolumemileage() +
                 " cost 1 km = " + getCostmileage() +
-                " date = " + Utility.getDateTime(getDate());
+                " date = " + DateTimeUtils.getDateTime(getDate());
     }
 
     @Override

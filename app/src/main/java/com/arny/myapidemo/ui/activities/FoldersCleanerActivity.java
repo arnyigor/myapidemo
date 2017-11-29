@@ -1,10 +1,11 @@
 package com.arny.myapidemo.ui.activities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import com.afollestad.materialdialogs.folderselector.FolderChooserDialog;
 import com.arny.arnylib.adapters.SimpleBindableAdapter;
 import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.files.FileUtils;
@@ -23,9 +25,6 @@ import com.arny.myapidemo.adapters.FoldersViewHolder;
 import com.arny.myapidemo.models.FolderFile;
 import com.codetroopers.betterpickers.timepicker.TimePickerBuilder;
 import com.codetroopers.betterpickers.timepicker.TimePickerDialogFragment;
-import com.github.developerpaul123.filepickerlibrary.FilePickerActivity;
-import com.github.developerpaul123.filepickerlibrary.enums.Request;
-import com.github.developerpaul123.filepickerlibrary.enums.Scope;
 import io.reactivex.Observable;
 import org.joda.time.DateTime;
 
@@ -33,7 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoldersCleanerActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialogFragment.TimePickerDialogHandler {
+public class FoldersCleanerActivity extends RuntimePermissionsActivity implements View.OnClickListener, TimePickerDialogFragment.TimePickerDialogHandler,FolderChooserDialog.FolderCallback {
 
 	private static final int REQUEST_DIRECTORY = 101;
 	private RecyclerView rvFolders;
@@ -53,9 +52,9 @@ public class FoldersCleanerActivity extends AppCompatActivity implements View.On
 		findViewById(R.id.btnCleanTime).setOnClickListener(this);
 		findViewById(R.id.btnCleanTime).setVisibility(View.GONE);
 		findViewById(R.id.btnClean).setOnClickListener(this);
-		rvFolders = (RecyclerView) findViewById(R.id.rvFolders);
+		rvFolders = findViewById(R.id.rvFolders);
 		rvFolders.setLayoutManager(new LinearLayoutManager(this));
-		fabAddFolder = (FloatingActionButton) findViewById(R.id.fabAddFolder);
+		fabAddFolder = findViewById(R.id.fabAddFolder);
 		fabAddFolder.setOnClickListener(this);
 		adapter = new SimpleBindableAdapter<>(this, R.layout.simple_example_item, FoldersViewHolder.class);
 		rvFolders.setAdapter(adapter);
@@ -86,6 +85,12 @@ public class FoldersCleanerActivity extends AppCompatActivity implements View.On
 				}, throwable -> ToastMaker.toastError(this, "Ошибка загрузки списка:" + throwable.getMessage()));
 	}
 
+
+    @Override
+    public void onPermissionsGranted(int requestCode) {
+        selectFolder();
+    }
+
 	private Observable<ArrayList<FolderFile>> loadDB() {
 		return Observable.create(e -> {
 			e.onNext(getDBFolderFiles());
@@ -101,7 +106,7 @@ public class FoldersCleanerActivity extends AppCompatActivity implements View.On
 	}
 
 	private void initToolbar() {
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -176,52 +181,55 @@ public class FoldersCleanerActivity extends AppCompatActivity implements View.On
 				tpb.show();
 				break;
 			case R.id.fabAddFolder:
-				Intent filePickerActivity = new Intent(this, FilePickerActivity.class);
-				filePickerActivity.putExtra(FilePickerActivity.SCOPE, Scope.ALL);
-				filePickerActivity.putExtra(FilePickerActivity.REQUEST, Request.DIRECTORY);
-				filePickerActivity.putExtra(FilePickerActivity.INTENT_EXTRA_FAB_COLOR_ID, android.R.color.holo_green_dark);
-				startActivityForResult(filePickerActivity, REQUEST_DIRECTORY);
-				break;
+                if (!BasePermissions.isStoragePermissonGranted(this)) {
+                    FoldersCleanerActivity.super.requestAppPermissions(new
+                                    String[]{
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE}, R.string.storage_permission_denied
+                            , BasePermissions.REQUEST_PERMISSIONS);
+                    return;
+                }
+            selectFolder();
+            break;
 		}
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if ((requestCode == REQUEST_DIRECTORY) && (resultCode == RESULT_OK)) {
-			Stopwatch stopwatch = new Stopwatch();
-			stopwatch.start();
-			String folder = data.getStringExtra(FilePickerActivity.FILE_EXTRA_DATA_PATH);
-			Utility.mainThreadObservable(
-					Observable.zip(getTime(), getFolder(folder), this::saveFolder)
-							.map(aBoolean -> {
-								if (!aBoolean) {
-									runOnUiThread(() -> ToastMaker.toast(this, "Папка не добавлена"));
-								}
-								return aBoolean;
-							})
-							.doOnSubscribe(disposable -> {
-								runOnUiThread(() -> DroidUtils.showProgress(pDialog,"Добавление папки:" +new File(folder).getName() ));
-							})
-							.flatMap(aBoolean -> loadDB()))
-					.subscribe(folderFiles -> {
-						DroidUtils.hideProgress(pDialog);
-						adapter.clear();
-						adapter.addAll(folderFiles);
-					}, throwable -> ToastMaker.toastError(this, "Ошибка сохранения:" + throwable.getMessage()));
-		}
-	}
+    public void selectFolder() {
+        new FolderChooserDialog.Builder(this)
+                .chooseButton(R.string.choose_folder)  // changes label of the choose button
+                .initialPath(Environment.getExternalStorageDirectory().getPath())  // changes initial path, defaults to external storage directory
+                .tag("folder_choose")
+                .goUpLabel("Вверх")
+                .show(this);
+    }
 
-	private Observable<String> getTime() {
+    public void saveFolder(File folder) {
+        Utility.mainThreadObservable(
+                Observable.zip(getTime(), getFolder(folder), this::saveFolder)
+                        .map(aBoolean -> {
+                            if (!aBoolean) {
+                                runOnUiThread(() -> ToastMaker.toast(this, "Папка не добавлена"));
+                            }
+                            return aBoolean;
+                        })
+                        .flatMap(aBoolean -> loadDB())) .doOnSubscribe(disposable -> DroidUtils.showProgress(pDialog, "Добавление папки:" + folder.getName()))
+                .subscribe(folderFiles -> {
+                    DroidUtils.hideProgress(pDialog);
+                    adapter.clear();
+                    adapter.addAll(folderFiles);
+                }, throwable -> ToastMaker.toastError(this, "Ошибка сохранения:" + throwable.getMessage()));
+    }
+
+    private Observable<String> getTime() {
 		return Observable.create(e -> {
 			e.onNext(getStringDateTime());
 			e.onComplete();
 		});
 	}
 
-	private Observable<FolderFile> getFolder(String path) {
+	private Observable<FolderFile> getFolder(File folder) {
 		return Observable.create(e -> {
-			e.onNext(getMediaFileInfo(path));
+			e.onNext(getMediaFileInfo(folder));
 			e.onComplete();
 		});
 	}
@@ -244,13 +252,12 @@ public class FoldersCleanerActivity extends AppCompatActivity implements View.On
 	}
 
 	@NonNull
-	private static FolderFile getMediaFileInfo(String path) {
-		File file = new File(path);
+	private static FolderFile getMediaFileInfo(File folder) {
 		FolderFile fileInfo = new FolderFile();
-		fileInfo.setFileName(file.getName());
-		fileInfo.setFilePath(file.getPath());
+		fileInfo.setFileName(folder.getName());
+		fileInfo.setFilePath(folder.getPath());
 		fileInfo.setSize(FileUtils.getFolderSize(new File(fileInfo.getFilePath())));
-		fileInfo.setFileType(MediaFile.getMimeTypeForFile(file.getPath()));
+		fileInfo.setFileType(MediaFile.getMimeTypeForFile(folder.getPath()));
 		return fileInfo;
 	}
 
@@ -272,4 +279,14 @@ public class FoldersCleanerActivity extends AppCompatActivity implements View.On
 		}
 		return DateTimeUtils.getDateTime(nextTime, "ddMMyyyyHHmm");
 	}
+
+    @Override
+    public void onFolderSelection(@NonNull FolderChooserDialog dialog, @NonNull File folder) {
+        saveFolder(folder);
+    }
+
+    @Override
+    public void onFolderChooserDismissed(@NonNull FolderChooserDialog dialog) {
+	    onResume();
+    }
 }

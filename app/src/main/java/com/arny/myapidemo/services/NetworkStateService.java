@@ -37,8 +37,9 @@ public class NetworkStateService extends Service {
     private boolean connected;
 	private NotificationManager notifyManager;
 	private Notification.Builder notifyBuilder;
+    private int timeout = 1000;
 
-	private Notification.Builder getNotifyBuilder() {
+    private Notification.Builder getNotifyBuilder() {
 		if (notifyBuilder == null) {
 			createNotification(getApplicationContext());
 		}
@@ -65,7 +66,11 @@ public class NetworkStateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.startId = startId;
+        Log.i(NetworkStateService.class.getSimpleName(), "onStartCommand: intent:" + DroidUtils.dumpIntent(intent));
         Bundle extras = intent.getExtras();
+        if (extras != null) {
+            timeout = extras.getInt("timeout");
+        }
         initTimer();
         return START_STICKY;
     }
@@ -114,7 +119,7 @@ public class NetworkStateService extends Service {
 
 	private Notification createNotification(Context context) {
 		notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		isHostAvailable("www.google.com", 80, 1000);
+		isHostAvailable("www.google.com", 80, timeout);
 		String content = DateTimeUtils.getDateTime("HH:mm:ss") + " Net:" + DroidUtils.getNetworkInfo(getApplicationContext());
 		notifyBuilder = new Notification.Builder(this)
 				.setSmallIcon(R.drawable.ic_launcher)// маленькая иконка

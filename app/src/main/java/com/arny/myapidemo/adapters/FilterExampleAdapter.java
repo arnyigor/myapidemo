@@ -20,7 +20,7 @@ public class FilterExampleAdapter extends FilterBindableAdapter<TestObject, Simp
     }
 
     @Override
-    protected void onBindItemViewHolder(SimpleViewHolder viewHolder, final int position, int type) {
+    protected void onBindItemViewHolder(SimpleViewHolder viewHolder, final int position, int type,boolean isSelected) {
         viewHolder.bindView(context,position,getItem(position),simpleActionListener);
     }
 

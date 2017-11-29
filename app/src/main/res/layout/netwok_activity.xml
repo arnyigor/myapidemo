@@ -34,7 +34,13 @@
 				android:layout_height="wrap_content"
 				android:text="тест"
 		/>
-	</LinearLayout>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1" android:hint="Timeout" android:inputType="number"
+                android:id="@+id/edtTimeout"/>
+    </LinearLayout>
 	<LinearLayout android:layout_width="match_parent"
 	              android:layout_height="wrap_content"
 	              android:orientation="horizontal"

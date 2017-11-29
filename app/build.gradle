@@ -38,14 +38,19 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
     compile 'com.android.support:multidex:1.0.2'
-    compile 'com.google.android.gms:play-services-maps:11.2.2'
-    compile 'com.google.android.gms:play-services-auth:11.2.2'
+    compile 'com.google.android.gms:play-services-maps:11.6.0'
+    compile 'com.google.android.gms:play-services-auth:11.6.0'
     compile 'com.code-troopers.betterpickers:library:3.1.0'
     compile 'com.arello-mobile:moxy:1.5.3'
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
     compile 'com.arello-mobile:moxy-android:1.5.3'
     compile 'com.arello-mobile:moxy-app-compat:1.5.3'
-    compile 'com.github.alirezaaa:FilePickerLibrary:3.5.1'
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'

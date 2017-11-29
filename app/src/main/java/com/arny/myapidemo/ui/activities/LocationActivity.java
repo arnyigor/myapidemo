@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import com.arny.arnylib.utils.BasePermissions;
+import com.arny.arnylib.utils.DateTimeUtils;
 import com.arny.arnylib.utils.ToastMaker;
 import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
@@ -97,7 +98,7 @@ public class LocationActivity extends AppCompatActivity {
                 locationTime = location.getTime();
             }
             myLocationText.setText(String.format("Провайдер:%s\nВремя: %s\n Время обновления:%d\nLat = %.6f Long = %.6f",
-                    location.getProvider(), Utility.getDateTime(location.getTime(),null),updateTeme,location.getLatitude(),location.getLongitude()));
+                    location.getProvider(), DateTimeUtils.getDateTime(location.getTime(),null),updateTeme,location.getLatitude(),location.getLongitude()));
         }
 
         public void onProviderDisabled(String provider) {

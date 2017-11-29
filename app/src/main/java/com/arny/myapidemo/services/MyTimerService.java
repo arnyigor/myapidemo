@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import com.arny.arnylib.utils.DateTimeUtils;
 import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.ui.activities.TimerTaskActivity;
@@ -101,7 +102,7 @@ public class MyTimerService extends Service {
             updateNotification();
         }
         Intent intent = new Intent(ACTION_UPDATE);
-        intent.putExtra(EXTRA_KEY_TIME, Utility.strLogTime(tastSec));
+        intent.putExtra(EXTRA_KEY_TIME, DateTimeUtils.strLogTime(tastSec));
         sendBroadcast(intent);
     }
 
@@ -118,7 +119,7 @@ public class MyTimerService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher)// маленькая иконка
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(getBaseContext().getResources().getString(R.string.str_service_running))// Заголовок уведомления
-                .setContentText(Utility.strLogTime(tastSec)); // Текст уведомления
+                .setContentText(DateTimeUtils.strLogTime(tastSec)); // Текст уведомления
 //        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         notifbuild.setContentIntent(pendingIntent);
         notification = notifbuild.build();

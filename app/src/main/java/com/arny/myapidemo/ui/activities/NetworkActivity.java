@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import com.android.volley.Request;
 import com.arny.arnylib.adapters.SimpleBindableAdapter;
 import com.arny.arnylib.adapters.SnappingLinearLayoutManager;
@@ -56,12 +57,15 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
 	private List<PostModel> posts = new ArrayList<>();
 	private PlaceholderApi placeholderService;
 	private UmoriliApi umoriliApi;
+    private int timeout;
+    private EditText edttimeout;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.netwok_activity);
-		intent = new Intent(this, NetworkStateService.class);
+        edttimeout = (EditText) findViewById(R.id.edtTimeout);
+        intent = new Intent(this, NetworkStateService.class);
 		placeholderService = ApiFactory.getInstance().createService(PlaceholderApi.class, API.JSON_PLASEHOLDER_BASE_URL);
 		umoriliApi = ApiFactory.getInstance().createService(UmoriliApi.class, API.BASE_URL_UMORILI);
 		Log.i(NetworkActivity.class.getSimpleName(), "onCreate: intent = " + intent);
@@ -136,7 +140,12 @@ public class NetworkActivity extends AppCompatActivity implements View.OnClickLi
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btn_start_network_service:
-				startService(intent);
+                String s = edttimeout.getText().toString();
+                if (!Utility.empty(s)) {
+                    timeout =Integer.parseInt(s);
+                    intent.putExtra("timeout", timeout);
+                }
+                startService(intent);
 				viewNetInfo();
 				break;
 			case R.id.btn_stop_network_service:

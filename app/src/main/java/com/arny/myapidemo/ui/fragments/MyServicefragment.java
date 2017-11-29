@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.arny.arnylib.service.AbstractIntentService;
 import com.arny.arnylib.service.OperationProvider;
+import com.arny.arnylib.utils.DateTimeUtils;
 import com.arny.arnylib.utils.ToastMaker;
 import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.R;
@@ -121,7 +122,7 @@ public class MyServicefragment extends Fragment implements View.OnClickListener,
                 Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras success= " + success);
 //                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras getOperationData= " + provider.getOperationData());
                 Log.i(MyServicefragment.class.getSimpleName(), "onReceive: extras operationResult= " + operationResult);
-                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: time = " + Utility.getDateTime());
+                Log.i(MyServicefragment.class.getSimpleName(), "onReceive: time = " + DateTimeUtils.getDateTime());
             }
             if (operationFinished) {
                 ToastMaker.toastSuccess(context,"Результат операции " + operation + ":"+ operationResult);

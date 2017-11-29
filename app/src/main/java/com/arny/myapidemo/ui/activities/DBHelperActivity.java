@@ -26,7 +26,9 @@ import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
 import com.arny.myapidemo.database.DB;
+import com.arny.myapidemo.db.TestDataBase;
 import com.arny.myapidemo.models.TestObject;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -43,34 +45,46 @@ public class DBHelperActivity extends AppCompatActivity {
     private Context context = DBHelperActivity.this;
     private boolean isDbLocked;
     private Stopwatch stopwatch;
-    private int count;
     private FilterExampleAdapter adapter;
+    private TestDataBase mDb;
+    private Button btnAddObject;
+    private int count;
 
     @SuppressLint("StaticFieldLeak")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sqllist);
-        initToolbar();
         stopwatch = new Stopwatch();
         stopwatch.start();
+        initUI();
+        initAdapter();
+        btnAddObject.setOnClickListener(v -> rxSave());
+        initList();
+        mDb = TestDataBase.getInMemoryDatabase(getApplicationContext());
         System.out.println("onCreate:" + stopwatch.getElapsedTimeMili() + "ms");
+    }
+    @Override
+    protected void onDestroy() {
+        TestDataBase.destroyInstance();
+        super.onDestroy();
+    }
+
+    public void initUI() {
+        initToolbar();
         pDialog = new ProgressDialog(DBHelperActivity.this);
         pDialog.setCancelable(false);
-        recyclerView = (RecyclerView) findViewById(R.id.sqlList);
-        editText = (EditText) findViewById(R.id.cntObjects);
+        recyclerView = findViewById(R.id.sqlList);
+        editText = findViewById(R.id.cntObjects);
         recyclerView.setLayoutManager(new SnappingLinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        initAdapter();
-        Button btnAddObject = (Button) findViewById(R.id.btnAddObject);
+        btnAddObject = findViewById(R.id.btnAddObject);
         findViewById(R.id.btnScroll).setOnClickListener(v -> {
             String str = editText.getText().toString();
             if (!Utility.empty(str)) {
                 recyclerView.scrollToPosition(Integer.parseInt(str));
             }
         });
-        btnAddObject.setOnClickListener(v -> rxSave());
-        initList();
     }
 
     public void rxSave() {
@@ -121,7 +135,10 @@ public class DBHelperActivity extends AppCompatActivity {
             @Override
             public void OnRemove(int position) {
                 if (isDbLocked) return;
-                DBProvider.deleteDB("test", "id = ?", new String[]{objects.get(position).getId()}, DBHelperActivity.this);
+                String id = objects.get(position).getId();
+                if (id != null) {
+                    mDb.getTestDao().delete(id);
+                }
                 adapter.removeChild(position);
                 objects.remove(position);
                 setTitle(objects.size() + " записей");
@@ -154,11 +171,7 @@ public class DBHelperActivity extends AppCompatActivity {
     protected void initList() {
         if (isDbLocked) return;
         stopwatch.restart();
-	    Observable<ArrayList<TestObject>> observable = Observable.create(e -> {
-		    e.onNext(getData());
-		    e.onComplete();
-	    });
-	     observable.subscribeOn(Schedulers.io())
+        mDb.getTestDao().getObjects().subscribeOn(Schedulers.io())
 			    .observeOn(AndroidSchedulers.mainThread())
 			    .doOnSubscribe(disposable -> {
 				    isDbLocked = true;
@@ -178,18 +191,12 @@ public class DBHelperActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle(getString(R.string.title_dbhelper));
         }
-    }
-
-    private ArrayList<TestObject> getData() {
-        Cursor cursor = DBProvider.selectDB("test", null, null, null, this);
-        ArrayList<TestObject> cursorObjectList = DBProvider.getCursorObjectList(cursor, TestObject.class);
-        return cursorObjectList;
     }
 
     @Override
