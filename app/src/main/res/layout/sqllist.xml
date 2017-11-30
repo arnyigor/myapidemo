@@ -28,13 +28,19 @@
             android:id="@+id/btnAddObject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-	<EditText
-			android:id="@+id/cntObjects"
-			android:hint="Count"
-			android:inputType="numberSigned"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_toRightOf="@+id/btnAddObject" android:layout_toEndOf="@+id/btnAddObject"/>
+    <EditText
+            android:id="@+id/cntObjects"
+            android:hint="Count"
+            android:inputType="numberSigned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" android:layout_toRightOf="@+id/btnAddObject"
+            android:layout_toEndOf="@+id/btnAddObject"/>
+    <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/cntObjects" android:layout_toEndOf="@+id/cntObjects"
+            android:id="@+id/btnAddroomTest"/>
 
 </RelativeLayout>

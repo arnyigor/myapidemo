@@ -13,12 +13,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.arny.arnylib.utils.Config;
 import com.arny.myapidemo.ui.activities.*;
 import com.arny.myapidemo.ui.fragments.SettingsFragment;
 
 public class HomeActivity extends AppCompatActivity {
+    private static final int TIME_DELAY = 2000;
+    private static long back_pressed;
     private final Class[] sActivities = new Class[]{
+            LiveDataActivity.class,
             JsonPlaceholderApiActivity.class,
 		    FoldersCleanerActivity.class,
             LoginActivity.class,
@@ -43,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
             RecyclerTestActivity.class,
             PermissionsActivity.class,
             LoaderActivity.class,
-            GoogleOAuthActivity.class,
+            GoogleOAuthActivity.class
     };
 
     @Override
@@ -52,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initToolbar();
 
-        ListView listView = (ListView) findViewById(R.id.main_list);
+        ListView listView = findViewById(R.id.main_list);
         String[] classesNames = getClassesNames();
 
         if (classesNames.length > 0) {
@@ -64,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             setTitle(getString(R.string.res_main_title));
@@ -84,7 +88,12 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        openQuitDialog();
+        if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, "Нажмите еще раз для выхода", Toast.LENGTH_SHORT).show();
+        }
+        back_pressed = System.currentTimeMillis();
     }
 
     @Override

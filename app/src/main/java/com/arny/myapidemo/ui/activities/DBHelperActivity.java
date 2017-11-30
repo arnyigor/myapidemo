@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.arny.arnylib.adapters.SnappingLinearLayoutManager;
@@ -20,6 +21,9 @@ import com.arny.arnylib.utils.*;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
+import com.arny.myapidemo.database.RoomDB;
+import com.arny.myapidemo.database.TestDao;
+import com.arny.myapidemo.models.Test;
 import com.arny.myapidemo.models.TestObject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,8 +31,9 @@ import io.reactivex.functions.BiConsumer;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class DBHelperActivity extends AppCompatActivity {
+public class DBHelperActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private ArrayList<TestObject> objects = new ArrayList<>();
     private EditText editText;
@@ -37,8 +42,8 @@ public class DBHelperActivity extends AppCompatActivity {
     private boolean isDbLocked;
     private Stopwatch stopwatch;
     private FilterExampleAdapter adapter;
-    private Button btnAddObject;
     private int count = 1;
+    private TestDao testDao;
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -49,7 +54,6 @@ public class DBHelperActivity extends AppCompatActivity {
         stopwatch.start();
         initUI();
         initAdapter();
-        btnAddObject.setOnClickListener(v -> rxSave());
         initList();
         System.out.println("onCreate:" + stopwatch.getElapsedTimeMili() + "ms");
     }
@@ -66,13 +70,9 @@ public class DBHelperActivity extends AppCompatActivity {
         editText = findViewById(R.id.cntObjects);
         recyclerView.setLayoutManager(new SnappingLinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        btnAddObject = findViewById(R.id.btnAddObject);
-        findViewById(R.id.btnScroll).setOnClickListener(v -> {
-            String str = editText.getText().toString();
-            if (!Utility.empty(str)) {
-                recyclerView.scrollToPosition(Integer.parseInt(str));
-            }
-        });
+        findViewById(R.id.btnAddObject).setOnClickListener(this);
+        findViewById(R.id.btnAddroomTest).setOnClickListener(this);
+        findViewById(R.id.btnScroll).setOnClickListener(this);
     }
 
     public void rxSave() {
@@ -157,12 +157,24 @@ public class DBHelperActivity extends AppCompatActivity {
         });
         adapter.setFilter((constraint, item) -> Utility.matcher("(?i).*" + constraint + ".*", item.getName()));
         recyclerView.setAdapter(adapter);
+        testDao = RoomDB.init(this).getTestDao();
     }
 
     protected void initList() {
         if (isDbLocked) return;
         stopwatch.restart();
-        Utility.mainThreadObservable(DBProvider.getObjectsListRx(this,"test",null,null,null,null, TestObject.class))
+        Utility.mainThreadObservable(DBProvider.getObjectsListRx(this,"test",null,null,null,null, TestObject.class)
+        .map(testObjects -> {
+            List<Test> listTest = testDao.getListTest();
+            for (Test test : listTest) {
+                TestObject testObject = new TestObject();
+                testObject.setId(test.getGuid());
+                testObject.setName(String.valueOf(test.getIndex()));
+                testObject.setDbId(Long.valueOf(test.getId()));
+                testObjects.add(testObject);
+            }
+            return testObjects;
+        }))
 			    .doOnSubscribe(disposable -> {
 				    isDbLocked = true;
                     DroidUtils.showProgress(pDialog, "Загрузка записей...");
@@ -210,7 +222,6 @@ public class DBHelperActivity extends AppCompatActivity {
             case R.id.action_additem:
                 return true;
             case R.id.menu_action_get_object_fields:
-
                 return true;
             case R.id.action_clearall:
                 DBProvider.deleteDB("test", null, this);
@@ -221,4 +232,25 @@ public class DBHelperActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnScroll:
+                String str = editText.getText().toString();
+                if (!Utility.empty(str)) {
+                    recyclerView.scrollToPosition(Integer.parseInt(str));
+                }
+                break;
+            case R.id.btnAddObject:
+                rxSave();
+                break;
+            case R.id.btnAddroomTest:
+                Test test = new Test();
+                test.setActive(false);
+                test.setGuid("27364208374");
+                test.setIndex(7326483);
+                Utility.mainThreadObservable(Observable.just(1).doOnSubscribe(disposable -> testDao.insert(test))).subscribe(integer -> initList(), Throwable::printStackTrace);
+                break;
+        }
+    }
 }
