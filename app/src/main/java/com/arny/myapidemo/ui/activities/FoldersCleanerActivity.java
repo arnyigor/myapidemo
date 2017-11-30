@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -78,7 +77,11 @@ public class FoldersCleanerActivity extends RuntimePermissionsActivity implement
 	protected void onResume() {
 		super.onResume();
 		Utility.mainThreadObservable(loadDB())
+                .doOnSubscribe(disposable -> {
+                    DroidUtils.showProgress(pDialog, "Загрузка папок");
+                })
 				.subscribe(folderFiles -> {
+                    DroidUtils.hideProgress(pDialog);
 					Log.i(FoldersCleanerActivity.class.getSimpleName(), "onCreate: folderFiles = " + folderFiles);
 					adapter.clear();
 					adapter.addAll(folderFiles);
@@ -92,13 +95,9 @@ public class FoldersCleanerActivity extends RuntimePermissionsActivity implement
     }
 
 	private Observable<ArrayList<FolderFile>> loadDB() {
-		return Observable.create(e -> {
-			e.onNext(getDBFolderFiles());
-			e.onComplete();
-		})
-				.map(o -> (ArrayList<FolderFile>) o)
-				.map(folderFiles -> {
-					for (FolderFile folderFile : folderFiles) {
+        return DBProvider.getObjectsListRx(this, "cleanfile", null, null, null, null, FolderFile.class)
+                .map(folderFiles -> {
+                    for (FolderFile folderFile : folderFiles) {
 						folderFile.setSize(FileUtils.getFolderSize(new File(folderFile.getFilePath())));
 					}
 					return folderFiles;
@@ -123,11 +122,6 @@ public class FoldersCleanerActivity extends RuntimePermissionsActivity implement
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	private ArrayList<FolderFile> getDBFolderFiles() {
-		Cursor cursor = DBProvider.selectDB("cleanfile", null, null, null, null, this);
-		return DBProvider.getCursorObjectList(cursor, FolderFile.class);
 	}
 
 	@Override
@@ -158,9 +152,7 @@ public class FoldersCleanerActivity extends RuntimePermissionsActivity implement
 										for (FolderFile item : items) {
 											item.setSize(FileUtils.getFolderSize(new File(item.getFilePath())));
 											int finalPos = pos;
-											runOnUiThread(() -> {
-												adapter.notifyItemChanged(finalPos);
-											});
+											runOnUiThread(() -> adapter.notifyItemChanged(finalPos));
 											pos++;
 										}
 									}

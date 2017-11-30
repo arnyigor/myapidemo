@@ -3,7 +3,6 @@ package com.arny.myapidemo.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,15 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.arny.arnylib.adapters.SnappingLinearLayoutManager;
 import com.arny.arnylib.database.DBProvider;
-import com.arny.arnylib.utils.DroidUtils;
-import com.arny.arnylib.utils.MathUtils;
-import com.arny.arnylib.utils.Stopwatch;
-import com.arny.arnylib.utils.Utility;
+import com.arny.arnylib.utils.*;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
-import com.arny.myapidemo.database.AppDatabase;
-import com.arny.myapidemo.database.DB;
 import com.arny.myapidemo.models.TestObject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -98,10 +92,10 @@ public class DBHelperActivity extends AppCompatActivity {
                 .collect(ArrayList::new, (BiConsumer<ArrayList<TestObject>, TestObject>) ArrayList::add)
                 .doOnSubscribe(disposable -> isDbLocked = true)
                 .map(testObjects -> {
+                    stopwatch.restart();
                     for (TestObject testObject : testObjects) {
-                        stopwatch.restart();
-	                    long row = AppDatabase.getDb(this).getTestDao().insert(testObject);
-                        String x = "Сохранение " + row + ":" + stopwatch.getElapsedTimeMili() + " ms";
+                        long row = DBProvider.saveObject(context, "test", testObject);
+                        String x = "Сохранение id:" + row + "-" + stopwatch.getElapsedTimeSecs(3) + " сек";
                         runOnUiThread(() -> setTitle(x));
                     }
                     return testObjects;
@@ -133,13 +127,10 @@ public class DBHelperActivity extends AppCompatActivity {
             @Override
             public void OnRemove(int position) {
                 if (isDbLocked) return;
-                String id = String.valueOf(objects.get(position).getDbId());
-                Utility.mainThreadObservable(Observable.create(e -> {
-                    e.onNext(AppDatabase.getDb(DBHelperActivity.this).getTestDao().delete(id));
-                    e.onComplete();
-                }).map(o -> (Integer)o)).subscribe(integer -> {
-                    Log.i(DBHelperActivity.class.getSimpleName(), "OnRemove: row = " + integer);
-                });
+                TestObject testObject = objects.get(position);
+                if (testObject != null) {
+                    DBProvider.deleteDB("test", "_id = ?", new String[]{String.valueOf(testObject.getDbId())}, DBHelperActivity.this);
+                }
                 adapter.removeChild(position);
                 objects.remove(position);
                 setTitle(objects.size() + " записей");
@@ -171,19 +162,20 @@ public class DBHelperActivity extends AppCompatActivity {
     protected void initList() {
         if (isDbLocked) return;
         stopwatch.restart();
-	    AppDatabase.getDb(DBHelperActivity.this).getTestDao().getObjects()
-        .map(o -> (ArrayList<TestObject>)o)
-        .subscribeOn(Schedulers.io())
-			    .observeOn(AndroidSchedulers.mainThread())
+        Utility.mainThreadObservable(DBProvider.getObjectsListRx(this,"test",null,null,null,null, TestObject.class))
 			    .doOnSubscribe(disposable -> {
 				    isDbLocked = true;
-				    runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Загрузка записей..."));
-			    })
+                    DroidUtils.showProgress(pDialog, "Загрузка записей...");
+                })
 			    .subscribe(testObjects -> {
 				    isDbLocked = false;
 				    DroidUtils.hideProgress(pDialog);
 				    setAdapterList(testObjects);
-			    });
+			    },throwable -> {
+                    isDbLocked = false;
+                    DroidUtils.hideProgress(pDialog);
+                    ToastMaker.toastError(this,throwable.getMessage());
+                });
     }
 
     private void setAdapterList(ArrayList<TestObject> testObjects) {
@@ -221,7 +213,7 @@ public class DBHelperActivity extends AppCompatActivity {
 
                 return true;
             case R.id.action_clearall:
-	            AppDatabase.getDb(DBHelperActivity.this).getTestDao().deleteAll();
+                DBProvider.deleteDB("test", null, this);
                 initList();
                 return true;
             default:

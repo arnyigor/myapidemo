@@ -40,6 +40,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
     compile 'com.android.support:multidex:1.0.2'
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
     compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'com.google.android.gms:play-services-auth:11.6.0'
     compile 'com.code-troopers.betterpickers:library:3.1.0'
@@ -47,9 +48,6 @@ dependencies {
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
     compile 'com.arello-mobile:moxy-android:1.5.3'
     compile 'com.arello-mobile:moxy-app-compat:1.5.3'
-    compile 'android.arch.persistence.room:runtime:1.0.0'
-    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0'
-    implementation "android.arch.persistence.room:rxjava2:1.0.0"
     compile 'android.arch.lifecycle:runtime:1.0.3'
     compile 'android.arch.lifecycle:extensions:1.0.0'
     annotationProcessor 'android.arch.lifecycle:compiler:1.0.0'
