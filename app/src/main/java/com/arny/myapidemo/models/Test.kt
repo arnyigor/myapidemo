@@ -8,17 +8,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "test")
-data class Test(@SerializedName("index") @Expose @ColumnInfo(name = "index") var index:Int? = null) {
-    @SerializedName("isActive")
-    @Expose
-    @ColumnInfo(name = "active")
-    var isActive: Boolean? = null
-    @SerializedName("guid")
-    @Expose
-    @ColumnInfo(name = "guid")
+data class Test(@ColumnInfo(name = "title") var title:String? = null) {
+    @ColumnInfo(name = "id")
     var guid: String? = null
-    @SerializedName("_id")
-    @Expose
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     var id: Long? = null

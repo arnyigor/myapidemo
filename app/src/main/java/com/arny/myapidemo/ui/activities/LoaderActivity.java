@@ -79,7 +79,7 @@ public class LoaderActivity extends AppCompatActivity implements LoaderManager.L
 
 	@Override
 	public Loader<String> onCreateLoader(int id, Bundle args) {
-		return new MyLoader(instance,"init params");
+		return new MyLoader(instance,"getDb params");
 	}
 
 	@Override

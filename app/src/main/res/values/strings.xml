@@ -36,7 +36,7 @@
 
     <string name="str_new">New</string>
     <string name="title_tabs">Табы</string>
-    <string name="title_dbhelper">Базы данных</string>
+    <string name="title_dbhelper">База данных</string>
     <string name="title_alarm_manager">Alarm manager</string>
     <string name="Dialog">Dialog</string>
     <string name="Scroll">Scroll</string>
