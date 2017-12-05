@@ -2,7 +2,6 @@ package com.arny.myapidemo.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +19,12 @@ import android.widget.TextView;
 import com.arny.arnylib.adapters.SnappingLinearLayoutManager;
 import com.arny.arnylib.database.DBProvider;
 import com.arny.arnylib.utils.*;
+import com.arny.arnylib.utils.generators.Generator;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
 import com.arny.myapidemo.database.RoomDB;
+import com.arny.myapidemo.models.InfoObject;
 import com.arny.myapidemo.models.Test;
 import com.arny.myapidemo.models.TestObject;
 import io.reactivex.Observable;
@@ -111,12 +112,13 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
                             Test test = new Test();
                             test.setTitle(testObject.getName());
                             test.setGuid(testObject.getId());
+                            InfoObject infoObject = new InfoObject(Generator.getMaleName(), Generator.getUUID());
+                            infoObject.setSize(MathUtils.randLong(0, 10000));
+                            infoObject.setType(Generator.getWord());
+                            test.setInfo(infoObject);
                             row = RoomDB.getDb(this).getTestDao().insert(test);
                         } else {
-                            ContentValues cv = new ContentValues();
-                            cv.put("id",testObject.getId());
-                            cv.put("title",testObject.getName());
-                            row = DBProvider.insertDB("test", cv,context);
+                            row = DBProvider.saveObject(context, "test", Test.class);
                         }
                         double st = saveTime.getElapsedTimeSecs(3);
                         double average = MathUtils.getAverage(MathUtils.fillAverage(st, 10, this.doubles));
@@ -192,9 +194,11 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private TestObject getFromTest(Test test) {
+        Log.i(DBHelperActivity.class.getSimpleName(), "getFromTest: test:" + test);
         TestObject testObject = new TestObject();
         testObject.setDbId(test.getId());
-        testObject.setName(test.getTitle());
+        InfoObject info = test.getInfo();
+        testObject.setName(test.getTitle() + " info:" + (info != null ? info.getName() : ""));
         testObject.setId(test.getGuid());
         return testObject;
     }
