@@ -1,0 +1,1 @@
+CREATE TABLE `gooditem` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `good_title` TEXT,`cat_id` INTEGER, FOREIGN KEY(`cat_id`) REFERENCES category(`_id`));

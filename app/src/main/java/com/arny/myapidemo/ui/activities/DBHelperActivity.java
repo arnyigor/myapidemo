@@ -23,9 +23,11 @@ import com.arny.arnylib.utils.generators.Generator;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
+import com.arny.myapidemo.api.User;
+import com.arny.myapidemo.database.DbTypeConverter;
 import com.arny.myapidemo.database.RoomDB;
 import com.arny.myapidemo.models.InfoObject;
-import com.arny.myapidemo.models.Test;
+import com.arny.myapidemo.models.TestSubObject;
 import com.arny.myapidemo.models.TestObject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,6 +35,8 @@ import io.reactivex.functions.BiConsumer;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DBHelperActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
@@ -47,7 +51,7 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
     private TextView tvInfo;
     private ArrayList<Double> doubles;
     private Switch switchDb;
-    private boolean dbRoom = false;
+    private boolean isDbroom = false;
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -72,9 +76,9 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
         pDialog.setCancelable(false);
         tvInfo = findViewById(R.id.tvInfo);
         switchDb = findViewById(R.id.switchDb);
-        dbRoom = Config.getBoolean("dbroom", false, this);
-        switchDb.setChecked(dbRoom);
-        switchDb.setText(dbRoom ? "Room" : "Sqlite");
+        isDbroom = Config.getBoolean("dbroom", false, this);
+        switchDb.setChecked(isDbroom);
+        switchDb.setText(isDbroom ? "Room" : "Sqlite");
         recyclerView = findViewById(R.id.sqlList);
         editText = findViewById(R.id.cntObjects);
         recyclerView.setLayoutManager(new SnappingLinearLayoutManager(this));
@@ -92,7 +96,7 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
         saveTime.start();
         Observable.create(e -> new Thread(() -> {
             for (int i = 0; i < count; i++) {
-                e.onNext(new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "Test"));
+                e.onNext(new TestObject(String.valueOf(MathUtils.randInt(0, 10)), "TestSubObject"));
             }
             e.onComplete();
         }).start())
@@ -108,17 +112,29 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
                         iter++;
                         saveTime.restart();
                         long row;
-                        if (dbRoom) {
-                            Test test = new Test();
-                            test.setTitle(testObject.getName());
-                            test.setGuid(testObject.getId());
+                        if (isDbroom) {
+                            TestSubObject testSubObject = new TestSubObject();
+                            testSubObject.setTitle(testObject.getName());
+                            testSubObject.setGuid(testObject.getId());
                             InfoObject infoObject = new InfoObject(Generator.getMaleName(), Generator.getUUID());
                             infoObject.setSize(MathUtils.randLong(0, 10000));
                             infoObject.setType(Generator.getWord());
-                            test.setInfo(infoObject);
-                            row = RoomDB.getDb(this).getTestDao().insert(test);
+                            ArrayList<InfoObject> arrayList = new ArrayList<>();
+                            arrayList.add(infoObject);
+                            testSubObject.setInfo(arrayList);
+                            row = RoomDB.getDb(this).getTestDao().insert(testSubObject);
+                            Log.i(DBHelperActivity.class.getSimpleName(), "rxSave: row:" + row);
+                            ArrayList<User> users = new ArrayList<>();
+                            int cntUsers = MathUtils.randInt(1, 50);
+                            for (int i = 0; i < cntUsers; i++) {
+                                User e = new User(Generator.getWord(), Generator.getMaleName());
+                                e.setParentId(row);
+                                users.add(e);
+                            }
+                            long[] rows = RoomDB.getDb(this).getTestDao().insert(users);
+                            Log.i(DBHelperActivity.class.getSimpleName(), "rxSave: users rows:" + Arrays.toString(rows));
                         } else {
-                            row = DBProvider.saveObject(context, "test", Test.class);
+                            row = DBProvider.saveObject(context, "test", TestSubObject.class);
                         }
                         double st = saveTime.getElapsedTimeSecs(3);
                         double average = MathUtils.getAverage(MathUtils.fillAverage(st, 10, this.doubles));
@@ -186,20 +202,25 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
         adapter.setFilter((constraint, item) -> Utility.matcher("(?i).*" + constraint + ".*", item.getName()));
         recyclerView.setAdapter(adapter);
         switchDb.setOnCheckedChangeListener((compoundButton, b) -> {
-            this.dbRoom = b;
+            this.isDbroom = b;
             Config.setBoolean("dbroom", b, this);
             switchDb.setText(b ? "Room" : "Sqlite");
             initList();
         });
     }
 
-    private TestObject getFromTest(Test test) {
-        Log.i(DBHelperActivity.class.getSimpleName(), "getFromTest: test:" + test);
+    private TestObject getFromTest(TestSubObject testSubObject) {
         TestObject testObject = new TestObject();
-        testObject.setDbId(test.getId());
-        InfoObject info = test.getInfo();
-        testObject.setName(test.getTitle() + " info:" + (info != null ? info.getName() : ""));
-        testObject.setId(test.getGuid());
+        if (testSubObject != null) {
+            Log.i(DBHelperActivity.class.getSimpleName(), "getFromTest: testSubObject:" + testSubObject);
+            if (testSubObject.getId() != null) {
+                List<User> users = RoomDB.getDb(this).getTestDao().getUsers(testSubObject.getId());
+                Log.i(DBHelperActivity.class.getSimpleName(), "getFromTest: users:" + users);
+            }
+            testObject.setDbId(testSubObject.getId());
+            testObject.setName(testSubObject.getTitle());
+            testObject.setId(testSubObject.getGuid());
+        }
         return testObject;
     }
 
@@ -207,15 +228,15 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
     protected void initList() {
         if (isDbLocked) return;
         totalTime.restart();
-        if (dbRoom) {
+        if (isDbroom) {
             Utility.mainThreadObservable(Observable.create(e -> {
                 e.onNext(RoomDB.getDb(this).getTestDao().getListTest());
                 e.onComplete();
             })
-                    .map(o -> (ArrayList<Test>) o).map(tests -> {
+                    .map(o -> (ArrayList<TestSubObject>) o).map(tests -> {
                         ArrayList<TestObject> testObjects = new ArrayList<>();
-                        for (Test test : tests) {
-                            testObjects.add(getFromTest(test));
+                        for (TestSubObject testSubObject : tests) {
+                            testObjects.add(getFromTest(testSubObject));
                         }
                         return testObjects;
                     }))
@@ -225,6 +246,7 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
                         setAdapterList(testObjects);
                         tvInfo.setText(String.format("%d записей Время загрузки:%.3f сек", objects.size(), totalTime.getElapsedTimeSecs(3)));
                     }, throwable -> {
+                        throwable.printStackTrace();
                         isDbLocked = false;
                         DroidUtils.hideProgress(pDialog);
                         ToastMaker.toastError(this, throwable.getMessage());
@@ -283,7 +305,7 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
             case R.id.menu_action_get_object_fields:
                 return true;
             case R.id.action_clearall:
-                if (dbRoom) {
+                if (isDbroom) {
                     Utility.mainThreadObservable(Observable.just(1).doOnSubscribe(disposable -> {
                         RoomDB.getDb(this).getTestDao().delete();
                     })).subscribe(integer -> {

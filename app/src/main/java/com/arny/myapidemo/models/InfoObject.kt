@@ -4,11 +4,13 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.arny.arnylib.utils.Utility
+
 @Entity
 data class InfoObject(var name: String? = null) {
-    @PrimaryKey
-    @ColumnInfo(name = "object_id")
-    var id:Long? = null
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "info_id")
+    var id:Long = 0
+    var infoId:Long = 0
     var uid:String? = null
     var type:String? = null
     var size:Long? = null

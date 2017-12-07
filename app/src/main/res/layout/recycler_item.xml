@@ -33,7 +33,7 @@
                 android:id="@+id/tvGoodName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="test"
+                tools:text="testSubObject"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:gravity="center_horizontal"

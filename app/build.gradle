@@ -12,6 +12,7 @@ android {
         applicationId "com.arny.myapidemo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -39,6 +40,12 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
+    testImplementation 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.6.2'
+    androidTestCompile 'com.squareup.assertj:assertj-android:1.2.0'
+    androidTestCompile 'com.squareup.assertj:assertj-android-support-v4:1.2.0'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:multidex:1.0.2'
     debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
     compile 'com.google.android.gms:play-services-maps:11.6.2'

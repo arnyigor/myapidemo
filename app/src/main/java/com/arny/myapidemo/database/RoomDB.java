@@ -1,17 +1,22 @@
 package com.arny.myapidemo.database;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.arny.arnylib.database.DBProvider;
+import com.arny.myapidemo.api.User;
+import com.arny.myapidemo.models.Category;
 import com.arny.myapidemo.models.InfoObject;
-import com.arny.myapidemo.models.Test;
+import com.arny.myapidemo.models.TestSubObject;
 
-@Database(entities = {Test.class, InfoObject.class},version = 1)
+import java.util.ArrayList;
+
+@Database(entities = {TestSubObject.class, InfoObject.class, User.class, Category.class},version = 2)
+@TypeConverters({DbTypeConverter.class})
 public abstract class RoomDB extends RoomDatabase {
     private static final Object LOCK = new Object();
     private static RoomDB sInstance;
@@ -21,9 +26,12 @@ public abstract class RoomDB extends RoomDatabase {
             synchronized (LOCK) {
                 if (sInstance == null) {
                     Builder<RoomDB> roomdb = Room.databaseBuilder(context.getApplicationContext(), RoomDB.class, "Room.db");
-                    if (getMigrations() != null && getMigrations().length != 0) {
-                        roomdb.addMigrations(getMigrations());
+                    Migration[] roomMigrations = DBProvider.getRoomMigrations(context.getApplicationContext());
+//                    Migration[] roomMigrations = getMigrations();
+                    if (roomMigrations != null && roomMigrations.length != 0) {
+                        roomdb.addMigrations(roomMigrations);
                     }
+                    roomdb.fallbackToDestructiveMigration();
                     sInstance = roomdb.build();
                 }
             }
@@ -31,29 +39,21 @@ public abstract class RoomDB extends RoomDatabase {
         return sInstance;
     }
 
+    abstract public TestDao getTestDao();
+
+
     @Nullable
     private static Migration[] getMigrations() {
-        Migration[] migrations = null;
-        migrations = new Migration[2];
-//        migrations[0] = new Migration(1, 2) {
-//            @Override
-//            public void migrate(@NonNull SupportSQLiteDatabase database) {
-//                database.beginTransaction();
-//                database.execSQL("ALTER TABLE test ADD COLUMN info TEXT");
-//                database.endTransaction();
-//            }
-//        };
-//        migrations[1] = new Migration(4, 5) {
-//            @Override
-//            public void migrate(@NonNull SupportSQLiteDatabase database) {
-//                database.beginTransaction();
-//                database.execSQL("ALTER TABLE test ADD COLUMN gooditem TEXT");
-//                database.endTransaction();
-//            }
-//        };
+        ArrayList<Migration> migrationArrayList=new ArrayList<>();
+        migrationArrayList.add(DBProvider.addRoomMigration(1, 2, "CREATE TABLE IF NOT EXISTS `test` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` TEXT, `title` TEXT)"));
+        migrationArrayList.add(DBProvider.addRoomMigration(1, 2, "CREATE TABLE IF NOT EXISTS `users` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `login` TEXT, `name` TEXT, `parentId` INTEGER  NOT NULL, FOREIGN KEY(`parentid`) REFERENCES test(_id))"));
+        migrationArrayList.add(DBProvider.addRoomMigration(1, 2, "CREATE TABLE `category` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cat_id` INTEGER, `name` TEXT)"));
+        Migration[] migrations = new Migration[migrationArrayList.size()];
+        for (int i = 0; i < migrationArrayList.size(); i++) {
+            migrations[i] = migrationArrayList.get(i);
+        }
         return migrations;
     }
 
-    abstract public TestDao getTestDao();
 
 }

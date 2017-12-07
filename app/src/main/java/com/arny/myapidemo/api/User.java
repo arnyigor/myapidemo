@@ -1,27 +1,37 @@
 
 package com.arny.myapidemo.api;
 
+import android.arch.persistence.room.*;
 import com.arny.arnylib.utils.Utility;
+import com.arny.myapidemo.models.TestSubObject;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "users")
 public class User {
-
     @SerializedName("id")
     @Expose
-    private Integer id;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
+    private long id;
     @SerializedName("login")
     @Expose
     private String login;
     @SerializedName("name")
     @Expose
     private String name;
+    private long parentId;// this ID points to a parent
 
-    public Integer getId() {
+    public User(String login, String name) {
+        this.login = login;
+        this.name = name;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -41,8 +51,16 @@ public class User {
         this.name = name;
     }
 
-	@Override
-	public String toString() {
-		return Utility.getFields(this);
-	}
+    @Override
+    public String toString() {
+        return Utility.getFields(this);
+    }
+
+    public long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
+    }
 }
