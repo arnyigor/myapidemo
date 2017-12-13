@@ -7,12 +7,11 @@ import android.text.TextUtils;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arny.arnylib.utils.Config;
-import com.arny.myapidemo.mvp.view.LoginView;
+import com.arny.myapidemo.mvp.view.AuthView;
 
 import java.util.concurrent.TimeUnit;
 @InjectViewState
-public class LoginPresenter extends MvpPresenter<LoginView> {
-	@SuppressLint("StaticFieldLeak")
+public class AuthPresenter extends MvpPresenter<AuthView> {
 	public void checkLoginPass(String login, String pass, Context context) {
 		getViewState().hideErrors();
 		if (TextUtils.isEmpty(login)) {

@@ -17,7 +17,6 @@ import com.arny.arnylib.utils.TouchImageView;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.models.GoodItem;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -144,11 +143,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(listener);
-        holder.itemName.setText("Id:" + goodItems.get(position).getId() + " Name:" + goodItems.get(position).getName());
+        holder.itemName.setText("Id:" + goodItems.get(position).getId() + " Name:" + goodItems.get(position).getTitle());
         String priceText = "Price:" + String.valueOf(MathUtils.round(goodItems.get(position).getPrice(), 2));
         holder.itemPrice.setText(priceText);
         Glide.with(context)
-                .load(goodItems.get(position).getImgUrl())
+                .load(goodItems.get(position).getImage())
                 .into(holder.itemImage);
     }
 

@@ -1,38 +1,39 @@
 package com.arny.myapidemo.models;
 
 import android.arch.persistence.room.*;
+import com.arny.arnylib.utils.Utility;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "gooditem",foreignKeys = @ForeignKey(
         entity = Category.class,
         parentColumns = "_id",
-        childColumns = "cat_id"))
+        childColumns = "parentId"))
 public class GoodItem {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     private long dbID;
-    private long cat_id;
+    @ColumnInfo(index = true)
+    private long parentId;
     @SerializedName("price")
 	@Expose
-    @Ignore
 	private double price;
-	@SerializedName("imgUrl")
+	@SerializedName("image")
 	@Expose
     @Ignore
-	private String imgUrl;
+	private String image;
 	@SerializedName("name")
 	@Expose
     @ColumnInfo(name = "good_title")
-	private String name;
+	private String title;
 	@SerializedName("_id")
 	@Expose
     @Ignore
 	private String id;
+    private String description;
 
-	public GoodItem(double price, String name, String id) {
+	public GoodItem(double price, String name) {
 		this.price = price;
-		this.name = name;
-		this.id = id;
+		this.title = name;
 	}
 
 	public GoodItem() {
@@ -46,20 +47,20 @@ public class GoodItem {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public double getPrice() {
@@ -72,15 +73,15 @@ public class GoodItem {
 
     @Override
     public String toString() {
-        return "\nid:" + getId() + " name:" + getName()  + " imgUrl:" + getImgUrl() + " price:" + getPrice();
+        return Utility.getFields(this);
     }
 
-    public long getCat_id() {
-        return cat_id;
+    public long getParentId() {
+        return parentId;
     }
 
-    public void setCat_id(long cat_id) {
-        this.cat_id = cat_id;
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
     }
 
     public long getDbID() {
@@ -89,5 +90,13 @@ public class GoodItem {
 
     public void setDbID(long dbID) {
         this.dbID = dbID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

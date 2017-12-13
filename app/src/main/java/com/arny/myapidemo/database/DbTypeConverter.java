@@ -15,15 +15,4 @@ public class DbTypeConverter {
     public static ArrayList<InfoObject> jsonToInfo(String list) {
         return (ArrayList<InfoObject>) new Gson().fromJson(list, ArrayList.class);
     }
-
-    @TypeConverter
-    public static String objToJson(InfoObject t) {
-        return new Gson().toJson(t);
-    }
-
-    @TypeConverter
-    public static InfoObject jsonToObj(String obj) {
-        return new Gson().fromJson(obj, InfoObject.class);
-    }
-
 }

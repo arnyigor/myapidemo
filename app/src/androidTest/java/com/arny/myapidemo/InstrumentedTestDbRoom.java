@@ -9,11 +9,15 @@ import com.arny.arnylib.files.FileUtils;
 import com.arny.arnylib.utils.MathUtils;
 import com.arny.arnylib.utils.Utility;
 import com.arny.arnylib.utils.generators.Generator;
-import com.arny.myapidemo.api.User;
+import com.arny.myapidemo.models.User;
 import com.arny.myapidemo.database.RoomDB;
+import com.arny.myapidemo.database.TestDao;
+import com.arny.myapidemo.models.Category;
+import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.models.InfoObject;
 import com.arny.myapidemo.models.TestSubObject;
 import com.arny.myapidemo.ui.activities.DBHelperActivity;
+import com.arny.myapidemo.utils.Local;
 import org.assertj.core.api.Condition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -188,8 +192,51 @@ public class InstrumentedTestDbRoom {
         Context appContext = InstrumentationRegistry.getTargetContext();
         List<String> dbTables = RoomDB.getDb(appContext).getTestDao().getDbTables();
         Log.i(InstrumentedTestDbRoom.class.getSimpleName(), "roomTables: dbTables:" + dbTables);
-        assertThat(dbTables).contains("category_test");
-//        assertThat(dbTables).contains("gooditems");
+        assertThat(dbTables).contains("category");
+        assertThat(dbTables).contains("gooditem");
+    }
+
+    @Test
+    public void roomTablesColumns() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        TestDao testDao = RoomDB.getDb(appContext).getTestDao();
+        List<String> dbTables = testDao.getDbTables();
+        Log.i(InstrumentedTestDbRoom.class.getSimpleName(), "roomTables: dbTables:" + dbTables);
+        List<Category> categoryData = testDao.getCategoryData();
+        Log.i(InstrumentedTestDbRoom.class.getSimpleName(), "roomTablesColumns: " +categoryData);
+        assertThat(categoryData).isNotNull();
+    }
+
+    @Test
+    public void tablesSchema() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        String schema = RoomDB.getDb(appContext).getTestDao().getSchema();
+        Log.i(InstrumentedTestDbRoom.class.getSimpleName(), "tablesSchema: " + schema);
+        assertThat(schema).isNotNull();
+        assertThat(schema).contains("category");
+    }
+
+
+    @Test
+    public void saveItemsToRoom() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Category category = new Category();
+        category.setTitle("test category");
+        long row = RoomDB.getDb(appContext).getTestDao().insertCategory(category);
+        assertTrue(row != 0);
+        Log.i(DBHelperActivity.class.getSimpleName(), "rxSave: row:" + row);
+        int cntUsers = MathUtils.randInt(1, 50);
+        ArrayList<GoodItem> goodItems = Local.generateItems(0, cntUsers, row);
+        long[] rows = RoomDB.getDb(appContext).getTestDao().insertItems(goodItems);
+        assertThat(rows).doesNotHaveDuplicates();
+        List<GoodItem> listTest = RoomDB.getDb(appContext).getTestDao().getGoods(row);
+        Log.i(InstrumentedTestDbRoom.class.getSimpleName(), "saveItemsToRoom: listTest:" + listTest);
+        assertThat(listTest).is(new Condition<List<? extends GoodItem>>() {
+            @Override
+            public boolean matches(List<? extends GoodItem> values) {
+                return values != null && values.size() > 0;
+            }
+        });
     }
 
 

@@ -1,6 +1,7 @@
 package com.arny.myapidemo.api;
 
 import com.arny.arnylib.utils.Utility;
+import com.arny.myapidemo.models.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

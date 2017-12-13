@@ -2,8 +2,9 @@ package com.arny.myapidemo.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
-import com.arny.myapidemo.api.User;
+import com.arny.myapidemo.models.User;
 import com.arny.myapidemo.models.Category;
+import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.models.TestSubObject;
 import io.reactivex.Flowable;
 import java.util.List;
@@ -25,6 +26,12 @@ public interface TestDao {
     @Query("SELECT * FROM category")
     List<Category> getCategories();
 
+    @Query("SELECT name FROM sqlite_master WHERE type='table'")
+    String getSchema();
+
+    @Query("SELECT * FROM `category`")
+    List<Category> getCategoryData();
+
     @Query("SELECT DISTINCT tbl_name FROM sqlite_master")
     List<String> getDbTables();
 
@@ -38,11 +45,20 @@ public interface TestDao {
     long insert(User user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insertCategory(Category category);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insert(List<User> users);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertItems(List<GoodItem> goodItems);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(TestSubObject testSubObject);
 
     @Query("SELECT * FROM users WHERE parentId IS :parentId")
     List<User> getUsers(long parentId);
+
+    @Query("SELECT * FROM gooditem WHERE cat_id IS :parentId")
+    List<GoodItem> getGoods(long parentId);
 }

@@ -4,11 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
-import com.arny.myapidemo.ui.fragments.FragmentAlarms;
-import com.arny.myapidemo.ui.fragments.FragmentClearFolders;
-import com.arny.myapidemo.ui.fragments.MyServicefragment;
-import com.arny.myapidemo.ui.fragments.SplashFragment;
+import com.arny.myapidemo.ui.fragments.*;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
@@ -17,6 +13,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             "Fragment two",
             "Fragment splash",
             "Fragment service",
+            "Fragment Map OsmAnd",
     };
 //    private String[] tabsFragmentsResourses = {
 //            context.getResources().getString(R.string.action_settings),
@@ -38,6 +35,8 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
                 return new SplashFragment();
             case 3:
                 return new MyServicefragment();
+            case 4:
+                return new OsmandMapFragment();
         }
         return null;
 

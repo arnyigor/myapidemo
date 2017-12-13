@@ -1,9 +1,8 @@
 
-package com.arny.myapidemo.api;
+package com.arny.myapidemo.models;
 
 import android.arch.persistence.room.*;
 import com.arny.arnylib.utils.Utility;
-import com.arny.myapidemo.models.TestSubObject;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,15 +11,21 @@ public class User {
     @SerializedName("id")
     @Expose
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "_id")
+    @ColumnInfo(name = "_id",index = true)
     private long id;
     @SerializedName("login")
     @Expose
+    @ColumnInfo(name = "login")
     private String login;
     @SerializedName("name")
     @Expose
     private String name;
-    private long parentId;// this ID points to a parent
+    @ColumnInfo(index = true)
+    private long parentId;
+    private boolean admin;
+    private String email;
+    private String pass;
+    private String avatar;
 
     public User(String login, String name) {
         this.login = login;
@@ -62,5 +67,37 @@ public class User {
 
     public void setParentId(long parentId) {
         this.parentId = parentId;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

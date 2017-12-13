@@ -60,8 +60,8 @@ public class RecyclerTestActivity extends AppCompatActivity  implements Recycler
     private GoodItem getNewGoodItem() {
             GoodItem goodItem = new GoodItem();
             goodItem.setId(String.valueOf(goodItems.size()));
-            goodItem.setName(Generator.getString(10));
-            goodItem.setImgUrl(Generator.getImageUrl(1600, 1200,Generator.GENERATOR_TYPE_IMG_PLACEIMG));
+            goodItem.setTitle(Generator.getString(10));
+            goodItem.setImage(Generator.getImageUrl(1600, 1200,Generator.GENERATOR_TYPE_IMG_PLACEIMG));
             goodItem.setPrice(MathUtils.randDouble(15.05,55.5));
         return goodItem;
     }
@@ -71,8 +71,8 @@ public class RecyclerTestActivity extends AppCompatActivity  implements Recycler
         for (int i = 1; i <= 10; i++) {
             GoodItem goodItem = new GoodItem();
             goodItem.setId(String.valueOf(i));
-            goodItem.setName(Generator.getString(10));
-            goodItem.setImgUrl(Generator.getImageUrl(1600, 1200,Generator.GENERATOR_TYPE_IMG_PLACEIMG));
+            goodItem.setTitle(Generator.getString(10));
+            goodItem.setImage(Generator.getImageUrl(1600, 1200,Generator.GENERATOR_TYPE_IMG_PLACEIMG));
             goodItem.setPrice(MathUtils.randDouble(15.05,55.5));
             goodItems.add(goodItem);
         }

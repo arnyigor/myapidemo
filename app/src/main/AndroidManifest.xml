@@ -32,7 +32,6 @@
                 android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -159,7 +158,7 @@
         </activity>
         <activity android:name=".ui.activities.RxJavaActivity">
         </activity>
-        <activity android:name=".ui.activities.LoginActivity">
+        <activity android:name=".ui.activities.AuthActivity">
         </activity>
         <activity android:name=".ui.activities.FoldersCleanerActivity">
         </activity>

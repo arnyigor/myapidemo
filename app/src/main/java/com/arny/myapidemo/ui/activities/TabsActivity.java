@@ -1,6 +1,7 @@
 package com.arny.myapidemo.ui.activities;
 
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.arny.arnylib.utils.BasePermissions;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.TabPagerAdapter;
 import com.arny.myapidemo.ui.fragments.ActivityCommunicator;
@@ -18,7 +20,7 @@ import com.arny.myapidemo.ui.fragments.FragmentCommunicator;
 
 import java.util.List;
 
-public class TabsActivity extends AppCompatActivity implements ActivityCommunicator {
+public class TabsActivity extends RuntimePermissionsActivity implements ActivityCommunicator {
 
 	public FragmentCommunicator fragmentCommunicator;
     private ViewPager viewPager;
@@ -32,9 +34,22 @@ public class TabsActivity extends AppCompatActivity implements ActivityCommunica
         initToolbar();
         initTabs();
         initTabsWork();
+        if (!BasePermissions.isStoragePermissonGranted(this)) {
+            TabsActivity.super.requestAppPermissions(new
+                            String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE}, R.string.storage_permission_denied
+                    , BasePermissions.REQUEST_PERMISSIONS);
+        }
     }
+
+    @Override
+    public void onPermissionsGranted(int requestCode) {
+        onResume();
+    }
+
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -57,8 +72,8 @@ public class TabsActivity extends AppCompatActivity implements ActivityCommunica
     }
 
     private void initTabs() {
-        viewPager= (ViewPager) findViewById(R.id.viewPager);
-        tabLayout= (TabLayout) findViewById(R.id.tabLayout);
+        viewPager= findViewById(R.id.viewPager);
+        tabLayout= findViewById(R.id.tabLayout);
     }
 
     @Override

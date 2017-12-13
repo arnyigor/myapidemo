@@ -1,1 +1,0 @@
-CREATE TABLE `category` (`_id`	INTEGER PRIMARY KEY AUTOINCREMENT, `cat_title` TEXT,`cat_id` INTEGER, FOREIGN KEY(`cat_id`) REFERENCES category(`_id`)) );

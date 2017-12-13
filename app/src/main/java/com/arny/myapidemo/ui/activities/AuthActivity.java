@@ -15,12 +15,12 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arny.arnylib.utils.ToastMaker;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.mvp.presenter.LoginPresenter;
-import com.arny.myapidemo.mvp.view.LoginView;
+import com.arny.myapidemo.mvp.presenter.AuthPresenter;
+import com.arny.myapidemo.mvp.view.AuthView;
 
-public class LoginActivity extends MvpAppCompatActivity implements LoginView, View.OnClickListener {
+public class AuthActivity extends MvpAppCompatActivity implements AuthView, View.OnClickListener {
 	@InjectPresenter
-	LoginPresenter mPresenter;
+    AuthPresenter mPresenter;
 	private EditText editLogin;
 	private EditText editPass;
 	private TextInputLayout tilLogin;
@@ -39,13 +39,13 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView, Vi
 
 	private void initUI() {
 		findViewById(R.id.btn_log_in).setOnClickListener(this);
-		editLogin = (EditText) findViewById(R.id.et_login);
-		editPass = (EditText) findViewById(R.id.et_pass);
-		tilLogin = (TextInputLayout) findViewById(R.id.til_login);
-		tilPass = (TextInputLayout) findViewById(R.id.til_pass);
-		llLogin = (LinearLayout) findViewById(R.id.ll_login);
-		llProgress = (LinearLayout) findViewById(R.id.ll_progress);
-		tvProgress = (TextView) findViewById(R.id.tv_progress);
+		editLogin = findViewById(R.id.et_login);
+		editPass = findViewById(R.id.et_pass);
+		tilLogin = findViewById(R.id.til_login);
+		tilPass = findViewById(R.id.til_pass);
+		llLogin = findViewById(R.id.ll_login);
+		llProgress = findViewById(R.id.ll_progress);
+		tvProgress = findViewById(R.id.tv_progress);
 		llProgress.setVisibility(View.GONE);
 	}
 
@@ -103,7 +103,7 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView, Vi
 
 	@Override
 	public void showAlert(String message) {
-		Log.i(LoginActivity.class.getSimpleName(), "showAlert: isRestore = " + mPresenter.isInRestoreState(this));
+		Log.i(AuthActivity.class.getSimpleName(), "showAlert: isRestore = " + mPresenter.isInRestoreState(this));
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 			if (mDialog == null || !mDialog.isShowing()) {
 				AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder((new ContextThemeWrapper(this, android.R.style.Theme_Holo_Light_Dialog)))
@@ -128,4 +128,14 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView, Vi
 			mDialog = null;
 		}
 	}
+
+    @Override
+    public void subscribe() {
+
+    }
+
+    @Override
+    public void unsubscribe() {
+
+    }
 }
