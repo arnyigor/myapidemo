@@ -25,6 +25,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles fileTree('proguard').asList().toArray()
+        }
     }
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
@@ -38,29 +43,46 @@ android {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:27.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
     testImplementation 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.2'
     testCompile 'org.assertj:assertj-core:3.6.2'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.2.0'
     androidTestCompile 'com.squareup.assertj:assertj-android-support-v4:1.2.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.android.support:multidex:1.0.2'
+
     debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
     compile 'com.google.android.gms:play-services-maps:11.6.2'
     compile 'com.google.android.gms:play-services-auth:11.6.2'
-    compile 'com.code-troopers.betterpickers:library:3.1.0'
+
+    /*MVP*/
+    /*MOXY*/
     compile 'com.arello-mobile:moxy:1.5.3'
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
     compile 'com.arello-mobile:moxy-android:1.5.3'
     compile 'com.arello-mobile:moxy-app-compat:1.5.3'
+
+    /*Mosby*/
+//    compile 'com.hannesdorfmann.mosby3:mvi:3.1.0' // Model-View-Intent
+//    compile 'com.hannesdorfmann.mosby3:mvp:3.1.0' // Plain MVP
+//    compile 'com.hannesdorfmann.mosby3:viewstate:3.1.0' // MVP + ViewState support
+//    compile 'com.hannesdorfmann.mosby3:mvp-lce:3.1.0'// MVP + ViewState + LCE Views
+//    compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.0'// Null Object Presenter for MVP
+
+    /*ROOM DB*/
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     implementation "android.arch.persistence.room:rxjava2:1.0.0"
+
+    /*Livecycle*/
     compile 'android.arch.lifecycle:runtime:1.0.3'
     compile 'android.arch.lifecycle:extensions:1.0.0'
     annotationProcessor 'android.arch.lifecycle:compiler:1.0.0'
+
+    compile 'org.osmdroid:osmdroid-android:5.6.5'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 // ADD THIS AT THE BOTTOM
