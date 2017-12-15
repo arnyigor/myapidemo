@@ -25,12 +25,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        release {
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles fileTree('proguard').asList().toArray()
         }
     }
+
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
@@ -44,6 +45,8 @@ android {
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.android.support:support-v4:27.0.2'
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
     testImplementation 'junit:junit:4.12'
@@ -59,19 +62,10 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.6.2'
 
     /*MVP*/
-    /*MOXY*/
     compile 'com.arello-mobile:moxy:1.5.3'
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
     compile 'com.arello-mobile:moxy-android:1.5.3'
     compile 'com.arello-mobile:moxy-app-compat:1.5.3'
-
-    /*Mosby*/
-//    compile 'com.hannesdorfmann.mosby3:mvi:3.1.0' // Model-View-Intent
-//    compile 'com.hannesdorfmann.mosby3:mvp:3.1.0' // Plain MVP
-//    compile 'com.hannesdorfmann.mosby3:viewstate:3.1.0' // MVP + ViewState support
-//    compile 'com.hannesdorfmann.mosby3:mvp-lce:3.1.0'// MVP + ViewState + LCE Views
-//    compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.0'// Null Object Presenter for MVP
-
     /*ROOM DB*/
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
