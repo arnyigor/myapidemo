@@ -6,7 +6,7 @@ import com.arny.arnylib.utils.Utility;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "users")
+@Entity(tableName = "users",indices = {@Index(value = "login",unique = true)} )
 public class User {
     @SerializedName("id")
     @Expose
@@ -20,16 +20,17 @@ public class User {
     @SerializedName("name")
     @Expose
     private String name;
-    @ColumnInfo(index = true)
-    private long parentId;
     private boolean admin;
     private String email;
-    private String pass;
+    private String token;
     private String avatar;
 
     public User(String login, String name) {
         this.login = login;
         this.name = name;
+    }
+
+    public User() {
     }
 
     public long getId() {
@@ -61,14 +62,6 @@ public class User {
         return Utility.getFields(this);
     }
 
-    public long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(long parentId) {
-        this.parentId = parentId;
-    }
-
     public boolean isAdmin() {
         return admin;
     }
@@ -85,12 +78,12 @@ public class User {
         this.avatar = avatar;
     }
 
-    public String getPass() {
-        return pass;
+    public String getToken() {
+        return token;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getEmail() {

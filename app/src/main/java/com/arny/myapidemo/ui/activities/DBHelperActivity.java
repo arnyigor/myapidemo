@@ -127,7 +127,6 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
                             int cntUsers = MathUtils.randInt(1, 50);
                             for (int i = 0; i < cntUsers; i++) {
                                 User e = new User(Generator.getWord(), Generator.getMaleName());
-                                e.setParentId(row);
                                 users.add(e);
                             }
                             long[] rows = RoomDB.getDb(this).getTestDao().insert(users);
@@ -211,11 +210,6 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
     private TestObject getFromTest(TestSubObject testSubObject) {
         TestObject testObject = new TestObject();
         if (testSubObject != null) {
-            Log.i(DBHelperActivity.class.getSimpleName(), "getFromTest: testSubObject:" + testSubObject);
-            if (testSubObject.getId() != null) {
-                List<User> users = RoomDB.getDb(this).getTestDao().getUsers(testSubObject.getId());
-                Log.i(DBHelperActivity.class.getSimpleName(), "getFromTest: users:" + users);
-            }
             testObject.setDbId(testSubObject.getId());
             testObject.setName(testSubObject.getTitle());
             testObject.setId(testSubObject.getGuid());

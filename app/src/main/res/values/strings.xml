@@ -100,7 +100,6 @@
     <string name="server_client_id">611805983196-qlkbci1l4anmt0j3jdh3a3au0praijqf.apps.googleusercontent.com</string>
     <string name="client_secret">eCluiaVBiPX4fOmqYNNzCYH5</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="network">Работа с сетью</string>
     <string name="choose_folder">Выбрать папку</string>

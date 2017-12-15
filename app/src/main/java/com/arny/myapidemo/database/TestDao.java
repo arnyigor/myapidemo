@@ -56,9 +56,6 @@ public interface TestDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(TestSubObject testSubObject);
 
-    @Query("SELECT * FROM users WHERE parentId IS :parentId")
-    List<User> getUsers(long parentId);
-
-    @Query("SELECT * FROM gooditem WHERE cat_id IS :parentId")
+    @Query("SELECT * FROM gooditem WHERE parentId IS :parentId")
     List<GoodItem> getGoods(long parentId);
 }

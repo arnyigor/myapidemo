@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.arny.arnylib.utils.Config;
+import com.arny.myapidemo.mvp.auth.AuthActivity;
+import com.arny.myapidemo.mvp.useredit.EditActivity;
 import com.arny.myapidemo.ui.activities.*;
 import com.arny.myapidemo.ui.fragments.SettingsFragment;
 
@@ -24,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
             JsonPlaceholderApiActivity.class,
 		    FoldersCleanerActivity.class,
             AuthActivity.class,
+            EditActivity.class,
             RxJavaActivity.class,
             TabsActivity.class,
             DBHelperActivity.class,

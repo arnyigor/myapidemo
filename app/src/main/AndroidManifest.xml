@@ -32,6 +32,7 @@
                 android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -158,11 +159,13 @@
         </activity>
         <activity android:name=".ui.activities.RxJavaActivity">
         </activity>
-        <activity android:name=".ui.activities.AuthActivity">
+        <activity android:name=".mvp.auth.AuthActivity">
         </activity>
         <activity android:name=".ui.activities.FoldersCleanerActivity">
         </activity>
         <activity android:name=".ui.activities.LiveDataActivity">
+        </activity>
+        <activity android:name=".mvp.useredit.EditActivity">
         </activity>
     </application>
 

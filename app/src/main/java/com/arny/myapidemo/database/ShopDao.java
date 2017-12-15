@@ -5,6 +5,8 @@ import com.arny.myapidemo.models.Category;
 import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.models.TestSubObject;
 import com.arny.myapidemo.models.User;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public interface ShopDao {
     @Query("SELECT DISTINCT tbl_name FROM sqlite_master")
     List<String> getDbTables();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.FAIL)
     long insert(User user);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -26,10 +28,16 @@ public interface ShopDao {
     @Delete()
     void delete(User user);
 
-    @Query("SELECT _id,login,name,admin,email,avatar,pass FROM users WHERE _id IS :id")
+    @Query("SELECT _id,login,name,admin,email,avatar,token FROM users WHERE _id IS :id")
     User getUser(long id);
 
-    @Query("SELECT _id,login,name,admin,email,avatar,pass FROM users ORDER BY login")
+    @Query("SELECT _id,login,name,admin,email,avatar,token FROM users WHERE login IS :login")
+    Flowable<User> getUserByLogin(String login);
+
+    @Query("SELECT _id,login,name,admin,email,avatar,token FROM users WHERE token=:token")
+    User getUserByToken(String token);
+
+    @Query("SELECT _id,login,name,admin,email,avatar,token FROM users ORDER BY login")
     List<User> getUsers();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -56,7 +64,7 @@ public interface ShopDao {
     @Delete()
     void delete(GoodItem goodItem);
 
-    @Query("SELECT _id,title,image,description,parentId FROM gooditem WHERE _id IS :id")
+    @Query("SELECT _id,title,image,description,parentId,price FROM gooditem WHERE _id IS :id")
     GoodItem getGoodItem(long id);
 
     @Query("SELECT _id,title,image,description,parentId,price FROM gooditem ORDER BY title")

@@ -19,11 +19,9 @@ public class GoodItem {
 	private double price;
 	@SerializedName("image")
 	@Expose
-    @Ignore
 	private String image;
 	@SerializedName("name")
 	@Expose
-    @ColumnInfo(name = "good_title")
 	private String title;
 	@SerializedName("_id")
 	@Expose

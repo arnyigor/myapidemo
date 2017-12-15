@@ -67,7 +67,6 @@ public class InstrumentedTestDbRoom {
         int cntUsers = MathUtils.randInt(1, 50);
         for (int i = 0; i < cntUsers; i++) {
             User e = new User(Generator.getWord(), Generator.getMaleName());
-            e.setParentId(row);
             users.add(e);
         }
         long[] rows = RoomDB.getDb(appContext).getTestDao().insert(users);
@@ -78,30 +77,6 @@ public class InstrumentedTestDbRoom {
             @Override
             public boolean matches(List<? extends TestSubObject> values) {
                 return values != null && values.size() > 0;
-            }
-        });
-    }
-
-    @Test
-    public void getUsersDbRoom() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        List<TestSubObject> listTestSubObject = RoomDB.getDb(appContext).getTestDao().getListTest();
-        assertThat(listTestSubObject).is(new Condition<List<? extends TestSubObject>>() {
-            @Override
-            public boolean matches(List<? extends TestSubObject> subObjects) {
-                for (TestSubObject subObject : subObjects) {
-                    long id = subObject.getId();
-                    Log.i(InstrumentedTestDbRoom.class.getSimpleName(), "matches: id:" +id);
-                    List<User> users = RoomDB.getDb(appContext).getTestDao().getUsers(id);
-                    Log.i(InstrumentedTestDbRoom.class.getSimpleName(), "matches: users:" +users);
-                    assertThat(users).is(new Condition<List<? extends User>>() {
-                        @Override
-                        public boolean matches(List<? extends User> value) {
-                            return value != null && value.size() > 0;
-                        }
-                    });
-                }
-                return subObjects.size() > 0;
             }
         });
     }

@@ -1,23 +1,25 @@
-package com.arny.myapidemo.mvp.view;
+package com.arny.myapidemo.mvp.auth;
 
+import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
-import com.arny.myapidemo.mvp.BaseView;
 @StateStrategyType(AddToEndSingleStrategy.class)
-public interface AuthView extends BaseView {
+public interface AuthView extends MvpView {
 	void loggedIn();
 
 	void showLoginError();
 
 	void showPassError();
 
-	void showAuthError();
+    void hideErrors();
 
-	void hideErrors();
+	void showAuthError();
 
 	void showProgress();
 
 	void hideProgress();
+
+	void setToolbarTitle(String title);
 
 	void updateProgress(String progress);
 
