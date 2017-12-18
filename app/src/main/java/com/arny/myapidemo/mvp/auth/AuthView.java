@@ -5,7 +5,9 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface AuthView extends MvpView {
-	void loggedIn();
+	void signUp();
+
+	void signIn();
 
 	void showLoginError();
 

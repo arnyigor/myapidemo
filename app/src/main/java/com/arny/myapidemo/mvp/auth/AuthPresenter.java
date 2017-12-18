@@ -2,6 +2,7 @@ package com.arny.myapidemo.mvp.auth;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arny.arnylib.security.CryptoStrings;
@@ -16,6 +17,8 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
 
     public AuthPresenter() {
         // Required empty public constructor
+        AuthView viewState = getViewState();
+        Log.i(AuthPresenter.class.getSimpleName(), "AuthPresenter: " + viewState);
     }
 
     public boolean checkLoginPass(String login, String pass) {
@@ -52,7 +55,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                         .subscribe(res -> {
                             getViewState().hideProgress();
                             if (res) {
-                                getViewState().loggedIn();
+                                getViewState().signUp();
                             } else {
                                 getViewState().showAlert("Неверный логин или пароль");
                             }
@@ -89,7 +92,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                         .subscribe(res -> {
                             getViewState().hideProgress();
                             if (res) {
-                                getViewState().loggedIn();
+                                getViewState().signUp();
                             } else {
                                 getViewState().showAlert("Неверный логин или пароль");
                             }

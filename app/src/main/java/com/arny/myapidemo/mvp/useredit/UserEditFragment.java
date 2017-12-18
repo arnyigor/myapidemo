@@ -17,7 +17,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arny.myapidemo.R;
 import com.bumptech.glide.Glide;
 
-public class UserEditFragment extends MvpAppCompatFragment implements UserEditView {
+public class UserEditFragment extends MvpAppCompatFragment implements UserEditView, View.OnClickListener {
     @InjectPresenter
     UserEditPresenter userEditPresenter;
     private ImageView imgAvatar;
@@ -52,6 +52,7 @@ public class UserEditFragment extends MvpAppCompatFragment implements UserEditVi
         imgBtnEditAvatar = view.findViewById(R.id.imgBtnEditAvatar);
         imgBtnDeleteAvatar = view.findViewById(R.id.imgBtnDeleteAvatar);
         fabEdit = view.findViewById(R.id.fabEdit);
+        fabEdit.setOnClickListener(this);
         if (getArguments() != null) {
             String login = getArguments().getString("login");
             userEditPresenter.initState(context, login);
@@ -74,7 +75,9 @@ public class UserEditFragment extends MvpAppCompatFragment implements UserEditVi
 
     @Override
     public void setToolbarTitle(String title) {
-
+        if (getActivity() != null) {
+            getActivity().setTitle(title);
+        }
     }
 
     @Override
@@ -99,6 +102,15 @@ public class UserEditFragment extends MvpAppCompatFragment implements UserEditVi
     public void hideMessage() {
         if (materialDialog != null && materialDialog.isShowing()) {
             materialDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnSignIn:
+                userEditPresenter.register(edtLogin.getText().toString(),edtPass.getText().toString(),context);
+                break;
         }
     }
 }
