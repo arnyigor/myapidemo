@@ -19,4 +19,6 @@ public interface UserEditView extends MvpView {
 	void showAlert(String message);
 
 	void hideMessage();
+
+	void viewImage(String uri);
 }
