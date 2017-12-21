@@ -50,8 +50,10 @@ public class MyServicefragment extends Fragment implements View.OnClickListener,
 		super.onAttach(activity);
 		context = getActivity();
 		activityCommunicator =(ActivityCommunicator)context;//send to activity
-		((TabsActivity)context).fragmentCommunicator = this;//recieve from activity
-	}
+        if (getActivity() != null) {
+            ((TabsActivity)getActivity()).fragmentCommunicator = this;//recieve from activity
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -61,15 +63,15 @@ public class MyServicefragment extends Fragment implements View.OnClickListener,
 
     private void initUI(View rootView) {
         Log.i(TAG, "initUI: ");
-        btnOper1 = (Button) rootView.findViewById(R.id.btnOper1);
-        btnOper2 = (Button) rootView.findViewById(R.id.btnOper2);
-        btnOper3 = (Button) rootView.findViewById(R.id.btnOper3);
+        btnOper1 = rootView.findViewById(R.id.btnOper1);
+        btnOper2 = rootView.findViewById(R.id.btnOper2);
+        btnOper3 = rootView.findViewById(R.id.btnOper3);
         btnOper1.setOnClickListener(this);
         btnOper2.setOnClickListener(this);
         btnOper3.setOnClickListener(this);
-        tvInfo1 = (TextView) rootView.findViewById(R.id.tvInfo1);
-        tvInfo2 = (TextView) rootView.findViewById(R.id.tvInfo2);
-        tvInfo3 = (TextView) rootView.findViewById(R.id.tvInfo3);
+        tvInfo1 = rootView.findViewById(R.id.tvInfo1);
+        tvInfo2 = rootView.findViewById(R.id.tvInfo2);
+        tvInfo3 = rootView.findViewById(R.id.tvInfo3);
     }
 
     private void showDialog(String result) {

@@ -89,3 +89,9 @@
 # platform version. We know about them, and they are safe.
 -dontwarn android.support.**
 -dontwarn com.google.ads.**
+-dontwarn javax.annotation.**
+-dontwarn com.google.**
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn okio.**
+-dontwarn org.joda.**

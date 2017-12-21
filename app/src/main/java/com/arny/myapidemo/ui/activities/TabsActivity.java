@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.arny.arnylib.utils.BasePermissions;
+import com.arny.arnylib.utils.RuntimePermissionsActivity;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.TabPagerAdapter;
 import com.arny.myapidemo.ui.fragments.ActivityCommunicator;
