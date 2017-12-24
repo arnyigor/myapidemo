@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
-        release {
-            keyAlias 'crackmealias'
-            keyPassword KEY_PASSWORD
-            storeFile file('../../keystore/crack_release.jks')
-            storePassword KEYSTORE_PASSWORD
-        }
+//        release {
+//            keyAlias 'crackmealias'
+//            keyPassword KEY_PASSWORD
+//            storeFile file('../../keystore/crack_release.jks')
+//            storePassword KEYSTORE_PASSWORD
+//        }
     }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -29,7 +29,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false

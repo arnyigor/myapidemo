@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/MyApiDemo.iml" filepath="$PROJECT_DIR$/MyApiDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/modules/arnylib/arnylib.iml" filepath="$PROJECT_DIR$/modules/arnylib/arnylib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/myapidemo.iml" filepath="$PROJECT_DIR$/myapidemo.iml" />
+      <module fileurl="file://C:\Android\AndroidStudioProjects\MyApiDemo\myapidemo.iml" filepath="C:\Android\AndroidStudioProjects\MyApiDemo\myapidemo.iml" />
     </modules>
   </component>
 </project>
