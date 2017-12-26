@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.arny.arnylib.network.ApiFactory;
 import com.arny.arnylib.utils.*;
 import com.arny.arnylib.utils.generators.Generator;
@@ -15,16 +16,14 @@ import com.arny.myapidemo.R;
 import com.arny.myapidemo.api.API;
 import com.arny.myapidemo.api.AristorService;
 import com.arny.myapidemo.api.Auth;
+import com.arny.myapidemo.api.jsongenerator.JsonGeneratorAPIKt;
+import com.arny.myapidemo.database.RoomDB;
 import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.utils.Local;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import org.json.JSONObject;
 
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 public class RxJavaActivity extends AppCompatActivity implements View.OnClickListener {
@@ -43,10 +41,12 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 	private AristorService aristos;
 	private ProgressDialog pDialog;
 	private Button btnTest1;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private MaterialDialog progress;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rx_java);
 		btn = findViewById(R.id.btn_login);
 		btnTest1 = findViewById(R.id.btnTest1);
@@ -54,18 +54,34 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 		btnTest1.setOnClickListener(this);
 		edt = findViewById(R.id.editText);
 		findViewById(R.id.btnTest).setOnClickListener(this);
-		pDialog = new ProgressDialog(this);
-		pDialog.setCancelable(false);
-		findViewById(R.id.btnGetTransfers).setOnClickListener(this);
-		aristos = ApiFactory.getInstance().createService(AristorService.class, API.BASE_URL_ARISTOS);
-		getRxEdit()
-				.map(s -> s.length() >= 3)
-				.subscribe(res -> btn.setEnabled(res));
-	}
+        findViewById(R.id.btnTest2).setOnClickListener(this);
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+        findViewById(R.id.btnGetTransfers).setOnClickListener(this);
+        aristos = ApiFactory.getInstance().createService(AristorService.class, API.BASE_URL_ARISTOS);
+        getRxEdit().map(s -> s.length() >= 3)
+                .subscribe(res -> btn.setEnabled(res));
+        progress = new MaterialDialog.Builder(this)
+                .content("Загрузка...")
+                .progress(true, 0)
+                .negativeText("Отмена")
+                .onNegative((dialog, which) -> disposeRX())
+                .build();
+    }
 
-	private Observable<String> getRxEdit() {
-		return RxTextView.textChanges(edt)
-				.map(CharSequence::toString).skip(1)
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposeRX();
+    }
+
+    private void disposeRX() {
+        compositeDisposable.clear();
+    }
+
+    private Observable<String> getRxEdit() {
+        return RxTextView.textChanges(edt)
+                .map(CharSequence::toString).skip(1)
 				.doOnNext(s -> {
 					boolean shortPass = s.length() < 3;
 					btn.setEnabled(!shortPass);
@@ -126,19 +142,15 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 			case R.id.btnTest:
 				stopwatch = new Stopwatch();
 				stopwatch.start();
-				Utility.mainThreadObservable(
-						Observable.create(e -> {
-							e.onNext(generateList());
-							e.onComplete();
-						}).map(o -> (ArrayList<Integer>) o)
-								.map(integers -> {
-									ArrayList<Long> objects = new ArrayList<>(integers.size());
-									for (Integer integer : integers) {
-										objects.add(Long.valueOf(integer));
-									}
-									return objects;
-								})
-								.map(unsortedList -> {//сортировка списка
+                Utility.mainThreadObservable(Observable.fromCallable(this::generateList)
+                        .map(integers -> {
+                            ArrayList<Long> objects = new ArrayList<>(integers.size());
+                            for (Integer integer : integers) {
+                                objects.add(Long.valueOf(integer));
+                            }
+                            return objects;
+                        })
+                        .map(unsortedList -> {//сортировка списка
 									List<Long> sortedList = new ArrayList<>(unsortedList.size());
 									Collections.copy(sortedList, unsortedList);
 									Collections.sort(sortedList, (o1, o2) -> Long.compare(o1, o2));
@@ -150,23 +162,17 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 										objects.add(Integer.parseInt(String.valueOf(object)));
 									}
 									return objects;
-								})
-				).subscribe(integers -> {
-					Utility.mainThreadObservable(
-							Observable.create(e -> {
-								e.onNext(savetest(integers));
-								e.onComplete();
-							}).map(o -> (Boolean) o)
-					).subscribe(System.out::println, Throwable::printStackTrace);
-					System.out.println("res " + integers + " time:" + stopwatch.getElapsedTimeSecs(3) + " sec");
-				}, Throwable::printStackTrace);
-				break;
-			case R.id.btnGetTransfers:
-				API.getTransfer()
-						.subscribeOn(Schedulers.io())
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe(object -> {
-							Log.i(RxJavaActivity.class.getSimpleName(), "onClick: object.getSuccess() = " + object.getSuccess());
+                                }).flatMap(integers -> Observable.fromCallable(() -> savetest(integers)))
+                ).subscribe(aBoolean -> {
+                    System.out.println("res " + aBoolean + " time:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+                }, Throwable::printStackTrace);
+                break;
+            case R.id.btnGetTransfers:
+                API.getTransfer()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object -> {
+                            Log.i(RxJavaActivity.class.getSimpleName(), "onClick: object.getSuccess() = " + object.getSuccess());
 							System.out.println(object);
 						}, Throwable::printStackTrace);
 				break;
@@ -190,21 +196,44 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 			case R.id.btnTest1:
 				Stopwatch stopwatch = new Stopwatch();
 				stopwatch.start();
-
                 Observable<String> stringObservable = Observable.fromCallable(this::londTimeFunctionString);
                 Observable<List<Integer>> listObservable = Observable.fromCallable(this::londTimeFunctionList);
-                Utility.mainThreadObservable(Schedulers.computation(), listObservable.flatMap(Observable::fromIterable).filter(integer -> integer > 3 && integer < 8 ).toList().flatMapObservable(Observable::fromIterable)).subscribe(
-                        res -> {
-                            Log.i(RxJavaActivity.class.getSimpleName(), "RX result: " + res + " with time :" + stopwatch.getElapsedTimeSecs(3) + " sec"  + " in thread:" + Utility.getThread());
-                            stopwatch.stop();
+                compositeDisposable.add(Utility.mainThreadObservable(Schedulers.computation(), listObservable.flatMap(Observable::fromIterable).filter(integer -> integer > 3 && integer < 8).toList().flatMapObservable(Observable::fromIterable))
+                        .doOnSubscribe(disposable -> progress.show())
+                        .subscribe(
+                                res -> {
+                                    ToastMaker.toastSuccess(this, "RX result: " + res + " with time :" + stopwatch.getElapsedTimeSecs(3) + " sec" + " in thread:" + Utility.getThread());
+                                    Log.i(RxJavaActivity.class.getSimpleName(), "RX result: " + res + " with time :" + stopwatch.getElapsedTimeSecs(3) + " sec" + " in thread:" + Utility.getThread());
+                                    stopwatch.stop();
+                                    progress.dismiss();
+                                }, throwable -> {
+                                    ToastMaker.toastError(this, "RX error: " + throwable.getMessage());
+                                    throwable.printStackTrace();
+                                    Log.i(RxJavaActivity.class.getSimpleName(), "RX error:" + throwable.getMessage() + " : in thread:" + Utility.getThread());
+                                    stopwatch.stop();
+                                    progress.dismiss();
+                                }
+                        ));
+                break;
+
+            case R.id.btnTest2:
+                Stopwatch stopwatch2 = new Stopwatch();
+                stopwatch2.start();
+                compositeDisposable.add(Utility.mainThreadObservable(JsonGeneratorAPIKt.getJson("4JzCgxruX")
+                        .doOnNext(places -> {
+                            RoomDB.getDb(this).getPlacesDao().insert(places);
+                            runOnUiThread(() -> progress.setContent("Обновление БД..."));
+                        })
+                ).doOnSubscribe(disposable -> progress.show())
+                        .subscribe(places -> {
+                            Log.i(RxJavaActivity.class.getSimpleName(), "getJson: " + places);
+                            ToastMaker.toastSuccess(this, "Geting json success!");
+                            progress.dismiss();
                         }, throwable -> {
                             throwable.printStackTrace();
-                            Log.i(RxJavaActivity.class.getSimpleName(), "RX error:"+throwable.getMessage()+" : in thread:" + Utility.getThread());
-                            stopwatch.stop();
-                        },() -> {
-                            Log.i(RxJavaActivity.class.getSimpleName(), "RX result final: in thread:" + Utility.getThread());
-                        }
-                );
+                            progress.dismiss();
+                            ToastMaker.toastError(this, "Geting json error:" + throwable.getMessage());
+                        }));
                 break;
         }
 	}

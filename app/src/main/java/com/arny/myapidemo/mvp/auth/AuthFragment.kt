@@ -105,13 +105,13 @@ class AuthFragment : MvpAppCompatFragment(), AuthView, View.OnClickListener {
     }
 
     override fun showAlert(message: String) {
-        Log.i(AuthActivity::class.java.simpleName, "onCreate: isRestore = " + (authPresenter != null && authPresenter!!.isInRestoreState(this)))
-        if (materialDialog == null || !materialDialog!!.isShowing) {
+        Log.i(AuthActivity::class.java.simpleName, "onCreate: isRestore = " + (authPresenter?.isInRestoreState(this)))
+        if (materialDialog?.isShowing!!) {
             materialDialog = MaterialDialog.Builder(context!!)
                     .title(R.string.app_name)
                     .content(message)
                     .positiveText(android.R.string.ok)
-                    .onPositive { dialog, which -> authPresenter!!.alertRead() }
+                    .onPositive { _, _ -> authPresenter?.alertRead() }
                     .cancelable(false)
                     .show()
         }

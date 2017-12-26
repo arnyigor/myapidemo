@@ -48,7 +48,7 @@ class AuthPresenter : MvpPresenter<AuthView>() {
                 Utility.mainThreadObservable(Observable.create<Boolean> { e ->
                     e.onNext(saveUser(context, login, finalToken))
                     e.onComplete()
-                }).doOnSubscribe { disposable -> viewState.showProgress() }
+                }).doOnSubscribe { _ -> viewState.showProgress() }
                         .subscribe({ res ->
                             viewState.hideProgress()
                             if (res!!) {
@@ -85,7 +85,7 @@ class AuthPresenter : MvpPresenter<AuthView>() {
                 Utility.mainThreadObservable(Observable.create<Boolean> { e ->
                     e.onNext(canLogin(context, finalToken))
                     e.onComplete()
-                }).doOnSubscribe { disposable -> viewState.showProgress() }
+                }).doOnSubscribe { viewState.showProgress() }
                         .subscribe({ res ->
                             viewState.hideProgress()
                             if (res!!) {

@@ -72,7 +72,7 @@ class UserEditFragment : MvpAppCompatFragment(), UserEditView, View.OnClickListe
                     .title(R.string.app_name)
                     .content(message)
                     .positiveText(android.R.string.ok)
-                    .onPositive { dialog, which -> userEditPresenter!!.alertRead() }
+                    .onPositive { _, _ -> userEditPresenter!!.alertRead() }
                     .cancelable(false)
                     .show()
         }
