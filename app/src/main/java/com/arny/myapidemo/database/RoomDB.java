@@ -11,7 +11,7 @@ import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.models.InfoObject;
 import com.arny.myapidemo.models.TestSubObject;
 
-@Database(entities = {TestSubObject.class, InfoObject.class, User.class, Category.class, GoodItem.class}, version = 1)
+@Database(entities = {TestSubObject.class, InfoObject.class, User.class, Category.class, GoodItem.class}, version = 2)
 @TypeConverters({DbTypeConverter.class})
 public abstract class RoomDB extends RoomDatabase {
     private static final Object LOCK = new Object();

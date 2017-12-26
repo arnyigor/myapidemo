@@ -15,8 +15,6 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // Launch the specified service when this message is received
         Bundle extras = intent.getExtras();
-        Log.i(BootBroadcastReceiver.class.getSimpleName(), "onReceive: extras = " + extras.get("test"));
-        Log.i(BootBroadcastReceiver.class.getSimpleName(), "onReceive: time = " + DateTimeUtils.getDateTime(0,null));
         Intent startServiceIntent = new Intent(context, WackeUpService.class);
         startServiceIntent.putExtras(extras);
         startWakefulService(context, startServiceIntent);

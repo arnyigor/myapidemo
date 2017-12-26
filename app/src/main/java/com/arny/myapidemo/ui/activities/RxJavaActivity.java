@@ -18,11 +18,13 @@ import com.arny.myapidemo.api.Auth;
 import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.utils.Local;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import io.reactivex.*;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import org.json.JSONObject;
 
@@ -169,11 +171,9 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 						}, Throwable::printStackTrace);
 				break;
 			case R.id.btn_login:
-				aristos.login(getPostHashMap())
+			    Utility.mainThreadObservable(aristos.login(getPostHashMap()))
 						.doOnSubscribe(disposable -> runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Вход...")))
-						.doFinally(() -> runOnUiThread(() -> DroidUtils.hideProgress(pDialog)))
-						.subscribeOn(Schedulers.io())
-						.observeOn(AndroidSchedulers.mainThread())
+                        .doFinally(() -> DroidUtils.hideProgress(pDialog))
 						.subscribe(auth -> {
 							System.out.println(auth);
 							if (auth.getSuccess()) {
@@ -190,39 +190,87 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 			case R.id.btnTest1:
 				Stopwatch stopwatch = new Stopwatch();
 				stopwatch.start();
-				Observable<List<Integer>> buffer1 = Observable.create((ObservableOnSubscribe<Integer>) e -> {
-					for (int i = 0; i < 10; i++) {
-						Thread.sleep(1000);
-						Log.i(RxJavaActivity.class.getSimpleName(), "Observable.create 1:  = " + i + " time:" + stopwatch.getElapsedTimeSecs(3) + "sec");
-						e.onNext(i);
-					}
-					e.onComplete();
-				}).buffer(5);
-				Observable<List<Integer>> b2 = Observable.range(0, 10).doOnNext(integer -> {
-					Thread.sleep(300);
-					Log.i(RxJavaActivity.class.getSimpleName(), "Observable.create 2:  = " + integer + " time:" + stopwatch.getElapsedTimeSecs(3) + "sec");
-				}).buffer(5);
-				Utility.mainThreadObservable(Observable.zip(buffer1, b2, (integers, integers2) -> {
-					StringBuilder res = new StringBuilder();
-					res.append("zip 1:{");
-					for (Integer integer : integers) {
-						res.append(integer);
-						res.append(",");
-					}
-					res.append("}");
-					res.append("zip 2:{");
-					for (Integer integer : integers2) {
-						res.append(integer);
-						res.append(",");
-					}
-					res.append("}");
-					return res.toString();
-				})).subscribe(
-						s -> Log.i(RxJavaActivity.class.getSimpleName(), "zip: res = " + s + " time res:" + stopwatch.getElapsedTimeSecs(3) + "sec"), Throwable::printStackTrace
-				);
-				break;
-		}
+
+                Observable<String> stringObservable = Observable.fromCallable(this::londTimeFunctionString);
+                Observable<List<Integer>> listObservable = Observable.fromCallable(this::londTimeFunctionList);
+                Utility.mainThreadObservable(Schedulers.computation(), listObservable.flatMap(Observable::fromIterable).filter(integer -> integer > 3 && integer < 8 ).toList().flatMapObservable(Observable::fromIterable)).subscribe(
+                        res -> {
+                            Log.i(RxJavaActivity.class.getSimpleName(), "RX result: " + res + " with time :" + stopwatch.getElapsedTimeSecs(3) + " sec"  + " in thread:" + Utility.getThread());
+                            stopwatch.stop();
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            Log.i(RxJavaActivity.class.getSimpleName(), "RX error:"+throwable.getMessage()+" : in thread:" + Utility.getThread());
+                            stopwatch.stop();
+                        },() -> {
+                            Log.i(RxJavaActivity.class.getSimpleName(), "RX result final: in thread:" + Utility.getThread());
+                        }
+                );
+                break;
+        }
 	}
+
+    private String londTimeFunctionString() {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionString: started:");
+        try {
+            for (int i = 0; i < 5; i++) {
+                Thread.sleep(1000);
+                Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionString update in thread " + Utility.getThread() + ": time:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionString: finished:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+        stopwatch.stop();
+        return "long_time_function_result";
+    }
+
+    private int londTimeFunctionInt() {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionInt: started:");
+        int res = 0;
+        try {
+            for (int i = 0; i < 5; i++) {
+                Thread.sleep(1000);
+                Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionInt update in thread " + Utility.getThread() + ": time:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+                res += MathUtils.randInt(0,9);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionInt: finished:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+        stopwatch.stop();
+        return res;
+    }
+
+
+    private List<Integer> londTimeFunctionList() throws Exception {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionList: started:");
+        int res = 0;
+        List<Integer> integers = new ArrayList<>();
+        try {
+            for (int i = 0; i < 5; i++) {
+                Thread.sleep(1000);
+                int randInt = MathUtils.randInt(0, 9);
+                int i1 = MathUtils.randInt(0, 1);
+                if (randInt == i1) {
+                    throw new Exception(" Danger!!! number is equals " + i1);
+                }
+                Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionList "+randInt+" update in thread " + Utility.getThread() + ": time:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+                integers.add(randInt);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionList: finished:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+        stopwatch.stop();
+        return integers;
+    }
+
 
 	@NonNull
 	private HashMap<String, Object> getPostHashMap() {

@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
-//        release {
-//            keyAlias 'crackmealias'
-//            keyPassword KEY_PASSWORD
-//            storeFile file('../../keystore/crack_release.jks')
-//            storePassword KEYSTORE_PASSWORD
-//        }
+        release {
+            keyAlias 'crackmealias'
+            keyPassword KEY_PASSWORD
+            storeFile file('../../keystore/crack_release.jks')
+            storePassword KEYSTORE_PASSWORD
+        }
     }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -29,7 +29,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false
@@ -56,13 +56,13 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':arnylib')
-    testImplementation 'junit:junit:4.12'
     compile 'com.android.support:multidex:1.0.2'
+    // Tests
+    testImplementation 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.6.2'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.2.0'
     androidTestCompile 'com.squareup.assertj:assertj-android-support-v4:1.2.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
     compile 'com.google.android.gms:play-services-maps:11.8.0'
     compile 'com.google.android.gms:play-services-auth:11.8.0'
@@ -82,6 +82,7 @@ dependencies {
     compile 'org.osmdroid:osmdroid-android:5.6.5'
     compile 'com.github.esafirm.android-image-picker:imagepicker:1.9.2'
     compile 'com.github.esafirm.android-image-picker:rximagepicker:1.9.2'
+
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

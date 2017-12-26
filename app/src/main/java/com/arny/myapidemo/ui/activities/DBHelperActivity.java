@@ -23,14 +23,15 @@ import com.arny.arnylib.utils.generators.Generator;
 import com.arny.myapidemo.R;
 import com.arny.myapidemo.adapters.FilterExampleAdapter;
 import com.arny.myapidemo.adapters.SimpleViewHolder;
-import com.arny.myapidemo.models.User;
 import com.arny.myapidemo.database.RoomDB;
 import com.arny.myapidemo.models.InfoObject;
-import com.arny.myapidemo.models.TestSubObject;
 import com.arny.myapidemo.models.TestObject;
+import com.arny.myapidemo.models.TestSubObject;
+import com.arny.myapidemo.models.User;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
@@ -222,18 +223,15 @@ public class DBHelperActivity extends AppCompatActivity implements View.OnClickL
         if (isDbLocked) return;
         totalTime.restart();
         if (isDbroom) {
-            Utility.mainThreadObservable(Observable.create(e -> {
-                e.onNext(RoomDB.getDb(this).getTestDao().getListTest());
-                e.onComplete();
-            })
-                    .map(o -> (ArrayList<TestSubObject>) o).map(tests -> {
+            Utility.mainThreadObservable(Observable.fromCallable(() -> RoomDB.getDb(this).getTestDao().getListTest())
+                    .map(tests -> {
                         ArrayList<TestObject> testObjects = new ArrayList<>();
                         for (TestSubObject testSubObject : tests) {
                             testObjects.add(getFromTest(testSubObject));
                         }
                         return testObjects;
-                    }))
-                    .subscribe(testObjects -> {
+                    })
+            ).subscribe(testObjects -> {
                         isDbLocked = false;
                         DroidUtils.hideProgress(pDialog);
                         setAdapterList(testObjects);

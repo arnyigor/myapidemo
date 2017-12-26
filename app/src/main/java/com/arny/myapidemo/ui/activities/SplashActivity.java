@@ -12,14 +12,8 @@ public class SplashActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(SplashActivity.this, HomeActivity.class);
-                startActivity(i);
-                finish();
-            }
-        }, 2 * DateUtils.SECOND_IN_MILLIS);
+        Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mainIntent);
     }
 }

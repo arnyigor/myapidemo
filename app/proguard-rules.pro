@@ -42,6 +42,35 @@
 -keep public class * extends android.app.Fragment
 -keep public class com.android.vending.licensing.ILicensingService
 
+#Custom keep
+-keep class com.arny.arnylib.adapters.BindableViewHolder
+-keep class com.arny.arnylib.adapters.FilterBindableAdapter
+-keep class com.arny.arnylib.database.DBProvider
+-keep class com.arny.arnylib.database.RoomDB
+-dontwarn com.arny.arnylib.database.**
+-keep class com.arny.arnylib.utils.ToastMaker
+-keep class com.arny.arnylib.utils.DroidUtils
+-keep class com.arny.arnylib.utils.CalculatorDialog
+
+
+#Moxy
+-keep class com.arellomobile.mvp.** { *; }
+-keep class com.arellomobile.mvp.MoxyReflector
+-keep class com.arellomobile.mvp.MvpPresenter
+-keep class com.arellomobile.mvp.viewstate.MvpViewState
+-keep class com.arellomobile.mvp.ViewStateClassNameProvider
+-keep class com.arellomobile.mvp.ViewStateClassNameProvider
+-keep class * extends com.arellomobile.mvp.MoxyReflector
+-keep class * extends com.arellomobile.mvp.MvpPresenter
+-keep class * extends com.arellomobile.mvp.viewstate.MvpViewState
+-keep class * extends com.arellomobile.mvp.ViewStateClassNameProvider
+-keep interface * extends com.arellomobile.mvp.MvpView
+
+#OsmDroid
+-keep class org.osmdroid.** { *; }
+-dontwarn org.osmdroid.**
+-keep interface org.osmdroid.** { *; }
+
 # For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
 -keepclasseswithmembernames class * {
  native <methods>;
