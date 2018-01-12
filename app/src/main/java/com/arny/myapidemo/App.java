@@ -10,7 +10,7 @@ public class App extends Application {
 	public void onCreate() {
 		super.onCreate();
 		MultiDex.install(this);
-		DBProvider.initDB(getApplicationContext(),"apidemo",4);
+//		DBProvider.initDB(getApplicationContext(),"apidemo",5);
         BigImageViewer.initialize(GlideImageLoader.with(this));
     }
 }

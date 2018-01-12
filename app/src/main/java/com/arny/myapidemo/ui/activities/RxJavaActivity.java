@@ -43,21 +43,13 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 	private Button btnTest1;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MaterialDialog progress;
+    private Button btnTest3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rx_java);
-		btn = findViewById(R.id.btn_login);
-		btnTest1 = findViewById(R.id.btnTest1);
-		btn.setOnClickListener(this);
-		btnTest1.setOnClickListener(this);
-		edt = findViewById(R.id.editText);
-		findViewById(R.id.btnTest).setOnClickListener(this);
-        findViewById(R.id.btnTest2).setOnClickListener(this);
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-        findViewById(R.id.btnGetTransfers).setOnClickListener(this);
+        initUI();
         aristos = ApiFactory.getInstance().createService(AristorService.class, API.BASE_URL_ARISTOS);
         getRxEdit().map(s -> s.length() >= 3)
                 .subscribe(res -> btn.setEnabled(res));
@@ -67,6 +59,21 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
                 .negativeText("Отмена")
                 .onNegative((dialog, which) -> disposeRX())
                 .build();
+    }
+
+    private void initUI() {
+        btn = findViewById(R.id.btn_login);
+        btnTest1 = findViewById(R.id.btnTest1);
+        btnTest3 = findViewById(R.id.btnTest3);
+        btnTest3.setOnClickListener(this);
+        btn.setOnClickListener(this);
+        btnTest1.setOnClickListener(this);
+        edt = findViewById(R.id.editText);
+        findViewById(R.id.btnTest).setOnClickListener(this);
+        findViewById(R.id.btnTest2).setOnClickListener(this);
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+        findViewById(R.id.btnGetTransfers).setOnClickListener(this);
     }
 
     @Override
@@ -217,23 +224,31 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.btnTest2:
-                Stopwatch stopwatch2 = new Stopwatch();
-                stopwatch2.start();
-                compositeDisposable.add(Utility.mainThreadObservable(JsonGeneratorAPIKt.getJson("4JzCgxruX")
-                        .doOnNext(places -> {
-                            RoomDB.getDb(this).getPlacesDao().insert(places);
-                            runOnUiThread(() -> progress.setContent("Обновление БД..."));
-                        })
-                ).doOnSubscribe(disposable -> progress.show())
-                        .subscribe(places -> {
-                            Log.i(RxJavaActivity.class.getSimpleName(), "getJson: " + places);
-                            ToastMaker.toastSuccess(this, "Geting json success!");
-                            progress.dismiss();
-                        }, throwable -> {
-                            throwable.printStackTrace();
-                            progress.dismiss();
-                            ToastMaker.toastError(this, "Geting json error:" + throwable.getMessage());
-                        }));
+//                Stopwatch stopwatch2 = new Stopwatch();
+//                stopwatch2.start();
+//                compositeDisposable.add(Utility.mainThreadObservable(JsonGeneratorAPIKt.getJson("4JzCgxruX")
+//                        .doOnNext(places -> {
+//                            RoomDB.getDb(this).getPlacesDao().insert(places);
+//                            runOnUiThread(() -> progress.setContent("Обновление БД..."));
+//                        })
+//                ).doOnSubscribe(disposable -> progress.show())
+//                        .subscribe(places -> {
+//                            Log.i(RxJavaActivity.class.getSimpleName(), "getJson: " + places);
+//                            ToastMaker.toastSuccess(this, "Geting json success!");
+//                            progress.dismiss();
+//                        }, throwable -> {
+//                            throwable.printStackTrace();
+//                            progress.dismiss();
+//                            ToastMaker.toastError(this, "Geting json error:" + throwable.getMessage());
+//                        }));
+                String res1 = londTimeFunctionString();
+                Log.i(RxJavaActivity.class.getSimpleName(), "res1: " + res1);
+                break;
+            case R.id.btnTest3:
+               Utility.mainThreadObservable(Observable.fromCallable(this::londTimeFunctionString))
+                        .subscribe(res -> {
+                            Log.i(RxJavaActivity.class.getSimpleName(), "res: " + res);
+                        });
                 break;
         }
 	}
@@ -274,7 +289,6 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
         return res;
     }
 
-
     private List<Integer> londTimeFunctionList() throws Exception {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
@@ -299,7 +313,6 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
         stopwatch.stop();
         return integers;
     }
-
 
 	@NonNull
 	private HashMap<String, Object> getPostHashMap() {

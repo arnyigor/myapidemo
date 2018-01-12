@@ -7,13 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.folderselector.FileChooserDialog
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.PresenterType
 import com.arny.myapidemo.R
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_user_edit.*
-import com.afollestad.materialdialogs.folderselector.FileChooserDialog
 
 
 class UserEditFragment : MvpAppCompatFragment(), UserEditView, View.OnClickListener {
@@ -39,7 +38,7 @@ class UserEditFragment : MvpAppCompatFragment(), UserEditView, View.OnClickListe
         fabEdit.setOnClickListener(this)
         imgBtnEditAvatar.setOnClickListener(this)
         if (arguments != null) {
-            val login = arguments!!.getString("login")
+            val login = arguments?.getString("login")
             context?.let { userEditPresenter?.initState(it, login) }
         }
     }
@@ -67,20 +66,20 @@ class UserEditFragment : MvpAppCompatFragment(), UserEditView, View.OnClickListe
     }
 
     override fun showAlert(message: String) {
-        if (materialDialog == null || !materialDialog!!.isShowing) {
+        if (materialDialog == null || materialDialog?.isShowing!!) {
             materialDialog = MaterialDialog.Builder(context!!)
                     .title(R.string.app_name)
                     .content(message)
                     .positiveText(android.R.string.ok)
-                    .onPositive { _, _ -> userEditPresenter!!.alertRead() }
+                    .onPositive { _, _ -> userEditPresenter?.alertRead() }
                     .cancelable(false)
                     .show()
         }
     }
 
     override fun hideMessage() {
-        if (materialDialog != null && materialDialog!!.isShowing) {
-            materialDialog!!.dismiss()
+        if (materialDialog != null && materialDialog?.isShowing!!) {
+            materialDialog.let { it?.dismiss() }
         }
     }
 

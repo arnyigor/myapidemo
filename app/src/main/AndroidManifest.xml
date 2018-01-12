@@ -167,6 +167,8 @@
         </activity>
         <activity android:name=".mvp.useredit.EditActivity">
         </activity>
+        <activity android:name=".weather.view.WeatherViewActivity">
+        </activity>
     </application>
 
 </manifest>

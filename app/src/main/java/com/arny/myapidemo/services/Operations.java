@@ -4,7 +4,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.arny.arnylib.network.NetworkService;
 import com.arny.arnylib.interfaces.OnStringRequestResult;
-import com.arny.arnylib.security.CryptoFiles;
+import com.arny.arnylib.security.CryptoStrings;
 import com.arny.arnylib.service.AbstractIntentService;
 import com.arny.arnylib.service.OperationProvider;
 import com.arny.arnylib.utils.Params;
@@ -43,8 +43,8 @@ public class Operations extends AbstractIntentService {
 		        try {
 		            String pass = "1111";
 		            String pass2 = "1111";
-			        byte[] passBytes = CryptoFiles.generateByteKey(pass);
-			        byte[] passBytes2 = CryptoFiles.generateByteKey(pass2);
+			        byte[] passBytes = CryptoStrings.generateByteKey(pass);
+			        byte[] passBytes2 = CryptoStrings.generateByteKey(pass2);
 			        if (passBytes2 == passBytes) {
 				        Log.d(Operations.class.getSimpleName(), "runOperation: passes equals");
 			        }

@@ -21,7 +21,6 @@ import com.arny.myapidemo.models.Consts;
 import org.json.JSONObject;
 
 public class GitHubActivity extends AppCompatActivity {
-	String url = "http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&APPID=" + API.OPEN_WEATHER_APIID;
 	private String name = "ay";
 	private int pageNum = 1;
 	private int pageSize = 25;
@@ -45,7 +44,6 @@ public class GitHubActivity extends AppCompatActivity {
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 		buttonGet.setOnClickListener(v -> {
-            Log.i(Consts.TAG, "onClick url = " + url);
             VolleyGet(UrlInit(1));
         });
 

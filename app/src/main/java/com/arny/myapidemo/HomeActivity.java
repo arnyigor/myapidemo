@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,11 +16,13 @@ import com.arny.myapidemo.mvp.auth.AuthActivity;
 import com.arny.myapidemo.mvp.useredit.EditActivity;
 import com.arny.myapidemo.ui.activities.*;
 import com.arny.myapidemo.ui.fragments.SettingsFragment;
+import com.arny.myapidemo.weather.view.WeatherViewActivity;
 
 public class HomeActivity extends AppCompatActivity {
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
     private final Class[] sActivities = new Class[]{
+            WeatherViewActivity.class,
             LiveDataActivity.class,
             JsonPlaceholderApiActivity.class,
 		    FoldersCleanerActivity.class,
@@ -63,7 +64,8 @@ public class HomeActivity extends AppCompatActivity {
 
         if (classesNames.length > 0) {
             listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classesNames));
-            listView.setOnItemClickListener(onListItemClick);
+            listView.setOnItemClickListener((parent, view, position, id) ->
+                    startActivity(new Intent(getBaseContext(), sActivities[position])));
         }
         String test = Config.getString(SettingsFragment.PREF_EDIT_TEST, this);
         if (BuildConfig.DEBUG) Log.i(HomeActivity.class.getSimpleName(), "onCreate: test = " + test);
@@ -84,9 +86,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         return names;
     }
-
-    AdapterView.OnItemClickListener onListItemClick = (parent, view, position, id) ->
-            startActivity(new Intent(getBaseContext(), sActivities[position]));
 
     @Override
     public void onBackPressed() {
