@@ -92,8 +92,7 @@ dependencies {
     compile 'org.osmdroid:osmdroid-android:5.6.5'
     compile 'com.github.esafirm.android-image-picker:imagepicker:1.9.2'
     compile 'com.github.esafirm.android-image-picker:rximagepicker:1.9.2'
-    compile 'io.nlopez.smartlocation:library:3.3.3'
-    compile 'io.nlopez.smartlocation:rx:3.3.3'
+    compile 'com.github.florent37:rxgps:1.0.0'
 
 }
 // ADD THIS AT THE BOTTOM

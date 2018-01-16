@@ -30,6 +30,7 @@ public class User {
         this.name = name;
     }
 
+    @Ignore
     public User() {
     }
 

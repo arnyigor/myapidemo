@@ -1,6 +1,7 @@
 package com.arny.myapidemo;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.multidex.MultiDex;
 import com.arny.arnylib.database.DBProvider;
 import com.github.piasy.biv.BigImageViewer;

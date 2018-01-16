@@ -3,6 +3,7 @@ package com.arny.myapidemo.weather.api;
 
 import java.util.List;
 
+import com.arny.arnylib.utils.Utility;
 import com.arny.myapidemo.weather.models.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -43,7 +44,12 @@ public class ApiWeatherResponse {
     @Expose
     private int cod;
 
-    public Coord getCoord() {
+	@Override
+	public String toString() {
+		return Utility.getFields(this);
+	}
+
+	public Coord getCoord() {
         return coord;
     }
 

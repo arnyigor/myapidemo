@@ -1,6 +1,7 @@
 
 package com.arny.myapidemo.weather.models;
 
+import com.arny.arnylib.utils.Utility;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,7 +17,12 @@ public class Sys {
     @Expose
     private int sunset;
 
-    public String getCountry() {
+	@Override
+	public String toString() {
+		return Utility.getFields(this);
+	}
+
+	public String getCountry() {
         return country;
     }
 

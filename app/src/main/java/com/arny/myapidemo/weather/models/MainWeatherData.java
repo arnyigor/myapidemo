@@ -1,6 +1,7 @@
 
 package com.arny.myapidemo.weather.models;
 
+import com.arny.arnylib.utils.Utility;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,10 +12,10 @@ public class MainWeatherData {
     private double temp;
     @SerializedName("humidity")
     @Expose
-    private int humidity;
+    private double humidity;
     @SerializedName("pressure")
     @Expose
-    private int pressure;
+    private double pressure;
     @SerializedName("temp_min")
     @Expose
     private double tempMin;
@@ -22,7 +23,12 @@ public class MainWeatherData {
     @Expose
     private double tempMax;
 
-    public double getTemp() {
+	@Override
+	public String toString() {
+		return Utility.getFields(this);
+	}
+
+	public double getTemp() {
         return temp;
     }
 
@@ -30,19 +36,19 @@ public class MainWeatherData {
         this.temp = temp;
     }
 
-    public int getHumidity() {
+    public double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(double humidity) {
         this.humidity = humidity;
     }
 
-    public int getPressure() {
+    public double getPressure() {
         return pressure;
     }
 
-    public void setPressure(int pressure) {
+    public void setPressure(double pressure) {
         this.pressure = pressure;
     }
 

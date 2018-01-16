@@ -1,6 +1,7 @@
 
 package com.arny.myapidemo.weather.models;
 
+import com.arny.arnylib.utils.Utility;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,7 +20,12 @@ public class Weather {
     @Expose
     private String icon;
 
-    public int getId() {
+	@Override
+	public String toString() {
+		return Utility.getFields(this);
+	}
+
+	public int getId() {
         return id;
     }
 
