@@ -3,7 +3,6 @@ package com.arny.myapidemo.services;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +12,8 @@ import android.util.Log;
 import com.arny.arnylib.utils.DateTimeUtils;
 import com.arny.arnylib.utils.DroidUtils;
 import com.arny.myapidemo.R;
-import com.arny.myapidemo.ui.activities.NetworkActivity;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -117,7 +116,7 @@ public class NetworkStateService extends Service {
         }.execute();
     }
 
-	private Notification createNotification(Context context) {
+    private Notification createNotification(Context context) {
 		notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		isHostAvailable("www.google.com", 80, timeout);
 		String content = DateTimeUtils.getDateTime("HH:mm:ss") + " Net:" + DroidUtils.getNetworkInfo(getApplicationContext());

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.arny.arnylib.network.ApiUtils;
 import com.arny.arnylib.utils.Config;
 import com.arny.myapidemo.mvp.auth.AuthActivity;
 import com.arny.myapidemo.mvp.useredit.EditActivity;
@@ -18,7 +19,7 @@ import com.arny.myapidemo.ui.activities.*;
 import com.arny.myapidemo.ui.fragments.SettingsFragment;
 import com.arny.myapidemo.weather.view.WeatherViewActivity;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends PermissionsActivity {
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
     private final Class[] sActivities = new Class[]{
@@ -69,6 +70,14 @@ public class HomeActivity extends AppCompatActivity {
         }
         String test = Config.getString(SettingsFragment.PREF_EDIT_TEST, this);
         if (BuildConfig.DEBUG) Log.i(HomeActivity.class.getSimpleName(), "onCreate: test = " + test);
+//        new Thread(() -> {
+//            boolean hostAvailable = ApiUtils.isHostAvailable("192.168.1.41", 9100, 500);
+//            Log.d(HomeActivity.class.getSimpleName(), "onCreate: hostAvailable:" + hostAvailable);
+//            if (hostAvailable) {
+//                ApiUtils.sendSocketData("192.168.1.41", 9100, "^XA^FO17,16^GB379,371,8^FS^FT65,255^A0N,135,134^FDTEST^FS^XZ");
+//            }
+//        }).start();
+
     }
 
     private void initToolbar() {

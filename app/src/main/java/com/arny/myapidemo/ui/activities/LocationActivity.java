@@ -70,10 +70,6 @@ public class LocationActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
         mLocMgr.removeUpdates(locationListener);
         super.onDestroy();
     }

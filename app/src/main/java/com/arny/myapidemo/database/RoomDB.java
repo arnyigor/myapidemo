@@ -6,29 +6,27 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import com.arny.myapidemo.api.jsongenerator.Place;
-import com.arny.myapidemo.models.User;
-import com.arny.myapidemo.models.Category;
-import com.arny.myapidemo.models.GoodItem;
-import com.arny.myapidemo.models.InfoObject;
-import com.arny.myapidemo.models.TestSubObject;
+import com.arny.myapidemo.models.*;
 
 @Database(entities = {TestSubObject.class, InfoObject.class, User.class, Category.class, GoodItem.class, Place.class}, version = 1)
 @TypeConverters({DbTypeConverter.class})
 public abstract class RoomDB extends RoomDatabase {
     private static final Object LOCK = new Object();
-    private static RoomDB sInstance;
+    private static volatile RoomDB sInstance;
 
-    public static synchronized RoomDB getDb(Context context) {
-        if (sInstance == null) {
+    public static RoomDB getDb(Context context) {
+        RoomDB localInstance = sInstance;
+        if (localInstance == null) {
             synchronized (LOCK) {
-                if (sInstance == null) {
+                localInstance = sInstance;
+                if (localInstance == null) {
                     Builder<RoomDB> roomdb = Room.databaseBuilder(context.getApplicationContext(), RoomDB.class, "Room.db");
                     roomdb.fallbackToDestructiveMigration();
-                    sInstance = roomdb.build();
+                    sInstance = localInstance = roomdb.build();
                 }
             }
         }
-        return sInstance;
+        return localInstance;
     }
 
     abstract public TestDao getTestDao();

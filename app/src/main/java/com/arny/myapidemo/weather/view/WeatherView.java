@@ -6,7 +6,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.arny.myapidemo.weather.api.ApiWeatherResponse;
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface WeatherView extends MvpView {
-	void showLoadingProcess();
+	void showLoadingProcess(String process);
 
 	void showError(String error);
 

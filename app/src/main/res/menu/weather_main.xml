@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_get_coodr_from_map"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_menu_mylocation"
+        app:showAsAction="ifRoom"
+        android:title="Получить координаты с карты">
+    </item>
+</menu>
