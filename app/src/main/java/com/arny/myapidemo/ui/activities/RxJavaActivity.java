@@ -16,14 +16,13 @@ import com.arny.myapidemo.R;
 import com.arny.myapidemo.api.API;
 import com.arny.myapidemo.api.AristorService;
 import com.arny.myapidemo.api.Auth;
-import com.arny.myapidemo.api.jsongenerator.JsonGeneratorAPIKt;
-import com.arny.myapidemo.database.RoomDB;
 import com.arny.myapidemo.models.GoodItem;
 import com.arny.myapidemo.utils.Local;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.json.JSONObject;
 
@@ -44,6 +43,10 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MaterialDialog progress;
     private Button btnTest3;
+    private Button btnRetry;
+    private int retryCount;
+    private int maxRetries;
+    private int stopRetries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
         findViewById(R.id.btnGetTransfers).setOnClickListener(this);
+        btnRetry = findViewById(R.id.buttonRetry);
+        btnRetry.setOnClickListener(this);
     }
 
     @Override
@@ -183,9 +188,44 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 							System.out.println(object);
 						}, Throwable::printStackTrace);
 				break;
-			case R.id.btn_login:
-			    Utility.mainThreadObservable(aristos.login(getPostHashMap()))
-						.doOnSubscribe(disposable -> runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Вход...")))
+            case R.id.buttonRetry:
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.start();
+                btnRetry.setEnabled(false);
+                retryCount = 0;
+                maxRetries = 5;
+                stopRetries = 15;
+                Utility.mainThreadObservable(Observable.fromCallable(() -> londTimeConnection(1000, true)))
+                        .doOnError(throwable -> {
+                            Log.e(RxJavaActivity.class.getSimpleName(), "londTimeConnection error: " + throwable.getMessage() + " попытка:" + retryCount);
+                        }).retryWhen(throwableObservable -> throwableObservable.flatMap((Function<Throwable, Observable<?>>) throwable -> {
+                    long elapsedTimeMili = stopwatch.getElapsedTimeMili();
+                    Log.d(RxJavaActivity.class.getSimpleName(), "retryWhen: retryCount:" + retryCount + " maxRetries:" + maxRetries + " time:" + elapsedTimeMili);
+                    stopwatch.restart();
+                    if (elapsedTimeMili < 5000) maxRetries += 5;
+                    if (maxRetries >= stopRetries) {
+                        maxRetries = stopRetries;
+                    }
+                    if (++retryCount < maxRetries) {
+                        return Observable.timer(1, TimeUnit.MILLISECONDS);
+                    }
+                    return Observable.error(throwable);
+                })).subscribe(
+                        aBoolean -> {
+                            stopwatch.stop();
+                            btnRetry.setEnabled(true);
+                            ToastMaker.toastSuccess(this, "Connection success");
+                        }, throwable -> {
+                            stopwatch.stop();
+                            btnRetry.setEnabled(true);
+                            throwable.printStackTrace();
+                            ToastMaker.toastError(this, throwable.getMessage());
+                        }
+                );
+                break;
+            case R.id.btn_login:
+                Utility.mainThreadObservable(aristos.login(getPostHashMap()))
+                        .doOnSubscribe(disposable -> runOnUiThread(() -> DroidUtils.showProgress(pDialog, "Вход...")))
                         .doFinally(() -> DroidUtils.hideProgress(pDialog))
 						.subscribe(auth -> {
 							System.out.println(auth);
@@ -201,23 +241,23 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
 						});
 				break;
 			case R.id.btnTest1:
-				Stopwatch stopwatch = new Stopwatch();
-				stopwatch.start();
+                Stopwatch stopwatch1 = new Stopwatch();
+                stopwatch1.start();
                 Observable<String> stringObservable = Observable.fromCallable(this::londTimeFunctionString);
                 Observable<List<Integer>> listObservable = Observable.fromCallable(this::londTimeFunctionList);
                 compositeDisposable.add(Utility.mainThreadObservable(Schedulers.computation(), listObservable.flatMap(Observable::fromIterable).filter(integer -> integer > 3 && integer < 8).toList().flatMapObservable(Observable::fromIterable))
                         .doOnSubscribe(disposable -> progress.show())
                         .subscribe(
                                 res -> {
-                                    ToastMaker.toastSuccess(this, "RX result: " + res + " with time :" + stopwatch.getElapsedTimeSecs(3) + " sec" + " in thread:" + Utility.getThread());
-                                    Log.i(RxJavaActivity.class.getSimpleName(), "RX result: " + res + " with time :" + stopwatch.getElapsedTimeSecs(3) + " sec" + " in thread:" + Utility.getThread());
-                                    stopwatch.stop();
+                                    ToastMaker.toastSuccess(this, "RX result: " + res + " with time :" + stopwatch1.getElapsedTimeSecs(3) + " sec" + " in thread:" + Utility.getThread());
+                                    Log.i(RxJavaActivity.class.getSimpleName(), "RX result: " + res + " with time :" + stopwatch1.getElapsedTimeSecs(3) + " sec" + " in thread:" + Utility.getThread());
+                                    stopwatch1.stop();
                                     progress.dismiss();
                                 }, throwable -> {
                                     ToastMaker.toastError(this, "RX error: " + throwable.getMessage());
                                     throwable.printStackTrace();
                                     Log.i(RxJavaActivity.class.getSimpleName(), "RX error:" + throwable.getMessage() + " : in thread:" + Utility.getThread());
-                                    stopwatch.stop();
+                                    stopwatch1.stop();
                                     progress.dismiss();
                                 }
                         ));
@@ -268,6 +308,25 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
         Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionString: finished:" + stopwatch.getElapsedTimeSecs(3) + " sec");
         stopwatch.stop();
         return "long_time_function_result";
+    }
+
+    private boolean londTimeConnection(int millis, boolean error) throws Exception {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeConnection: started millis:" + millis);
+        try {
+            Log.i(RxJavaActivity.class.getSimpleName(), "londTimeConnection: error:" + error);
+            Thread.sleep(millis);
+            if (error) {
+                throw new Exception("Connection failed");
+            }
+            return true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeConnection: finished:" + stopwatch.getElapsedTimeSecs(3) + " sec");
+        stopwatch.stop();
+        return false;
     }
 
     private int londTimeFunctionInt() {
