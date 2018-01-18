@@ -195,7 +195,7 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
                 retryCount = 0;
                 maxRetries = 5;
                 stopRetries = 15;
-                Utility.mainThreadObservable(Observable.fromCallable(() -> londTimeConnection(1000, true)))
+                Utility.mainThreadObservable(Observable.fromCallable(() -> TestingUtils.londTimeConnection(1000, true)))
                         .doOnError(throwable -> {
                             Log.e(RxJavaActivity.class.getSimpleName(), "londTimeConnection error: " + throwable.getMessage() + " попытка:" + retryCount);
                         }).retryWhen(throwableObservable -> throwableObservable.flatMap((Function<Throwable, Observable<?>>) throwable -> {
@@ -308,25 +308,6 @@ public class RxJavaActivity extends AppCompatActivity implements View.OnClickLis
         Log.i(RxJavaActivity.class.getSimpleName(), "londTimeFunctionString: finished:" + stopwatch.getElapsedTimeSecs(3) + " sec");
         stopwatch.stop();
         return "long_time_function_result";
-    }
-
-    private boolean londTimeConnection(int millis, boolean error) throws Exception {
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.start();
-        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeConnection: started millis:" + millis);
-        try {
-            Log.i(RxJavaActivity.class.getSimpleName(), "londTimeConnection: error:" + error);
-            Thread.sleep(millis);
-            if (error) {
-                throw new Exception("Connection failed");
-            }
-            return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i(RxJavaActivity.class.getSimpleName(), "londTimeConnection: finished:" + stopwatch.getElapsedTimeSecs(3) + " sec");
-        stopwatch.stop();
-        return false;
     }
 
     private int londTimeFunctionInt() {
