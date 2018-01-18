@@ -29,6 +29,7 @@ public class WeatherViewActivity extends MvpAppCompatActivity implements Weather
     @InjectPresenter
     ViewWeatherPresenter weatherPresenter;
     private TextView tvWeatherData;
+	private Intent intentTracking, intentTrackingService;
     private TextView tvTemp;
 	private ImageView imgView;
 	private TextView tvWind;

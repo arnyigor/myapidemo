@@ -100,7 +100,19 @@
             </intent-filter>
         </receiver>
 
-        <service
+	    <receiver android:name=".tracking.TrackingReceiver">
+		    <intent-filter>
+			    <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    </intent-filter>
+	    </receiver>
+
+	    <service android:name=".tracking.TrackingService"
+	             android:enabled="true"
+	             android:exported="false"
+	             android:process=":tracking.service"/>
+
+
+	    <service
                 android:name=".services.MyTimerService"
                 android:label="MyAlarmService"/>
         <service
