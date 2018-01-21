@@ -8,7 +8,7 @@ import android.content.Context;
 import com.arny.myapidemo.api.jsongenerator.Place;
 import com.arny.myapidemo.models.*;
 
-@Database(entities = {TestSubObject.class, InfoObject.class, User.class, Category.class, GoodItem.class, Place.class}, version = 1)
+@Database(entities = {TestSubObject.class, InfoObject.class, User.class, Category.class, GoodItem.class, Place.class}, version = 1, exportSchema = false)
 @TypeConverters({DbTypeConverter.class})
 public abstract class RoomDB extends RoomDatabase {
     private static final Object LOCK = new Object();

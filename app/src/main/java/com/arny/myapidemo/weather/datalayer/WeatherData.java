@@ -21,4 +21,5 @@ public class WeatherData {
 	public static double getMMRTST(double pressure) {
 		return pressure * 0.7500637554192;
 	}
+
 }

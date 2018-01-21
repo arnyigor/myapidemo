@@ -94,7 +94,6 @@ dependencies {
     compile 'org.osmdroid:osmdroid-android:5.6.5'
     compile 'com.github.esafirm.android-image-picker:imagepicker:1.9.2'
     compile 'com.github.esafirm.android-image-picker:rximagepicker:1.9.2'
-    compile 'pl.charmas.android:android-reactive-location2:2.1@aar'
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

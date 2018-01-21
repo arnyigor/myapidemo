@@ -12,6 +12,6 @@ public interface WeatherView extends MvpView {
 
 	void hideLoadingProcess();
 
-	void showWeather(ApiWeatherResponse response);
+	void showWeather(ApiWeatherResponse response, double latitude, double longitude);
 
 }
