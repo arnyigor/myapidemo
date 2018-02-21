@@ -30,7 +30,7 @@ public class JsonPlaceholderApi {
         ApiRequest.apiResponse(context, BASE_URL + POSTS, null, new Response.Listener<Object>() {
             @Override
             public void onResponse(Object response) {
-                JsonArray posts = ApiUtils.getResponse(response, JsonArray.class);
+                JsonArray posts = ApiUtils.fromJson(response, JsonArray.class);
                 ArrayList<Post> arrayList = ApiUtils.convertArray(posts, Post.class);
                 postsResponse.onResultSuccess(arrayList);
             }

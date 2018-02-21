@@ -217,12 +217,12 @@ public class SimpleUIActivity extends AppCompatActivity implements View.OnClickL
             super(context, textViewResourceId);
         }
 
-        @Override
-        protected String getObjectName(String obj) {
-            return obj;
-        }
+	    @Override
+	    protected String getItemTitle(String obj) {
+		    return obj;
+	    }
 
-        @Override
+	    @Override
         protected boolean filterObject(String myObject, String constraint) {
             // If true, the object will be in the list, if false, it will be filtered.
             // Do your own filtering with myObject as you desire
